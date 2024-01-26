@@ -139,3 +139,13 @@ input[type=number]::-webkit-outer-spin-button {
 THATS WHY YOU USE IDs!!! ID > CLASS
 Now i can override material without !important
 */
+
+/* Sign in button */
+.icons {
+    width: 100%;
+    align-items: center;
+    align-content: center;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+}

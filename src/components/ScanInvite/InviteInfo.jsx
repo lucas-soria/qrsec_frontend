@@ -14,7 +14,7 @@ export function InviteInfo( { id, state } ) {
 		  	setInvite(await getInvite(id))
 		})();
 	
-	}, [state]);
+	}, [state, id]);
 
     const validate = (invite) => {
         let now = new Date()

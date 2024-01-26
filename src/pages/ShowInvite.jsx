@@ -12,6 +12,7 @@ export function ShowInvite() {
     const { id } = useParams()
 
 	const [invite, setInvite] = useState()
+	var inviteBoolean = !!invite;
 
 	useEffect(() => {
 	
@@ -19,7 +20,7 @@ export function ShowInvite() {
 		  	setInvite(await getInvite(id))
 		})();
 	
-	}, [!!invite]);
+	}, [inviteBoolean, id]);
 
 	useEffect(() => {
 		document.title = "QRSec - Ver invitación"

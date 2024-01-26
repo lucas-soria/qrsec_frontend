@@ -17,7 +17,7 @@ export function Map( { position } ) {
     map.fitBounds(bounds);
     map.setZoom(17);
     setMap(map)
-  }, [])
+  }, [position])
 
   const onUnmount = useCallback(function callback(map) {
     setMap(null)

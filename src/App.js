@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
 import { frontUrls } from './data/Urls'
 import { ScanInvite } from './pages/ScanInvite'
 import { SignIn } from './pages/SignIn'
+import { SignUp } from './pages/SignUp'
 import { ProtectedRoutes } from './components/ProtectedRoutes'
 
 export function App() {
@@ -21,8 +22,9 @@ export function App() {
             <Container maxWidth='sm'>
                 <BrowserRouter>
                     <Routes>
+                        <Route path={ frontUrls.signup } element={ <SignUp /> } />
                         <Route path={ frontUrls.signin } element={ <SignIn /> } />
-                        <Route path={ frontUrls.base } element={<Navigate replace to={ frontUrls.signin } />} />
+                        <Route path={ frontUrls.base } element={<Navigate replace to={ frontUrls.signup } />} />
                         <Route path={ frontUrls.view + ":id" } element={ <ShowInvite /> } />
                         <Route element={ <ProtectedRoutes /> } >
                             <Route path={ frontUrls.create } element={ <SendInvite /> } />

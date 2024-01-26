@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useReducer, useState } from 'react'
 import { InviteInfo } from '../components/ScanInvite/InviteInfo'
 import { QrScanner } from '../components/ScanInvite/QrScanner'
 
@@ -6,7 +6,7 @@ export function ScanInvite () {
 
     const [state, setState] = useState(false)
 
-    const [data, setData] = useState();
+    const [data, setData] = useReducer();
 
     useEffect(() => {
         document.title = "QRSec - Escanear invitaciones"

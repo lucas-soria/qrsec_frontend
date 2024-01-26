@@ -10,7 +10,7 @@ export function QRCodeComponent( { id } ) {
 
   	useEffect(() => {
     	setWidth(ref.current.clientWidth)
-  	})
+  	}, [])
 
   	return (
     	<Fragment>
