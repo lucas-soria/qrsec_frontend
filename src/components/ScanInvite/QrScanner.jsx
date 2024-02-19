@@ -4,49 +4,52 @@ import QRReader from 'qrreader';
 import React, { Fragment, useEffect } from 'react';
 
 
-export function QrScanner( { setData, state, setState } ) {
+export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive } ) {
 
-    var qrCodeReader
+    var qrCodeReader;
 
     const handleClick = () => {
-        if (state) {
-            setState(false)
-            stop()
+        if (cameraIsActive) {
+            setCameraIsActive(false);
+            stopCapture();
         } else {
-            setState(true)
+            setCameraIsActive(true);
         }
     }
 
-    // start Capture
-    const start = (videoElement) => {
+    const startCapture = (videoElement) => {
         qrCodeReader.startCapture(videoElement)
             .then((result) => {
-                setData(result)
-                setState(false)
+                setInviteID(result);
+                setCameraIsActive(false);
+                stopCapture();
             })
             .catch((error) => {
-                console.log(error)
+                console.log(error);
             });
     }
 
-    // stop Capture
-    const stop = () => {
-        if (!!qrCodeReader) qrCodeReader.stopCapture()
+    const stopCapture = () => {
+        if (!!qrCodeReader) {
+            qrCodeReader.stopCapture();
+        }
     }
 
-    useEffect(() => {
+    useEffect( () => {
 
         if (QRReader) {
             qrCodeReader = new QRReader();
             const videoElement = document.querySelector('video');
-            start(videoElement)
+            startCapture(videoElement);
         }
 
-    }, [QRReader, state]);
+    }, [ QRReader, cameraIsActive ]);
 
     return (
+
         <Fragment>
-            {state && (
+
+            {cameraIsActive && (
                 <video  
                     autoPlay={true}
                     id="video"
@@ -54,7 +57,16 @@ export function QrScanner( { setData, state, setState } ) {
                     style={{width: "100%"}}
                 />
             )}
-            <Button variant='contained' startIcon={ state ? <DoDisturb fontSize='large' /> : <QrCodeScanner fontSize='large' /> } onClick={ handleClick }>{ state ? "Cancelar" : "Escanear" }</Button>
+
+            <Button 
+                variant='contained'
+                startIcon={ cameraIsActive ? <DoDisturb fontSize='large' /> : <QrCodeScanner fontSize='large' /> }
+                onClick={ handleClick }
+            >
+                { cameraIsActive ? "Cancelar" : "Escanear" }
+            </Button>
+
         </Fragment>
+
     );
 }
