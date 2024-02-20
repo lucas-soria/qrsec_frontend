@@ -15,7 +15,7 @@ export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive } ) 
         } else {
             setCameraIsActive(true);
         }
-    }
+    };
 
     const startCapture = (videoElement) => {
         qrCodeReader.startCapture(videoElement)
@@ -27,13 +27,13 @@ export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive } ) 
             .catch((error) => {
                 console.log(error);
             });
-    }
+    };
 
     const stopCapture = () => {
         if (!!qrCodeReader) {
             qrCodeReader.stopCapture();
         }
-    }
+    };
 
     useEffect( () => {
 
@@ -52,9 +52,9 @@ export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive } ) 
             {cameraIsActive && (
                 <video  
                     autoPlay={true}
-                    id="video"
+                    id='video'
                     muted={true}
-                    style={{width: "100%"}}
+                    style={{width: '100%'}}
                 />
             )}
 
@@ -63,7 +63,7 @@ export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive } ) 
                 startIcon={ cameraIsActive ? <DoDisturb fontSize='large' /> : <QrCodeScanner fontSize='large' /> }
                 onClick={ handleClick }
             >
-                { cameraIsActive ? "Cancelar" : "Escanear" }
+                { cameraIsActive ? 'Cancelar' : 'Escanear' }
             </Button>
 
         </Fragment>

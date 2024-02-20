@@ -1,6 +1,6 @@
 import { AddCircleOutlineOutlined, RemoveCircleOutlineOutlined } from '@mui/icons-material';
 import { Card, IconButton, Typography } from '@mui/material';
-import React, { Fragment } from 'react'
+import React, { Fragment } from 'react';
 import { Hours } from './Hours';
 
 
@@ -8,12 +8,12 @@ export function SelectHours( { hours, setHours } ) {
 
     const handleAdd = () => {
         setHours([...hours, []]);
-    }
+    };
 
     const handleRemove = (key) => {
         hours.pop();
         setHours([...hours]);
-    }
+    };
 
     return (
         <Fragment>
@@ -28,5 +28,5 @@ export function SelectHours( { hours, setHours } ) {
             </div>
 
         </Fragment>
-    )
+    );
 }

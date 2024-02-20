@@ -1,8 +1,8 @@
-import { Card, Typography } from '@mui/material'
-import React, { Fragment, useEffect } from 'react'
-import { useState } from 'react';
-import { getInvite } from '../../data/Reducers'
-import { v4 as uuidv4 } from 'uuid'
+import { Card, Typography } from '@mui/material';
+import React, { Fragment, useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { getInvite } from '../../data/Reducers';
+
 
 export function InviteInfo( { inviteID, cameraIsActive } ) {
 
@@ -57,7 +57,7 @@ export function InviteInfo( { inviteID, cameraIsActive } ) {
 
         return false;
 
-    }
+    };
 
     return (
         <>
@@ -108,5 +108,5 @@ export function InviteInfo( { inviteID, cameraIsActive } ) {
             </>
         }
         </>
-    )
+    );
 }

@@ -1,7 +1,6 @@
 import { ArrowDropDown } from '@mui/icons-material';
 import { Autocomplete, Card, TextField, Typography } from '@mui/material';
-import React, { Fragment, useEffect } from 'react'
-import { useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { getMyGuests } from '../../data/Reducers';
 import { CreateGuest } from './CreateGuest';
 
@@ -43,7 +42,7 @@ export function SelectGuest( { guests, setGuests } ) {
 
     const removeFrom = (list, value) => {
         return list.filter(item => item !== value);
-    }
+    };
 
     const handleSelect = (event, selectedGuests=undefined) => {
         let guestsHasAddGuest = false;
@@ -61,7 +60,7 @@ export function SelectGuest( { guests, setGuests } ) {
         } else {
             setGuests(selectedGuests);
         }
-    }
+    };
 
     return (
         <Fragment>
@@ -95,5 +94,5 @@ export function SelectGuest( { guests, setGuests } ) {
 		    <CreateGuest open={ openGuest } setOpen={ setOpenGuest }/>
 
         </Fragment>
-    )
+    );
 }

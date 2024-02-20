@@ -1,43 +1,44 @@
-import React, { useCallback, useState } from 'react'
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api'
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import React, { useCallback, useState } from 'react';
+
 
 export function Map( { position } ) {
 
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: process.env.REACT_APP_MAPS_API
-  })
+    const [map, setMap] = useState(null);
+    
+    const { isLoaded } = useJsApiLoader({
+        id: 'google-map-script',
+        googleMapsApiKey: process.env.REACT_APP_MAPS_API
+    });
 
-  const [map, setMap] = useState(null)
+    const onLoad = useCallback(function callback(map) {
+        const bounds = new window.google.maps.LatLngBounds(position);
+        map.fitBounds(bounds);
+        setMap(map);
+    }, [ position ]);
 
-  console.log(map)
+    const onUnmount = useCallback(function callback(map) {
+        setMap(null);
+    }, [ ]);
 
-  const onLoad = useCallback(function callback(map) {
-    const bounds = new window.google.maps.LatLngBounds(position);
-    map.fitBounds(bounds);
-    map.setZoom(17);
-    setMap(map)
-  }, [position])
+    const showInMapClicked = () => {
+        window.open('https://maps.google.com?q=' + position.lat + ',' + position.lng );
+    };
 
-  const onUnmount = useCallback(function callback(map) {
-    setMap(null)
-  }, [])
+    return isLoaded ? (
 
-  const showInMapClicked = () => {
-    window.open("https://maps.google.com?q=" + position.lat + "," + position.lng );
-  };
+        <GoogleMap
+            mapContainerClassName='map-container'
+            center={ position }
+            onLoad={ onLoad }
+            onUnmount={ onUnmount }
+        >
+            <Marker
+                position={ position }
+                onClick={ showInMapClicked }
+                animation={ 0.0 }
+            />
+        </GoogleMap>
 
-
-  return isLoaded ? (
-      <GoogleMap
-        mapContainerClassName="map-container"
-        center={position}
-        onLoad={onLoad}
-        zoom={17}
-        defaultZoom={17}
-        onUnmount={onUnmount}
-      >
-        <Marker position={position} onClick={showInMapClicked} />
-      </GoogleMap>
-  ) : <></>
+    ) : <></>;
 }

@@ -1,19 +1,19 @@
-import { Typography } from '@mui/material'
-import React, { Fragment, useEffect, useState } from 'react'
-import jwt_decode from 'jwt-decode'
+import { Typography } from '@mui/material';
+import jwt_decode from 'jwt-decode';
+import React, { Fragment, useEffect, useState } from 'react';
 
 export function SignUp() {
 
-    const [image, setimage] = useState('')
+    const [image, setimage] = useState('');
 
     function handleCallbackResponse(response) {
-        var jwt = jwt_decode(response.credential)
-        console.log("Encoded JWT Token: ", jwt)
-        console.log(jwt.picture)
-        setimage(jwt.picture)
+        var jwt = jwt_decode(response.credential);
+        console.log('Encoded JWT Token: ', jwt);
+        console.log(jwt.picture);
+        setimage(jwt.picture);
     }
 
-    useEffect(() => {
+    useEffect( () => {
         /* global google */
 
         google.accounts.id.initialize({
@@ -24,24 +24,26 @@ export function SignUp() {
             ux_mode: 'redirect',
             context: 'use',
             itp_support: true
-        })
+        });
 
-        google.accounts.id.prompt()
+        google.accounts.id.prompt();
 
         google.accounts.id.renderButton(
             document.getElementById('google-oauth'),
             { theme: 'outline', type: 'icon', shape: 'round', size: 'large', text: 'signin_with' }
-        )
+        );
 
-    }, [])
+    }, [ ]);
 
     return (
         <Fragment>
+
             <Typography variant='h5'>Inicia Sesion</Typography>
             <div className='icons custom-component' id='google-oauth'></div>
             <div>
-            <img src={image} alt="alternatetext"></img>
+                <img src={ image } alt='alternatetext'></img>
             </div>
+
         </Fragment>
-    )
+    );
 }

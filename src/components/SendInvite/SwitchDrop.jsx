@@ -1,11 +1,12 @@
-import { Switch, Typography } from '@mui/material'
-import React from 'react'
+import { Switch, Typography } from '@mui/material';
+import React from 'react';
+
 
 export function SwitchDrop( { setDrop } ) {
 
     const handleDrop = (event) => {
-        setDrop(event.target.checked)
-    }
+        setDrop(event.target.checked);
+    };
 
     return (
         <div className='custom-component'>
@@ -14,5 +15,5 @@ export function SwitchDrop( { setDrop } ) {
             <Switch onChange={ handleDrop }/>
 
         </div>
-    )
+    );
 }

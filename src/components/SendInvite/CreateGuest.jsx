@@ -1,7 +1,8 @@
 import { PersonAdd } from '@mui/icons-material';
 import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Snackbar, TextField } from '@mui/material';
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState } from 'react';
 import { createGuest } from '../../data/Reducers';
+
 
 export function CreateGuest( { open, setOpen } ) {
 
@@ -45,7 +46,7 @@ export function CreateGuest( { open, setOpen } ) {
 
         createGuest(guest);
 		handleClose();
-    }
+    };
 
     return (
         <Fragment>
@@ -103,6 +104,6 @@ export function CreateGuest( { open, setOpen } ) {
             />
 
         </Fragment>
-    )
+    );
 }
 

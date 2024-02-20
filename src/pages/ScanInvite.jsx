@@ -1,12 +1,13 @@
-import React, { Fragment, useEffect, useReducer, useState } from 'react'
-import { InviteInfo } from '../components/ScanInvite/InviteInfo'
-import { QrScanner } from '../components/ScanInvite/QrScanner'
+import React, { Fragment, useEffect, useState } from 'react';
+import { InviteInfo } from '../components/ScanInvite/InviteInfo';
+import { QrScanner } from '../components/ScanInvite/QrScanner';
+
 
 export function ScanInvite () {
 
     const [cameraIsActive, setCameraIsActive] = useState(false);
 
-    const [inviteID, setInviteID] = useState("");
+    const [inviteID, setInviteID] = useState('');
 
     useEffect(() => {
 
@@ -30,5 +31,5 @@ export function ScanInvite () {
             )}
 
         </Fragment>
-    )
+    );
 }

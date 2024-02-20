@@ -1,5 +1,5 @@
 import { Card, ToggleButton, ToggleButtonGroup, Typography, useMediaQuery } from '@mui/material';
-import React, { Fragment } from 'react'
+import React, { Fragment } from 'react';
 
 
 export function SelectDays( { days, setDays } ) {
@@ -32,5 +32,5 @@ export function SelectDays( { days, setDays } ) {
             </div>
 
         </Fragment>
-    )
+    );
 }

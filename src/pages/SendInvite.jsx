@@ -1,14 +1,15 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import { Card, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Snackbar } from '@mui/material'
-import { AddLink, ContentCopy } from '@mui/icons-material'
-import { SelectGuest } from '../components/SendInvite/SelectGuest'
-import { SelectDays } from '../components/SendInvite/SelectDays'
-import { SelectHours } from '../components/SendInvite/SelectHours'
-import { SelectMaxTime } from '../components/SendInvite/SelectMaxTime'
-import { SelectPassengers } from '../components/SendInvite/SelectPassengers'
-import { SwitchDrop } from '../components/SendInvite/SwitchDrop'
-import { createInvite } from '../data/Reducers'
-import { frontUrls } from '../data/Urls'
+import { AddLink, ContentCopy } from '@mui/icons-material';
+import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@mui/material';
+import React, { Fragment, useEffect, useState } from 'react';
+import { SelectDays } from '../components/SendInvite/SelectDays';
+import { SelectGuest } from '../components/SendInvite/SelectGuest';
+import { SelectHours } from '../components/SendInvite/SelectHours';
+import { SelectMaxTime } from '../components/SendInvite/SelectMaxTime';
+import { SelectPassengers } from '../components/SendInvite/SelectPassengers';
+import { SwitchDrop } from '../components/SendInvite/SwitchDrop';
+import { createInvite } from '../data/Reducers';
+import { frontUrls } from '../data/Urls';
+
 
 export function SendInvite() {
 
@@ -38,7 +39,7 @@ export function SendInvite() {
 
         document.title = 'QRSec - Crear invitación';
 
-    }, [ ])
+    }, [ ]);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -50,19 +51,19 @@ export function SendInvite() {
 
     const handleCreate = async () => {
         invite['guests'] = guests;
-        invite['days'] = days,
+        invite['days'] = days;
         invite['hours'] = hours.filter( (hour) => hour.length > 0 );
         invite['maxTimeAllowed'] = maxTime;
         invite['numberOfPassengers'] = passengers;
         invite['dropsTrueGuest'] = drop;
         await createInvite(invite).then( (createInvite) => setUrl(base_url + createInvite.id) );
         handleClickOpen();
-    }
+    };
 
     const handleCopy = () => {
         setOpenSnack(true);
         navigator.clipboard.writeText(url);
-    }
+    };
 
     return (
         <Fragment>
@@ -98,5 +99,5 @@ export function SendInvite() {
             />
 
         </Fragment>
-    )
+    );
 }

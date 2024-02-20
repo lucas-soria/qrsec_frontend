@@ -1,11 +1,12 @@
-import { Card, TextField, Typography } from '@mui/material'
-import React from 'react'
+import { Card, TextField, Typography } from '@mui/material';
+import React from 'react';
+
 
 export function SelectMaxTime( { setMaxTime } ) {
 
     const handleMaxTime = (event) => {
-        setMaxTime(event.target.value)
-    }
+        setMaxTime(event.target.value);
+    };
 
     return (
         <div className='custom-component'>
@@ -16,5 +17,5 @@ export function SelectMaxTime( { setMaxTime } ) {
             </Card>
 
         </div>
-    )
+    );
 }
