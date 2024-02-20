@@ -12,25 +12,33 @@ import { frontUrls } from '../data/Urls'
 
 export function SendInvite() {
 
-    const base_url = frontUrls.wholeBase + frontUrls.view
+    const base_url = frontUrls.wholeBase + frontUrls.view;
 
-    var invite = {}
+    var invite = {};
 
-    const [guest, setGuest] = useState()
+    const [guests, setGuests] = useState([]);
     
-    const [days, setDays] = useState([])
+    const [days, setDays] = useState([]);
 
-    const [hours, setHours] = useState([ [] ])
+    const [hours, setHours] = useState([ [] ]);
 
-    const [maxTime, setMaxTime] = useState()
+    const [maxTime, setMaxTime] = useState();
 
-    const [passengers, setPassengers] = useState(0)
+    const [passengers, setPassengers] = useState(0);
 
-    const [drop, setDrop] = useState(false)
+    const [drop, setDrop] = useState(false);
 
-    const [url, setUrl] = useState("")
+    const [url, setUrl] = useState('');
 
     const [open, setOpen] = useState(false);
+
+    const [openSnack, setOpenSnack] = useState(false);
+
+    useEffect( () => {
+
+        document.title = 'QRSec - Crear invitación';
+
+    }, [ ])
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -41,60 +49,54 @@ export function SendInvite() {
     };
 
     const handleCreate = async () => {
-        invite['guests'] = [guest]
-        invite['days'] = days
-        invite['hours'] = hours.filter( (hour) => hour.length > 0 )
-        invite['maxTime'] = maxTime
-        invite['passengers'] = passengers
-        invite['drop'] = drop
-        await createInvite(invite).then((createInvite) => setUrl(base_url + createInvite.id))
-        handleClickOpen()
+        invite['guests'] = guests;
+        invite['days'] = days,
+        invite['hours'] = hours.filter( (hour) => hour.length > 0 );
+        invite['maxTimeAllowed'] = maxTime;
+        invite['numberOfPassengers'] = passengers;
+        invite['dropsTrueGuest'] = drop;
+        await createInvite(invite).then( (createInvite) => setUrl(base_url + createInvite.id) );
+        handleClickOpen();
     }
-
-    const [openSnack, setOpenSnack] = useState(false)
 
     const handleCopy = () => {
-        setOpenSnack(true)
-        navigator.clipboard.writeText(url)
+        setOpenSnack(true);
+        navigator.clipboard.writeText(url);
     }
-
-    useEffect(() => {
-        document.title = "QRSec - Crear invitación"
-      }, [])
 
     return (
         <Fragment>
-            <SelectGuest guest={ guest } setGuest={ setGuest } />
-            <SelectDays days={ days } setDays={ setDays } />
-            <SelectHours hours={ hours } setHours={ setHours } />
-            <SelectMaxTime setMaxTime={ setMaxTime } />
-            <SelectPassengers setPassengers={ setPassengers } />
-            <SwitchDrop setDrop={ setDrop } />
+
+            <SelectGuest guests={ guests } setGuests={ setGuests }/>
+            <SelectDays days={ days } setDays={ setDays }/>
+            <SelectHours hours={ hours } setHours={ setHours }/>
+            <SelectMaxTime setMaxTime={ setMaxTime }/>
+            <SelectPassengers setPassengers={ setPassengers }/>
+            <SwitchDrop setDrop={ setDrop }/>
+
             <Card elevation={6} id='card' className='card-send'>
-                <Button variant='contained' id='button-send' startIcon={ <AddLink fontSize='large' /> } onClick={ handleCreate } >Generar link</Button>
+                <Button variant='contained' id='button-send' startIcon={ <AddLink fontSize='large'/> } onClick={ handleCreate }>Generar link</Button>
             </Card>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-            >
-                <DialogTitle id="responsive-dialog-title">
-                    {"Copiá y compartí la invitación!:"}
-                </DialogTitle>
+
+            <Dialog open={open} onClose={ handleClose }>
+                <DialogTitle id='responsive-dialog-title'>Copiá y compartí la invitación!</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        {url} <Button variant='contained' startIcon={ <ContentCopy fontSize='large' /> } onClick={ handleCopy } >Copiar</Button>
+                        {url} <Button variant='contained' startIcon={ <ContentCopy fontSize='large'/> } onClick={ handleCopy }>Copiar</Button>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant='contained' onClick={handleClose} autoFocus>Hecho</Button>
+                    <Button variant='contained' onClick={ handleClose } autoFocus>Hecho</Button>
                 </DialogActions>
             </Dialog>
+
             <Snackbar
-                open={openSnack}
-                onClose={() => setOpenSnack(false)}
-                autoHideDuration={2000}
-                message="Copiado al portapapeles!"
+                open={ openSnack }
+                onClose={ () => setOpenSnack(false) }
+                autoHideDuration={ 2000 }
+                message='Copiado al portapapeles!'
             />
+
         </Fragment>
-  )
+    )
 }

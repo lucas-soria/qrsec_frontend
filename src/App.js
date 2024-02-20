@@ -12,27 +12,36 @@ import { ProtectedRoutes } from './components/ProtectedRoutes'
 
 export function App() {
 
-    // var token = localStorage.getItem("access_token")
+    var token = localStorage.getItem('access_token');
+    console.log(token);
     
     // var user_authorities = !!token ? jwtDecode(token).authorities : []
 
     return (
         <Fragment>
-            <ResponsiveAppBar />
+
+            <ResponsiveAppBar/>
             <Container maxWidth='sm'>
                 <BrowserRouter>
                     <Routes>
-                        <Route path={ frontUrls.signup } element={ <SignUp /> } />
-                        <Route path={ frontUrls.signin } element={ <SignIn /> } />
-                        <Route path={ frontUrls.base } element={<Navigate replace to={ frontUrls.signup } />} />
-                        <Route path={ frontUrls.view + ":id" } element={ <ShowInvite /> } />
+                        <Route path={ frontUrls.signup } element={ <SignUp/> }/>
+                        <Route path={ frontUrls.signin } element={ <SignIn/> }/>
+                        <Route path={ frontUrls.base } element={ <Navigate replace to={ frontUrls.signup }/> }/>
+                        <Route path={ frontUrls.view + ':id' } element={ <ShowInvite/> }/>
+
+                        {/*  Original es con rutas protegidas
                         <Route element={ <ProtectedRoutes /> } >
                             <Route path={ frontUrls.create } element={ <SendInvite /> } />
                             <Route path={ frontUrls.scan } element={ <ScanInvite /> } />
-                        </Route>
+                        </Route> */
+                        }
+
+                        <Route path={ frontUrls.create } element={ <SendInvite/> }/>
+                        <Route path={ frontUrls.scan } element={ <ScanInvite/> }/>
                     </Routes>
                 </BrowserRouter>
             </Container>
+
         </Fragment>
     )
 }

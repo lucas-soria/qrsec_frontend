@@ -9,10 +9,12 @@ export function SelectMaxTime( { setMaxTime } ) {
 
     return (
         <div className='custom-component'>
+
             <Typography variant='h6'>Tiempo máximo de estadía:</Typography>
             <Card elevation={6} id='card'>
-                <TextField variant='filled' type='number' label='Ej: 5hs' className="text-fields" onChange={ handleMaxTime } />
+                <TextField variant='filled' type='number' label='Ej: 5hs' className='text-fields' onChange={ handleMaxTime }/>
             </Card>
+
         </div>
     )
 }

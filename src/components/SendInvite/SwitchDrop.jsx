@@ -9,8 +9,10 @@ export function SwitchDrop( { setDrop } ) {
 
     return (
         <div className='custom-component'>
-            <Typography variant='h6' style={ {display:'inline-block'} } >¿Deja una o más personas?</Typography>
-            <Switch onChange={ handleDrop } />
+
+            <Typography variant='h6' style={ { display: 'inline-block' } }>¿Deja una o más personas?</Typography>
+            <Switch onChange={ handleDrop }/>
+
         </div>
     )
 }
