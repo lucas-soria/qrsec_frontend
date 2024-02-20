@@ -1,20 +1,24 @@
 import { Card, Typography } from '@mui/material';
 import React, { Fragment, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { getInvite } from '../../data/Reducers';
+import { getInvite } from '../../data/Reducers.tsx';
 
 
 export function InviteInfo( { inviteID, cameraIsActive } ) {
 
-    const [invite, setInvite] = useState();
+    const [invite, setInvite] = useState<Invite>();
 
     useEffect( () => {
 	
-        (async () => {
+        if (inviteID !== '') {
+            (async () => {
 
-            setInvite(await getInvite(inviteID));
+                setInvite(await getInvite(inviteID));
 
-        })();
+            })();
+        } else {
+            setInvite(undefined);
+        }
 	
 	}, [ inviteID ]);
 

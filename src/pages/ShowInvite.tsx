@@ -1,16 +1,16 @@
 import { Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Map } from '../components/ShowInvite/Map';
-import { QRCodeComponent } from '../components/ShowInvite/QRCode';
-import { getPublicInvite } from '../data/Reducers';
+import { Map } from '../components/ShowInvite/Map.tsx';
+import { QRCodeComponent } from '../components/ShowInvite/QRCode.tsx';
+import { getPublicInvite } from '../data/Reducers.tsx';
 
 
 export function ShowInvite() {
 
     const { id } = useParams();
 
-	const [invite, setInvite] = useState();
+	const [invite, setInvite] = useState<PublicInvite>();
 
 	var inviteBoolean = !!invite;
 

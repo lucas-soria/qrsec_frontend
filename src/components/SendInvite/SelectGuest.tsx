@@ -1,17 +1,21 @@
 import { ArrowDropDown } from '@mui/icons-material';
 import { Autocomplete, Card, TextField, Typography } from '@mui/material';
 import React, { Fragment, useEffect, useState } from 'react';
-import { getMyGuests } from '../../data/Reducers';
-import { CreateGuest } from './CreateGuest';
+import { getMyGuests } from '../../data/Reducers.tsx';
+import { CreateGuest } from './CreateGuest.tsx';
 
 
 export function SelectGuest( { guests, setGuests } ) {
+
+    interface OptionGuest {
+        name: string
+    }
 
     const [open, setOpen] = useState(false);
 
 	const [openGuest, setOpenGuest] = useState(false);
 
-    const [options, setOptions] = useState([]);
+    const [options, setOptions] = useState<OptionGuest[]>([]);
 
     const addGuest = 'Agregar un nuevo invitado';
 
@@ -44,7 +48,7 @@ export function SelectGuest( { guests, setGuests } ) {
         return list.filter(item => item !== value);
     };
 
-    const handleSelect = (event, selectedGuests=undefined) => {
+    const handleSelect = (event, selectedGuests : OptionGuest[]) => {
         let guestsHasAddGuest = false;
         selectedGuests.map(
             (guest) => {

@@ -8,7 +8,7 @@ export function Map( { position } ) {
     
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: process.env.REACT_APP_MAPS_API
+        googleMapsApiKey: process.env.REACT_APP_MAPS_API as string
     });
 
     const onLoad = useCallback(function callback(map) {

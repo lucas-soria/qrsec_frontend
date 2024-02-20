@@ -1,14 +1,14 @@
 import { AddLink, ContentCopy } from '@mui/icons-material';
 import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@mui/material';
 import React, { Fragment, useEffect, useState } from 'react';
-import { SelectDays } from '../components/SendInvite/SelectDays';
-import { SelectGuest } from '../components/SendInvite/SelectGuest';
-import { SelectHours } from '../components/SendInvite/SelectHours';
-import { SelectMaxTime } from '../components/SendInvite/SelectMaxTime';
-import { SelectPassengers } from '../components/SendInvite/SelectPassengers';
-import { SwitchDrop } from '../components/SendInvite/SwitchDrop';
-import { createInvite } from '../data/Reducers';
-import { frontUrls } from '../data/Urls';
+import { SelectDays } from '../components/SendInvite/SelectDays.tsx';
+import { SelectGuest } from '../components/SendInvite/SelectGuest.tsx';
+import { SelectHours } from '../components/SendInvite/SelectHours.tsx';
+import { SelectMaxTime } from '../components/SendInvite/SelectMaxTime.tsx';
+import { SelectPassengers } from '../components/SendInvite/SelectPassengers.tsx';
+import { SwitchDrop } from '../components/SendInvite/SwitchDrop.tsx';
+import { createInvite } from '../data/Reducers.tsx';
+import { frontUrls } from '../data/Urls.tsx';
 
 
 export function SendInvite() {

@@ -2,8 +2,8 @@ import { Login } from '@mui/icons-material';
 import { Button, Card, TextField, Typography } from '@mui/material';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { logIn } from '../data/Reducers';
-import { frontUrls } from '../data/Urls';
+import { logIn } from '../data/Reducers.tsx';
+import { frontUrls } from '../data/Urls.tsx';
 
 
 export function SignIn() {

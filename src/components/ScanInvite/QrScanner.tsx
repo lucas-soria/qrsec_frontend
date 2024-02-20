@@ -12,6 +12,7 @@ export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive } ) 
         if (cameraIsActive) {
             setCameraIsActive(false);
             stopCapture();
+            setInviteID('')
         } else {
             setCameraIsActive(true);
         }

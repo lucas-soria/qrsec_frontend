@@ -1,7 +1,7 @@
 import { AddCircleOutlineOutlined, RemoveCircleOutlineOutlined } from '@mui/icons-material';
 import { Card, IconButton, Typography } from '@mui/material';
 import React, { Fragment } from 'react';
-import { Hours } from './Hours';
+import { Hours } from './Hours.tsx';
 
 
 export function SelectHours( { hours, setHours } ) {
