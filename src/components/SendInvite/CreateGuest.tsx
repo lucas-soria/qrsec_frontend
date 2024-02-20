@@ -1,34 +1,34 @@
 import { PersonAdd } from '@mui/icons-material';
 import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Snackbar, TextField } from '@mui/material';
 import React, { Fragment, useState } from 'react';
-import { createGuest } from '../../data/Reducers';
+import { createGuest } from '../../data/Reducers.tsx';
 
 
-export function CreateGuest( { open, setOpen } ) {
+export function CreateGuest( { open, setOpen } : { open : boolean, setOpen : React.Dispatch<React.SetStateAction<boolean>> } ) {
 
-    const [openSnack, setOpenSnack] = useState(false);
+    const [openSnack, setOpenSnack] = useState<boolean>(false);
     
-    const [dni, setDNI] = useState();
+    const [dni, setDNI] = useState<string>('');
 
-    const [firstName, setFirstName] = useState();
+    const [firstName, setFirstName] = useState<string>('');
 
-    const [lastName, setLastName] = useState();
+    const [lastName, setLastName] = useState<string>('');
 
-	const [phone, setPhone] = useState();
+	const [phone, setPhone] = useState<string>('');
 
-	const handleDNI = (event) => {
+	const handleDNI = (event : React.ChangeEvent<HTMLInputElement>) => {
         setDNI(event.target.value);
     };
     
-    const handleFirstName = (event) => {
+    const handleFirstName = (event : React.ChangeEvent<HTMLInputElement>) => {
         setFirstName(event.target.value);
     };
 
-	const handleLastName = (event) => {
+	const handleLastName = (event : React.ChangeEvent<HTMLInputElement>) => {
         setLastName(event.target.value);
     };
 
-    const handlePhone = (event) => {
+    const handlePhone = (event : React.ChangeEvent<HTMLInputElement>) => {
         setPhone(event.target.value);
     };
 

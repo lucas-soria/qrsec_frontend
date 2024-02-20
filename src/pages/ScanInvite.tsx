@@ -1,13 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { InviteInfo } from '../components/ScanInvite/InviteInfo';
-import { QrScanner } from '../components/ScanInvite/QrScanner';
+import { InviteInfo } from '../components/ScanInvite/InviteInfo.tsx';
+import { QrScanner } from '../components/ScanInvite/QrScanner.tsx';
 
 
 export function ScanInvite () {
 
-    const [cameraIsActive, setCameraIsActive] = useState(false);
+    const [cameraIsActive, setCameraIsActive] = useState<boolean>(false);
 
-    const [inviteID, setInviteID] = useState('');
+    const [inviteID, setInviteID] = useState<string>('');
 
     useEffect(() => {
 

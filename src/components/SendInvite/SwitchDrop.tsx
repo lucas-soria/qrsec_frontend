@@ -2,9 +2,9 @@ import { Switch, Typography } from '@mui/material';
 import React from 'react';
 
 
-export function SwitchDrop( { setDrop } ) {
+export function SwitchDrop( { setDrop } : { setDrop : React.Dispatch<React.SetStateAction<boolean>> } ) { 
 
-    const handleDrop = (event) => {
+    const handleDrop = (event : React.ChangeEvent<HTMLInputElement>) => {
         setDrop(event.target.checked);
     };
 

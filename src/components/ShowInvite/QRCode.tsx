@@ -7,7 +7,7 @@ export function QRCodeComponent( { id } ) {
 
 	const [width, setWidth] = useState(0);
 
-  	const ref = useRef(null);
+  	const ref : any = useRef(null); // TODO: Give a proper type
 
   	useEffect(() => {
 

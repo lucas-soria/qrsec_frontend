@@ -1,24 +1,28 @@
 import { Card, Typography } from '@mui/material';
 import React, { Fragment, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { getInvite } from '../../data/Reducers';
+import { getInvite } from '../../data/Reducers.tsx';
 
 
-export function InviteInfo( { inviteID, cameraIsActive } ) {
+export function InviteInfo( { inviteID, cameraIsActive } : { inviteID : string, cameraIsActive : boolean } ) {
 
-    const [invite, setInvite] = useState();
+    const [invite, setInvite] = useState<Invite>();
 
     useEffect( () => {
 	
-        (async () => {
+        if (inviteID !== '') {
+            (async () => {
 
-            setInvite(await getInvite(inviteID));
+                setInvite(await getInvite(inviteID));
 
-        })();
+            })();
+        } else {
+            setInvite(undefined);
+        }
 	
 	}, [ inviteID ]);
 
-    const validate = (invite) => {
+    const validate = (invite : Invite) => {
 
         if (Object.keys(invite.days).length === 0) {
 
@@ -30,12 +34,12 @@ export function InviteInfo( { inviteID, cameraIsActive } ) {
         if (invite.days.includes(now.getDay().toString())) {
             let hoursValidation = invite.hours.map( (hour) => {
                 let start = new Date();
-                start.setHours(hour[0].split(':')[0]);
-                start.setMinutes(hour[0].split(':')[1]);
+                start.setHours(Number(hour[0].split(':')[0]));
+                start.setMinutes(Number(hour[0].split(':')[1]));
 
                 let end = new Date();
-                end.setHours(hour[1].split(':')[0]);
-                end.setMinutes(hour[1].split(':')[1]);
+                end.setHours(Number(hour[1].split(':')[0]));
+                end.setMinutes(Number(hour[1].split(':')[1]));
 
                 if (start > now || now > end) {
 

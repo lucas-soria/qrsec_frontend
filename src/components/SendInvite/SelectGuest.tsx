@@ -1,17 +1,21 @@
 import { ArrowDropDown } from '@mui/icons-material';
 import { Autocomplete, Card, TextField, Typography } from '@mui/material';
 import React, { Fragment, useEffect, useState } from 'react';
-import { getMyGuests } from '../../data/Reducers';
-import { CreateGuest } from './CreateGuest';
+import { getMyGuests } from '../../data/Reducers.tsx';
+import { CreateGuest } from './CreateGuest.tsx';
 
 
-export function SelectGuest( { guests, setGuests } ) {
+export function SelectGuest( { guests, setGuests } : { guests : Guest[], setGuests : React.Dispatch<React.SetStateAction<Guest[]>> } ) { 
 
-    const [open, setOpen] = useState(false);
+    interface OptionGuest extends Partial<Guest> {
+        name: string
+    }
 
-	const [openGuest, setOpenGuest] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
 
-    const [options, setOptions] = useState([]);
+	const [openGuest, setOpenGuest] = useState<boolean>(false);
+
+    const [options, setOptions] = useState<OptionGuest[]>([]);
 
     const addGuest = 'Agregar un nuevo invitado';
 
@@ -25,8 +29,8 @@ export function SelectGuest( { guests, setGuests } ) {
   
         (async () => {
 
-            const guests = await getMyGuests();
-            setOptions([{ name: addGuest }, ...guests.map( guest => ( { ...guest, name: guest.firstName + ' ' + guest.lastName } ))]);
+            const guests : Guest[] = await getMyGuests();
+            setOptions([{ name: addGuest }, ...guests.map( (guest : Guest) => ( { ...guest, name: guest.firstName + ' ' + guest.lastName } ))]);
 
         })();
   
@@ -40,14 +44,14 @@ export function SelectGuest( { guests, setGuests } ) {
 
     }, [ open ]);
 
-    const removeFrom = (list, value) => {
+    const removeFrom = (list : any[], value : any) => {
         return list.filter(item => item !== value);
     };
 
-    const handleSelect = (event, selectedGuests=undefined) => {
+    const handleSelect = (event : React.SyntheticEvent<Element, Event>, selectedGuests : OptionGuest[]) => {
         let guestsHasAddGuest = false;
-        selectedGuests.map(
-            (guest) => {
+        selectedGuests.forEach(
+            (guest : OptionGuest) => {
                 if (guest.name === addGuest) {
                     guestsHasAddGuest = true;
                 }
@@ -58,7 +62,7 @@ export function SelectGuest( { guests, setGuests } ) {
             guests = removeFrom(guests, addGuest);
             setGuests(guests);
         } else {
-            setGuests(selectedGuests);
+            setGuests(selectedGuests as Guest[]);
         }
     };
 
@@ -83,7 +87,7 @@ export function SelectGuest( { guests, setGuests } ) {
                         options={ options }
                         loading={ loading }
                         isOptionEqualToValue={ (option, value) => option.name === value.name }
-                        value={ guests }
+                        value={ guests as OptionGuest[] }
                         getOptionLabel={ (option) => option.name }
                         onChange={ handleSelect }
                         renderInput={ (guest) => <TextField variant='outlined' className='text-fields' {...guest} label='Seleccionar invitados'/> }

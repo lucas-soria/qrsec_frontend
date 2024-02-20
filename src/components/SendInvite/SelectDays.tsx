@@ -2,11 +2,11 @@ import { Card, ToggleButton, ToggleButtonGroup, Typography, useMediaQuery } from
 import React, { Fragment } from 'react';
 
 
-export function SelectDays( { days, setDays } ) {
+export function SelectDays( { days, setDays } : { days : string[], setDays : React.Dispatch<React.SetStateAction<string[]>> } ) {
 
     const matches = useMediaQuery('(min-width:600px)');
 
-    const handleDays = (event, newDays) => {
+    const handleDays = (event : React.MouseEvent<HTMLElement, MouseEvent>, newDays : string[] ) => {
         setDays(newDays);
     };
 

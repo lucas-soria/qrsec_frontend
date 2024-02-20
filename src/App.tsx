@@ -4,13 +4,13 @@ import React, { Fragment } from 'react';
 
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import { ResponsiveAppBar } from './components/ResponsiveAppBar';
-import { frontUrls } from './data/Urls';
-import { ScanInvite } from './pages/ScanInvite';
-import { SendInvite } from './pages/SendInvite';
-import { ShowInvite } from './pages/ShowInvite';
-import { SignIn } from './pages/SignIn';
-import { SignUp } from './pages/SignUp';
+import { ResponsiveAppBar } from './components/ResponsiveAppBar.tsx';
+import { frontUrls } from './data/Urls.tsx';
+import { ScanInvite } from './pages/ScanInvite.tsx';
+import { SendInvite } from './pages/SendInvite.tsx';
+import { ShowInvite } from './pages/ShowInvite.tsx';
+import { SignIn } from './pages/SignIn.tsx';
+import { SignUp } from './pages/SignUp.tsx';
 
 export function App() {
 

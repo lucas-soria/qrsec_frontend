@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router';
 import { Navigate, Outlet } from 'react-router-dom';
-import { frontUrls } from '../data/Urls';
+import { frontUrls } from '../data/Urls.tsx';
 
 
 export function ProtectedRoutes() {

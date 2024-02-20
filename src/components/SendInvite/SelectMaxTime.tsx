@@ -2,10 +2,10 @@ import { Card, TextField, Typography } from '@mui/material';
 import React from 'react';
 
 
-export function SelectMaxTime( { setMaxTime } ) {
+export function SelectMaxTime( { setMaxTime } : { setMaxTime : React.Dispatch<React.SetStateAction<number | null>> } ) { 
 
-    const handleMaxTime = (event) => {
-        setMaxTime(event.target.value);
+    const handleMaxTime = (event : React.ChangeEvent<HTMLInputElement>) => {
+        setMaxTime(Number(event.target.value));
     };
 
     return (

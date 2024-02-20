@@ -1,25 +1,23 @@
 import { DoDisturb, QrCodeScanner } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import QRReader from 'qrreader';
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useCallback, useEffect, useMemo } from 'react';
 
 
-export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive } ) {
+export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive } : { setInviteID : React.Dispatch<React.SetStateAction<string>>, cameraIsActive : boolean, setCameraIsActive : React.Dispatch<React.SetStateAction<boolean>> } ) {
 
-    var qrCodeReader;
+    var qrCodeReader = useMemo( () => new QRReader(), []);
 
-    const handleClick = () => {
-        if (cameraIsActive) {
-            setCameraIsActive(false);
-            stopCapture();
-        } else {
-            setCameraIsActive(true);
+    const stopCapture = useCallback( () => {
+        if (!!qrCodeReader) {
+            qrCodeReader.stopCapture();
         }
-    };
+    }, [ qrCodeReader ]);
 
-    const startCapture = (videoElement) => {
+    const startCapture = useCallback( (videoElement : HTMLVideoElement) => {
         qrCodeReader.startCapture(videoElement)
             .then((result) => {
+                console.log(result)
                 setInviteID(result);
                 setCameraIsActive(false);
                 stopCapture();
@@ -27,23 +25,26 @@ export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive } ) 
             .catch((error) => {
                 console.log(error);
             });
-    };
+    }, [ qrCodeReader, setCameraIsActive, setInviteID, stopCapture ]);
 
-    const stopCapture = () => {
-        if (!!qrCodeReader) {
-            qrCodeReader.stopCapture();
+    const handleClick = () => {
+        if (cameraIsActive) {
+            setCameraIsActive(false);
+            stopCapture();
+            setInviteID('')
+        } else {
+            setCameraIsActive(true);
         }
     };
 
     useEffect( () => {
 
-        if (QRReader) {
-            qrCodeReader = new QRReader();
-            const videoElement = document.querySelector('video');
+        const videoElement : HTMLVideoElement | null = document.querySelector('video');
+        if (videoElement !== null) {
             startCapture(videoElement);
-        }
+        };
 
-    }, [ QRReader, cameraIsActive ]);
+    }, [ cameraIsActive, startCapture ]);
 
     return (
 

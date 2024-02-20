@@ -2,10 +2,10 @@ import { Card, TextField, Typography } from '@mui/material';
 import React from 'react';
 
 
-export function SelectPassengers( { setPassengers } ) {
+export function SelectPassengers( { setPassengers } : { setPassengers : React.Dispatch<React.SetStateAction<number>> } ) { 
 
-    const handlePassangers = (event) => {
-        setPassengers(event.target.value);
+    const handlePassangers = (event : React.ChangeEvent<HTMLInputElement>) => {
+        setPassengers(Number(event.target.value));
     };
 
     return (

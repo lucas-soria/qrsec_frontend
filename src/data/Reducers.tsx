@@ -1,4 +1,4 @@
-import { backUrls } from './Urls';
+import { backUrls } from './Urls.tsx';
 
 
 var defaultHeaders = {

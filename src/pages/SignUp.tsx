@@ -7,7 +7,7 @@ export function SignUp() {
     const [image, setimage] = useState('');
 
     function handleCallbackResponse(response) {
-        var jwt = jwt_decode(response.credential);
+        var jwt : any = jwt_decode(response.credential); // TODO: Give a proper type
         console.log('Encoded JWT Token: ', jwt);
         console.log(jwt.picture);
         setimage(jwt.picture);
@@ -16,19 +16,21 @@ export function SignUp() {
     useEffect( () => {
         /* global google */
 
-        google.accounts.id.initialize({
+        // TODO: Give a proper type
+        (google as any).accounts.id.initialize({
             client_id: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID,
             callback: handleCallbackResponse,
-            login_uri: 'http://localhost:8080/v1/oauth/google/',
             cancel_on_tap_outside: true,
             ux_mode: 'redirect',
             context: 'use',
             itp_support: true
         });
 
-        google.accounts.id.prompt();
+        // TODO: Give a proper type
+        (google as any).accounts.id.prompt();
 
-        google.accounts.id.renderButton(
+        // TODO: Give a proper type
+        (google as any).accounts.id.renderButton(
             document.getElementById('google-oauth'),
             { theme: 'outline', type: 'icon', shape: 'round', size: 'large', text: 'signin_with' }
         );

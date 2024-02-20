@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import jwtDecode from 'jwt-decode';
 import * as React from 'react';
 import ReactLogo from '../Screenshot_2021-10-07_184334.svg';
-import { frontUrls } from '../data/Urls';
+import { frontUrls } from '../data/Urls.tsx';
 
 const pages = [ ['Inicio', ''], ['Crear', frontUrls.create] ];
 
@@ -24,7 +24,7 @@ export function ResponsiveAppBar() {
   
     var token = localStorage.getItem('access_token');
 
-    var decoded = !!token ? jwtDecode(token) : false;
+    var decoded : any = !!token ? jwtDecode(token) : false; // TODO: Give a proper type
 
     var user = !!decoded ? [ decoded.first_name, decoded.last_name ] : [ '', '' ];
 
@@ -142,7 +142,7 @@ export function ResponsiveAppBar() {
 
                                 { settings.map((setting) => (
                                     <MenuItem key={ setting } onClick={ handleCloseUserMenu }>
-                                        <a href={ '/signin' }><Typography variant='text' textAlign='center'>{ setting }</Typography></a>
+                                        <a href={ '/signin' }><Typography variant='body1' textAlign='center'>{ setting }</Typography></a>
                                     </MenuItem>
                                 ))}
 

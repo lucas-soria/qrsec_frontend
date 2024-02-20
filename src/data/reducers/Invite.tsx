@@ -4,8 +4,8 @@ interface Invite {
     guests: Guest[];
     days: string[];
     hours: string[][];
-    maxTimeAllowed: number;
-    numberOfPassengers: number;
+    maxTimeAllowed: number | null;
+    numberOfPassengers: number | null;
     dropsTrueGuest: boolean;
     enabled: boolean;
 }

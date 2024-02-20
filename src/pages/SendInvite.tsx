@@ -1,39 +1,39 @@
 import { AddLink, ContentCopy } from '@mui/icons-material';
 import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@mui/material';
 import React, { Fragment, useEffect, useState } from 'react';
-import { SelectDays } from '../components/SendInvite/SelectDays';
-import { SelectGuest } from '../components/SendInvite/SelectGuest';
-import { SelectHours } from '../components/SendInvite/SelectHours';
-import { SelectMaxTime } from '../components/SendInvite/SelectMaxTime';
-import { SelectPassengers } from '../components/SendInvite/SelectPassengers';
-import { SwitchDrop } from '../components/SendInvite/SwitchDrop';
-import { createInvite } from '../data/Reducers';
-import { frontUrls } from '../data/Urls';
+import { SelectDays } from '../components/SendInvite/SelectDays.tsx';
+import { SelectGuest } from '../components/SendInvite/SelectGuest.tsx';
+import { SelectHours } from '../components/SendInvite/SelectHours.tsx';
+import { SelectMaxTime } from '../components/SendInvite/SelectMaxTime.tsx';
+import { SelectPassengers } from '../components/SendInvite/SelectPassengers.tsx';
+import { SwitchDrop } from '../components/SendInvite/SwitchDrop.tsx';
+import { createInvite } from '../data/Reducers.tsx';
+import { frontUrls } from '../data/Urls.tsx';
 
 
 export function SendInvite() {
 
     const base_url = frontUrls.wholeBase + frontUrls.view;
 
-    var invite = {};
+    let invite : Invite;
 
-    const [guests, setGuests] = useState([]);
+    const [guests, setGuests] = useState<Guest[]>([]);
     
-    const [days, setDays] = useState([]);
+    const [days, setDays] = useState<string[]>([]);
 
-    const [hours, setHours] = useState([ [] ]);
+    const [hours, setHours] = useState<string[][]>([ [] ]);
 
-    const [maxTime, setMaxTime] = useState();
+    const [maxTime, setMaxTime] = useState<number|null>(null);
 
-    const [passengers, setPassengers] = useState(0);
+    const [passengers, setPassengers] = useState<number>(0);
 
-    const [drop, setDrop] = useState(false);
+    const [drop, setDrop] = useState<boolean>(false);
 
-    const [url, setUrl] = useState('');
+    const [url, setUrl] = useState<string>('');
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
 
-    const [openSnack, setOpenSnack] = useState(false);
+    const [openSnack, setOpenSnack] = useState<boolean>(false);
 
     useEffect( () => {
 
@@ -50,12 +50,12 @@ export function SendInvite() {
     };
 
     const handleCreate = async () => {
-        invite['guests'] = guests;
-        invite['days'] = days;
-        invite['hours'] = hours.filter( (hour) => hour.length > 0 );
-        invite['maxTimeAllowed'] = maxTime;
-        invite['numberOfPassengers'] = passengers;
-        invite['dropsTrueGuest'] = drop;
+        invite.guests = guests;
+        invite.days = days;
+        invite.hours = hours.filter( (hour) => hour.length > 0 );
+        invite.maxTimeAllowed = maxTime;
+        invite.numberOfPassengers = passengers;
+        invite.dropsTrueGuest = drop;
         await createInvite(invite).then( (createInvite) => setUrl(base_url + createInvite.id) );
         handleClickOpen();
     };
