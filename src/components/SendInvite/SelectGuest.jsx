@@ -7,15 +7,15 @@ import { CreateGuest } from './CreateGuest';
 
 export function SelectGuest( { guests, setGuests } ) {
 
-    const addGuest = 'Agregar un nuevo invitado';
-
-    const loading = open && options.length === 0;
-
     const [open, setOpen] = useState(false);
 
 	const [openGuest, setOpenGuest] = useState(false);
 
     const [options, setOptions] = useState([]);
+
+    const addGuest = 'Agregar un nuevo invitado';
+
+    const loading = open && options.length === 0;
   
     useEffect( () => {
   

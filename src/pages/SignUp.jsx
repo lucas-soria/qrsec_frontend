@@ -41,7 +41,7 @@ export function SignUp() {
             <Typography variant='h5'>Inicia Sesion</Typography>
             <div className='icons custom-component' id='google-oauth'></div>
             <div>
-                <img src={ image } alt='alternatetext'></img>
+                {image ? <img src={ image } alt='alternatetext'></img> : <></>}
             </div>
 
         </Fragment>
