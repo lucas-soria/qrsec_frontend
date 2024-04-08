@@ -1,6 +1,6 @@
 import { ArrowDropDown } from '@mui/icons-material';
 import { Autocomplete, Card, TextField, Typography } from '@mui/material';
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { getMyGuests } from '../../data/Reducers.tsx';
 import { CreateGuest } from './CreateGuest.tsx';
 

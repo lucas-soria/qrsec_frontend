@@ -1,6 +1,6 @@
 import { PersonAdd } from '@mui/icons-material';
 import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Snackbar, TextField } from '@mui/material';
-import React, { Fragment, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { createGuest } from '../../data/Reducers.tsx';
 
 
@@ -36,15 +36,17 @@ export function CreateGuest( { open, setOpen } : { open : boolean, setOpen : Rea
         setOpen(false);
     };
 
+    interface NewGuest extends Partial<Guest> {}
+
 	const handleClick = () => {
-		let guest = {
+		let guest : NewGuest = {
             dni: dni,
 			firstName: firstName,
 			lastName: lastName,
 			phone: phone
 		};
 
-        createGuest(guest);
+        createGuest(guest as Guest);
 		handleClose();
     };
 

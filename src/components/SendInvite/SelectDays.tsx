@@ -1,5 +1,5 @@
 import { Card, ToggleButton, ToggleButtonGroup, Typography, useMediaQuery } from '@mui/material';
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 
 
 export function SelectDays( { days, setDays } : { days : string[], setDays : React.Dispatch<React.SetStateAction<string[]>> } ) {

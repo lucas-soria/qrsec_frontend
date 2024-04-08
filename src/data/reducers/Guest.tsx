@@ -1,9 +1,9 @@
 interface Guest {
-    id: string;
+    id: string | null;
     firstName: string;
     lastName: string;
     dni: string;
     phone: string;
-    owners: User[];
+    owners: User[] | null;
 }
 

@@ -1,5 +1,5 @@
 import { Card, Typography } from '@mui/material';
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { getInvite } from '../../data/Reducers.tsx';
 

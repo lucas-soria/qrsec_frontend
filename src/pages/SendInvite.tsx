@@ -1,6 +1,6 @@
 import { AddLink, ContentCopy } from '@mui/icons-material';
 import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@mui/material';
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { SelectDays } from '../components/SendInvite/SelectDays.tsx';
 import { SelectGuest } from '../components/SendInvite/SelectGuest.tsx';
 import { SelectHours } from '../components/SendInvite/SelectHours.tsx';

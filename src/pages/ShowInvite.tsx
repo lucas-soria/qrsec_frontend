@@ -1,12 +1,12 @@
 import { Typography } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Map } from '../components/ShowInvite/Map.tsx';
 import { QRCodeComponent } from '../components/ShowInvite/QRCode.tsx';
 import { getPublicInvite } from '../data/Reducers.tsx';
 
 
-export function ShowInvite() {
+export function ShowInvite() { 
 
     const { id } = useParams();
 
@@ -34,7 +34,7 @@ export function ShowInvite() {
             <>
             	<br />
 
-			  	<QRCodeComponent id={ id }/>
+			  	<QRCodeComponent id={ id ?? '' }/>
 
 				<br />
 

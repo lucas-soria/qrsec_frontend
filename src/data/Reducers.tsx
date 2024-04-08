@@ -5,7 +5,7 @@ var defaultHeaders = {
     'Accept': 'application/json'
 };
 
-export const logIn = async( email, password ) => {
+export const logIn = async( email : string, password : string ) => {
 
     const response = await fetch( backUrls.base + backUrls.login, {
         mode: 'cors',
@@ -21,7 +21,7 @@ export const logIn = async( email, password ) => {
 
 }
 
-export const createInvite = async( invite ) => {
+export const createInvite = async( invite : Invite ) => {
 
     const response = await fetch( backUrls.base + backUrls.invite, {
         mode: 'cors',
@@ -37,7 +37,7 @@ export const createInvite = async( invite ) => {
 
 }
 
-export const getInvite = async ( id ) => {
+export const getInvite = async ( id : string ) => {
 
     const response = await fetch( backUrls.base + backUrls.invite + '/' + id, {
         mode: 'cors',
@@ -59,7 +59,7 @@ export const getInvite = async ( id ) => {
 
 }
 
-export const getPublicInvite = async ( id ) => {
+export const getPublicInvite = async ( id : string | undefined ) => {
     
     const response = await fetch( backUrls.base + backUrls.publicInvite + '/' + id, {
         mode: 'cors',
@@ -78,7 +78,7 @@ export const getPublicInvite = async ( id ) => {
 
         }
     } ).catch( (error) => console.error(error) );
-
+    
     return response;
 
 }
@@ -127,7 +127,7 @@ export const getMyGuests = async() => {
 
 }
 
-export const createGuest = async( guest ) => {
+export const createGuest = async( guest : Guest) => {
 
     const response = await fetch( backUrls.base + backUrls.guest, {
         mode: 'cors',

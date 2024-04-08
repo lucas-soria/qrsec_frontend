@@ -3,7 +3,7 @@ interface Address {
     street: string;
     number: number;
     house: House;
-    location: Location;
+    location: HouseLocation;
 }
 
 interface House {
@@ -11,8 +11,8 @@ interface House {
     house: number;
 }
 
-interface Location {
+interface HouseLocation {
     type: string;
-    coordinates: number[];
+    coordinates: [number, number];
 }
 

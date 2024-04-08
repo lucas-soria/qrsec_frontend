@@ -12,7 +12,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import jwtDecode from 'jwt-decode';
-import * as React from 'react';
+import { useState } from 'react';
 import ReactLogo from '../Screenshot_2021-10-07_184334.svg';
 import { frontUrls } from '../data/Urls.tsx';
 
@@ -26,17 +26,17 @@ export function ResponsiveAppBar() {
 
     var decoded : any = !!token ? jwtDecode(token) : false; // TODO: Give a proper type
 
-    var user = !!decoded ? [ decoded.first_name, decoded.last_name ] : [ '', '' ];
+    var user : [string, string] = !!decoded ? [ decoded.first_name, decoded.last_name ] : [ '', '' ];
 
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [anchorElNav, setAnchorElNav] = useState<HTMLButtonElement|null>();
 
-    const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [anchorElUser, setAnchorElUser] = useState<HTMLButtonElement|null>();
 
-    const handleOpenNavMenu = (event) => {
+    const handleOpenNavMenu = (event : React.MouseEvent<HTMLButtonElement>) => {
         setAnchorElNav(event.currentTarget);
     }
 
-    const handleOpenUserMenu = (event) => {
+    const handleOpenUserMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorElUser(event.currentTarget);
     }
 
@@ -50,7 +50,7 @@ export function ResponsiveAppBar() {
         setAnchorElUser(null);
     }
 
-    const stringAvatar = (name) => {
+    const stringAvatar = (name : [string, string]) => {
         
         return { children: `${name[0][0]}${name[1][0]}` };
 

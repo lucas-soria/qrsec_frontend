@@ -1,6 +1,6 @@
 import { Login } from '@mui/icons-material';
 import { Button, Card, TextField, Typography } from '@mui/material';
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logIn } from '../data/Reducers.tsx';
 import { frontUrls } from '../data/Urls.tsx';
@@ -16,11 +16,11 @@ export function SignIn() {
     
     const [password, setPassword] = useState('');
 
-    const handleEmail = (event) => {
+    const handleEmail = (event : React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
     };
 
-    const handlePassword = (event) => {
+    const handlePassword = (event : React.ChangeEvent<HTMLInputElement>) => {
         setPassword(event.target.value);
     };
 

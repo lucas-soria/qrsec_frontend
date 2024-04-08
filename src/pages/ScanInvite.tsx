@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { InviteInfo } from '../components/ScanInvite/InviteInfo.tsx';
 import { QrScanner } from '../components/ScanInvite/QrScanner.tsx';
 

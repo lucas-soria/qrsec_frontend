@@ -1,6 +1,6 @@
 import { Container } from '@mui/material';
 
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 

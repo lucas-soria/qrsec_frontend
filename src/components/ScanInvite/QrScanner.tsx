@@ -1,7 +1,7 @@
 import { DoDisturb, QrCodeScanner } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import QRReader from 'qrreader';
-import React, { Fragment, useCallback, useEffect, useMemo } from 'react';
+import { Fragment, useCallback, useEffect, useMemo } from 'react';
 
 
 export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive } : { setInviteID : React.Dispatch<React.SetStateAction<string>>, cameraIsActive : boolean, setCameraIsActive : React.Dispatch<React.SetStateAction<boolean>> } ) {

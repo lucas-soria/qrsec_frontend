@@ -1,5 +1,5 @@
 interface PublicInvite {
     id: string;
-    location: Location;
+    location: HouseLocation;
 }
 

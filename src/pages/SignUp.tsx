@@ -1,12 +1,13 @@
 import { Typography } from '@mui/material';
 import jwt_decode from 'jwt-decode';
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 
 export function SignUp() {
 
     const [image, setimage] = useState('');
 
-    function handleCallbackResponse(response) {
+    // TODO: Give a proper type
+    function handleCallbackResponse(response :  any) {
         var jwt : any = jwt_decode(response.credential); // TODO: Give a proper type
         console.log('Encoded JWT Token: ', jwt);
         console.log(jwt.picture);
