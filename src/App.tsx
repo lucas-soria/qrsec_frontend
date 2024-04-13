@@ -9,13 +9,11 @@ import { frontUrls } from './data/Urls.tsx';
 import { ScanInvite } from './pages/ScanInvite.tsx';
 import { SendInvite } from './pages/SendInvite.tsx';
 import { ShowInvite } from './pages/ShowInvite.tsx';
-import { SignIn } from './pages/SignIn.tsx';
 import { SignUp } from './pages/SignUp.tsx';
 
 export function App() {
 
-    var token = localStorage.getItem('access_token');
-    console.log(token);
+    // var token = localStorage.getItem('access_token');
     
     // var user_authorities = !!token ? jwtDecode(token).authorities : []
 
@@ -27,7 +25,7 @@ export function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route path={ frontUrls.signup } element={ <SignUp/> }/>
-                        <Route path={ frontUrls.signin } element={ <SignIn/> }/>
+                        <Route path={ frontUrls.signin } element={ <SignUp/> }/>
                         <Route path={ frontUrls.base } element={ <Navigate replace to={ frontUrls.signup }/> }/>
                         <Route path={ frontUrls.view + ':id' } element={ <ShowInvite/> }/>
 

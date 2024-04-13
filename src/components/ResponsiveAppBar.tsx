@@ -11,7 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import jwtDecode from 'jwt-decode';
+import jwt_decode from 'jwt-decode';
 import { useState } from 'react';
 import ReactLogo from '../Screenshot_2021-10-07_184334.svg';
 import { frontUrls } from '../data/Urls.tsx';
@@ -22,11 +22,11 @@ const settings = [ 'Cerrar sesión' ]; // TODO: hacer que cierre sesion
 
 export function ResponsiveAppBar() {
   
-    var token = localStorage.getItem('access_token');
+    var token : string = localStorage.getItem('access_token') ?? '';
 
-    var decoded : any = !!token ? jwtDecode(token) : false; // TODO: Give a proper type
+    var decoded_token : GoogleJWT | null = !!token ? jwt_decode(token) : null;
 
-    var user : [string, string] = !!decoded ? [ decoded.first_name, decoded.last_name ] : [ '', '' ];
+    var user : [string, string] = !!decoded_token ? [ decoded_token.given_name, decoded_token.family_name ] : [ '', '' ];
 
     const [anchorElNav, setAnchorElNav] = useState<HTMLButtonElement|null>();
 
@@ -46,7 +46,7 @@ export function ResponsiveAppBar() {
 
     const handleCloseUserMenu = () => {
         localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
+        // TODO: revoke token
         setAnchorElUser(null);
     }
 
@@ -116,7 +116,7 @@ export function ResponsiveAppBar() {
                             </Button>
                         ))}
                     </Box>
-                    {!!decoded && (
+                    {!!token && (
                         <Box sx={ { flexGrow: 0 } }>
                             <Tooltip title='Open settings'>
                                 <IconButton onClick={ handleOpenUserMenu } sx={ { p: 0 } }>

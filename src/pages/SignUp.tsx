@@ -4,37 +4,35 @@ import { Fragment, useEffect, useState } from 'react';
 
 export function SignUp() {
 
-    const [image, setimage] = useState('');
+    const [image, setimage] = useState<string>('');
 
-    // TODO: Give a proper type
-    function handleCallbackResponse(response :  any) {
-        var jwt : any = jwt_decode(response.credential); // TODO: Give a proper type
-        console.log('Encoded JWT Token: ', jwt);
-        console.log(jwt.picture);
+    function handleCallbackResponse( response :  google.accounts.id.CredentialResponse ) {
+        var jwt : GoogleJWT = jwt_decode(response.credential);
         setimage(jwt.picture);
+        localStorage.setItem('access_token', response.credential);
     }
 
     useEffect( () => {
-        /* global google */
 
-        // TODO: Give a proper type
-        (google as any).accounts.id.initialize({
-            client_id: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID,
+        const googleOAuthElement = document.getElementById('google-oauth');
+
+        google.accounts.id.initialize({
+            client_id: process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID ?? '',
             callback: handleCallbackResponse,
             cancel_on_tap_outside: true,
-            ux_mode: 'redirect',
+            ux_mode: 'popup',
             context: 'use',
             itp_support: true
         });
 
-        // TODO: Give a proper type
-        (google as any).accounts.id.prompt();
+        google.accounts.id.prompt();
 
-        // TODO: Give a proper type
-        (google as any).accounts.id.renderButton(
-            document.getElementById('google-oauth'),
-            { theme: 'outline', type: 'icon', shape: 'round', size: 'large', text: 'signin_with' }
-        );
+        if (googleOAuthElement) {
+            google.accounts.id.renderButton(
+                googleOAuthElement,
+                { theme: 'outline', type: 'icon', shape: 'square', size: 'large', text: 'signin_with' }
+            );
+        }
 
     }, [ ]);
 
