@@ -2,6 +2,8 @@ import { Typography } from '@mui/material';
 import jwt_decode from 'jwt-decode';
 import { Fragment, useEffect, useState } from 'react';
 
+/* global google */
+
 export function SignUp() {
 
     const [image, setimage] = useState<string>('');

@@ -17,13 +17,11 @@ export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive } : 
     const startCapture = useCallback( (videoElement : HTMLVideoElement) => {
         qrCodeReader.startCapture(videoElement)
             .then((result) => {
-                console.log(result)
                 setInviteID(result);
                 setCameraIsActive(false);
                 stopCapture();
             })
             .catch((error) => {
-                console.log(error);
             });
     }, [ qrCodeReader, setCameraIsActive, setInviteID, stopCapture ]);
 

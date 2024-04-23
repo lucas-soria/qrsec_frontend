@@ -120,7 +120,7 @@ export function ResponsiveAppBar() {
                         <Box sx={ { flexGrow: 0 } }>
                             <Tooltip title='Open settings'>
                                 <IconButton onClick={ handleOpenUserMenu } sx={ { p: 0 } }>
-                                    <Avatar className='avatar' { ...stringAvatar(user) } />
+                                    <Avatar className='avatar' src={decoded_token?.picture} { ...stringAvatar(user) } />
                                 </IconButton>
                             </Tooltip>
                             <Menu

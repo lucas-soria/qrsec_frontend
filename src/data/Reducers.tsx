@@ -1,25 +1,34 @@
 import { backUrls } from './Urls.tsx';
+import jwt_decode from 'jwt-decode';
 
+const token : string = localStorage.getItem('access_token') ?? '';
 
-var defaultHeaders = {
-    'Accept': 'application/json'
+const user : GoogleJWT | null = !!token ? jwt_decode(token) : null;
+
+let defaultHeaders : HeadersInit = {
+    'Accept': 'application/json',
+    'X-Email': user?.email ?? '',
 };
 
-export const logIn = async( email : string, password : string ) => {
+// # ---------- USERS ---------- #
 
-    const response = await fetch( backUrls.base + backUrls.login, {
+export const createUser = async( user : User ) => {
+
+    const response = await fetch( backUrls.base + backUrls.user, {
         mode: 'cors',
         method: 'POST',
-        body: JSON.stringify({
-            'username': email,
-            'password': password
-        }),
-        headers: defaultHeaders
-    } ).then( (response) => response.json() ).catch( (error) => console.log(error) );
+        body: JSON.stringify(user),
+        headers: {
+            ...defaultHeaders,
+            'Content-Type': 'application/json'
+        }
+    } ).then( (response) => response.json() );
 
     return response;
 
 }
+
+// # ---------- INVITES ---------- #
 
 export const createInvite = async( invite : Invite ) => {
 
@@ -65,12 +74,10 @@ export const getPublicInvite = async ( id : string | undefined ) => {
         mode: 'cors',
         method: 'GET',
         headers: defaultHeaders,
-    } ).then( async (response) => {
+    } ).then( (response) => {
         if (response.ok) {
-            let data = await response.json();
-            console.log(data);
 
-            return data;
+            return response.json();
 
         } else {
 
@@ -78,10 +85,12 @@ export const getPublicInvite = async ( id : string | undefined ) => {
 
         }
     } ).catch( (error) => console.error(error) );
-    
+
     return response;
 
 }
+
+// # ---------- GUESTS ---------- #
 
 export const getGuests = async() => {
 
@@ -90,7 +99,7 @@ export const getGuests = async() => {
         method: 'GET',
         headers: defaultHeaders,
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 200) {
 
             return response.json();
 
@@ -110,9 +119,9 @@ export const getMyGuests = async() => {
     const response = await fetch( backUrls.base + backUrls.guest, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,    
+        headers: defaultHeaders,
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 200) {
 
             return response.json();
 
