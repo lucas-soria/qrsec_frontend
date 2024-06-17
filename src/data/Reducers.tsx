@@ -10,6 +10,24 @@ let defaultHeaders : HeadersInit = {
     'X-Email': user?.email ?? '',
 };
 
+// # ---------- ADDRESS ---------- #
+
+export const createAddress = async( address : Address ) => {
+
+    const response = await fetch( backUrls.base + backUrls.address, {
+        mode: 'cors',
+        method: 'POST',
+        body: JSON.stringify(address),
+        headers: {
+            ...defaultHeaders,
+            'Content-Type': 'application/json'
+        }
+    } ).then( (response) => response.json() );
+
+    return response;
+
+}
+
 // # ---------- USERS ---------- #
 
 export const createUser = async( user : User ) => {

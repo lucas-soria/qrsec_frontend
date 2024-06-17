@@ -4,6 +4,7 @@ export const frontUrls = {
     signup: 'signup/',
     signin: 'signin/',
     create: 'create/',
+    address: 'address/',
     view: 'invite/view/',
     scan: 'scan/'
 }
@@ -14,6 +15,5 @@ export const backUrls = {
     publicInvite : '/public/invites',
     guest : '/guests',
     user : '/users',
-    login : '/login',
-    refreshToken : '/token/refresh'
+    address : '/addresses'
 }

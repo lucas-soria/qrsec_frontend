@@ -10,6 +10,7 @@ import { ScanInvite } from './pages/ScanInvite.tsx';
 import { SendInvite } from './pages/SendInvite.tsx';
 import { ShowInvite } from './pages/ShowInvite.tsx';
 import { SignUp } from './pages/SignUp.tsx';
+import { CreateNewAddress } from './pages/CreateAddress.tsx';
 
 export function App() {
 
@@ -28,6 +29,7 @@ export function App() {
                         <Route path={ frontUrls.signin } element={ <SignUp/> }/>
                         <Route path={ frontUrls.base } element={ <Navigate replace to={ frontUrls.signup }/> }/>
                         <Route path={ frontUrls.view + ':id' } element={ <ShowInvite/> }/>
+                        <Route path={ frontUrls.address } element={ <CreateNewAddress/> }/>
 
                         {
                         /*  Original es con rutas protegidas
