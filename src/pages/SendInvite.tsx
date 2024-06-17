@@ -9,6 +9,7 @@ import { SelectPassengers } from '../components/SendInvite/SelectPassengers.tsx'
 import { SwitchDrop } from '../components/SendInvite/SwitchDrop.tsx';
 import { createInvite } from '../data/Reducers.tsx';
 import { frontUrls } from '../data/Urls.tsx';
+import Alert from '@mui/material/Alert';
 
 
 export function SendInvite() {
@@ -95,8 +96,11 @@ export function SendInvite() {
                 open={ openSnack }
                 onClose={ () => setOpenSnack(false) }
                 autoHideDuration={ 2000 }
-                message='Copiado al portapapeles!'
-            />
+            >
+                <Alert severity='success'>
+                    Copiado al portapapeles!
+                </Alert>
+            </Snackbar>
 
         </Fragment>
     );

@@ -1,13 +1,11 @@
 import { PersonAdd } from '@mui/icons-material';
-import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Snackbar, TextField } from '@mui/material';
+import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField } from '@mui/material';
 import { Fragment, useState } from 'react';
 import { createGuest } from '../../data/Reducers.tsx';
 
 
 export function CreateGuest( { open, setOpen } : { open : boolean, setOpen : React.Dispatch<React.SetStateAction<boolean>> } ) {
 
-    const [openSnack, setOpenSnack] = useState<boolean>(false);
-    
     const [dni, setDNI] = useState<string>('');
 
     const [firstName, setFirstName] = useState<string>('');
@@ -97,13 +95,6 @@ export function CreateGuest( { open, setOpen } : { open : boolean, setOpen : Rea
                 </DialogActions>
 
             </Dialog>
-
-            <Snackbar
-                open={ openSnack }
-                onClose={ () => setOpenSnack(false) }
-                autoHideDuration={ 2000 }
-                message='Copiado al portapapeles!'
-            />
 
         </Fragment>
     );

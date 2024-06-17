@@ -28,6 +28,46 @@ export const createAddress = async( address : Address ) => {
 
 }
 
+export const getAddresses = async() => {
+
+    const response = await fetch( backUrls.base + '/admin' + backUrls.address, {
+        mode: 'cors',
+        method: 'GET',
+        headers: defaultHeaders,
+    } ).then( (response) => {
+        if (response.status === 200) {
+
+            return response.json();
+
+        } else {
+
+            return [];
+
+        }
+    });
+
+    return response;
+
+}
+
+export const deleteAddress = async(id : string) => {
+
+    const response = await fetch( backUrls.base + backUrls.address + '/' + id, {
+        mode: 'cors',
+        method: 'DELETE',
+        headers: defaultHeaders,
+    } ).then( (response) => {
+        if (response.status !== 204) {
+
+            console.log(response)
+
+        }
+    });
+
+    return response;
+
+}
+
 // # ---------- USERS ---------- #
 
 export const createUser = async( user : User ) => {

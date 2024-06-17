@@ -1,4 +1,5 @@
 import { Button, Card, Grid, Snackbar, TextField, Typography } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import HomeIcon from '@mui/icons-material/Home';
 import { Fragment, useState } from 'react';
 import { createAddress } from '../../data/Reducers.tsx';
@@ -49,7 +50,6 @@ export function CreateAddress( { setAddress } : { setAddress : React.Dispatch<Re
 		};
 
         await createAddress(address as Address).then( (createdAddress) => {
-            console.log(address);
             setAddress(createdAddress)
         } );
     };
@@ -106,8 +106,11 @@ export function CreateAddress( { setAddress } : { setAddress : React.Dispatch<Re
                 open={ openSnack }
                 onClose={ () => setOpenSnack(false) }
                 autoHideDuration={ 2000 }
-                message='Dirección creada!'
-            />
+            >
+                <Alert severity='success'>
+                    Dirección creada!
+                </Alert>
+            </Snackbar>
 
         </Fragment>
     );
