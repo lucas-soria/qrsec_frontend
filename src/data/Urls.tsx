@@ -5,7 +5,8 @@ export const frontUrls = {
     signin: 'signin/',
     create: 'create/',
     address: 'address/',
-    view: 'invite/view/',
+    publicInvite: 'invite/view/',
+    invite: 'invite/',
     scan: 'scan/'
 }
 

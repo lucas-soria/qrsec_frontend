@@ -104,7 +104,23 @@ export const createInvite = async( invite : Invite ) => {
 
 }
 
-export const getInvite = async ( id : string ) => {
+export const updateInvite = async( invite : Invite ) => {
+
+    const response = await fetch( backUrls.base + backUrls.invite + '/' + invite.id, {
+        mode: 'cors',
+        method: 'PUT',
+        body: JSON.stringify(invite),
+        headers: {
+            ...defaultHeaders,
+            'Content-Type': 'application/json'
+        }
+    } ).then( (response) => response.json() );
+
+    return response;
+
+}
+
+export const getInvite = async ( id : string | undefined ) => {
 
     const response = await fetch( backUrls.base + backUrls.invite + '/' + id, {
         mode: 'cors',
@@ -204,7 +220,17 @@ export const createGuest = async( guest : Guest) => {
             ...defaultHeaders,
             'Content-Type': 'application/json'
         }
-    } ).then( (response) => response.json() );
+    } ).then( (response) => {
+        if (response.ok) {
+
+            return response.json();
+
+        } else {
+
+            return null;
+
+        }
+    } ).catch( (error) => console.error(error) );
 
     return response;
 

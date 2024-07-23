@@ -6,7 +6,7 @@ import { QRCodeComponent } from '../components/ShowInvite/QRCode.tsx';
 import { getPublicInvite } from '../data/Reducers.tsx';
 
 
-export function ShowInvite() { 
+export function ViewPublicInvite() { 
 
     const { id } = useParams();
 

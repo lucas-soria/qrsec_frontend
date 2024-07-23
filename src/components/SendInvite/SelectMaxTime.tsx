@@ -2,7 +2,7 @@ import { Card, TextField, Typography } from '@mui/material';
 import React from 'react';
 
 
-export function SelectMaxTime( { setMaxTime } : { setMaxTime : React.Dispatch<React.SetStateAction<number | null>> } ) { 
+export function SelectMaxTime( { maxTime, setMaxTime } : { maxTime: number|null, setMaxTime : React.Dispatch<React.SetStateAction<number | null>> } ) { 
 
     const handleMaxTime = (event : React.ChangeEvent<HTMLInputElement>) => {
         setMaxTime(Number(event.target.value));
@@ -13,7 +13,7 @@ export function SelectMaxTime( { setMaxTime } : { setMaxTime : React.Dispatch<Re
 
             <Typography variant='h6'>Tiempo máximo de estadía:</Typography>
             <Card elevation={6} id='card'>
-                <TextField variant='filled' type='number' label='Ej: 5hs' className='text-fields' onChange={ handleMaxTime }/>
+                <TextField variant='filled' type='number' label='Ej: 5hs' className='text-fields' value={ !!maxTime ? String(maxTime) : '' } autoFocus={ !!maxTime } onChange={ handleMaxTime } />
             </Card>
 
         </div>

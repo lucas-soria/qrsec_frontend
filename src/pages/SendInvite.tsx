@@ -14,9 +14,9 @@ import Alert from '@mui/material/Alert';
 
 export function SendInvite() {
 
-    const base_url = frontUrls.wholeBase + frontUrls.view;
+    const base_url = frontUrls.wholeBase + frontUrls.publicInvite;
 
-    let invite : Invite;
+    interface NewInvite extends Partial<Invite> {}
 
     const [guests, setGuests] = useState<Guest[]>([]);
     
@@ -51,13 +51,16 @@ export function SendInvite() {
     };
 
     const handleCreate = async () => {
-        invite.guests = guests;
-        invite.days = days;
-        invite.hours = hours.filter( (hour) => hour.length > 0 );
-        invite.maxTimeAllowed = maxTime;
-        invite.numberOfPassengers = passengers;
-        invite.dropsTrueGuest = drop;
-        await createInvite(invite).then( (createInvite) => setUrl(base_url + createInvite.id) );
+        let invite : NewInvite = {
+            guests: guests,
+            days: days,
+            hours: hours.filter( (hour) => hour.length > 0 ),
+            maxTimeAllowed: maxTime,
+            numberOfPassengers: passengers,
+            dropsTrueGuest: drop
+        };
+
+        await createInvite(invite as Invite).then( (createdInvite) => setUrl(base_url + createdInvite.id) );
         handleClickOpen();
     };
 
@@ -72,9 +75,9 @@ export function SendInvite() {
             <SelectGuest guests={ guests } setGuests={ setGuests }/>
             <SelectDays days={ days } setDays={ setDays }/>
             <SelectHours hours={ hours } setHours={ setHours }/>
-            <SelectMaxTime setMaxTime={ setMaxTime }/>
-            <SelectPassengers setPassengers={ setPassengers }/>
-            <SwitchDrop setDrop={ setDrop }/>
+            <SelectMaxTime maxTime={ maxTime } setMaxTime={ setMaxTime }/>
+            <SelectPassengers passengers={ passengers } setPassengers={ setPassengers }/>
+            <SwitchDrop drop={ drop } setDrop={ setDrop }/>
 
             <Card elevation={6} id='card' className='card-send'>
                 <Button variant='contained' id='button-send' startIcon={ <AddLink fontSize='large'/> } onClick={ handleCreate }>Generar link</Button>

@@ -8,7 +8,8 @@ import { ResponsiveAppBar } from './components/ResponsiveAppBar.tsx';
 import { frontUrls } from './data/Urls.tsx';
 import { ScanInvite } from './pages/ScanInvite.tsx';
 import { SendInvite } from './pages/SendInvite.tsx';
-import { ShowInvite } from './pages/ShowInvite.tsx';
+import { ViewPublicInvite } from './pages/ViewPublicInvite.tsx';
+import { ViewInvite } from './pages/ViewInvite.tsx';
 import { SignUp } from './pages/SignUp.tsx';
 import { CreateNewAddress } from './pages/CreateAddress.tsx';
 import { ListAddresses } from './pages/ListAddresses.tsx';
@@ -29,7 +30,8 @@ export function App() {
                         <Route path={ frontUrls.signup } element={ <SignUp/> }/>
                         <Route path={ frontUrls.signin } element={ <SignUp/> }/>
                         <Route path={ frontUrls.base } element={ <Navigate replace to={ frontUrls.signup }/> }/>
-                        <Route path={ frontUrls.view + ':id' } element={ <ShowInvite/> }/>
+                        <Route path={ frontUrls.publicInvite + ':id' } element={ <ViewPublicInvite/> }/>
+                        <Route path={ frontUrls.invite + ':id' } element={ <ViewInvite/> }/>
                         <Route path={ frontUrls.address + 'create' } element={ <CreateNewAddress/> }/>
                         <Route path={ frontUrls.address } element={ <ListAddresses/> }/>
 
