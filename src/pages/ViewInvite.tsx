@@ -1,4 +1,3 @@
-import { Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { getInvite, updateInvite } from '../data/Reducers.tsx';
 import { Fragment, useEffect, useState } from 'react';
@@ -9,7 +8,7 @@ import { SelectMaxTime } from '../components/SendInvite/SelectMaxTime.tsx';
 import { SelectPassengers } from '../components/SendInvite/SelectPassengers.tsx';
 import { SwitchDrop } from '../components/SendInvite/SwitchDrop.tsx';
 import { frontUrls } from '../data/Urls.tsx';
-import { AddLink, ContentCopy, DataUsage } from '@mui/icons-material';
+import { AddLink, ContentCopy } from '@mui/icons-material';
 import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
 
@@ -41,25 +40,25 @@ export function ViewInvite() {
 
     const [openSnack, setOpenSnack] = useState<boolean>(false);
 
-	const setInitialValues = async () => {
-	
-		let invite = await getInvite(id);
-		setInvite(invite);
-		setGuests(invite.guests as Guest[]);
-		setDays(invite.days);
-		setHours(invite.hours.length === 0 ? [ [] ] : invite.hours);
-		setMaxTime(invite.maxTimeAllowed);
-		setPassengers(invite.numberOfPassengers);
-		setDrop(invite.dropsTrueGuest);
-	
-	};
-
 	useEffect( () => {
+
+		const setInitialValues = async () => {
+	
+			let invite = await getInvite(id);
+			setInvite(invite);
+			setGuests(invite.guests as Guest[]);
+			setDays(invite.days);
+			setHours(invite.hours.length === 0 ? [ [] ] : invite.hours);
+			setMaxTime(invite.maxTimeAllowed);
+			setPassengers(invite.numberOfPassengers);
+			setDrop(invite.dropsTrueGuest);
+		
+		};
 
 		document.title = 'QRSec - Ver invitación';
 		setInitialValues();
 
-	}, [ ]);
+	}, [ id ]);
 
 	const handleClickOpen = () => {
         setOpen(true);
