@@ -13,7 +13,6 @@ import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, 
 import Alert from '@mui/material/Alert';
 
 
-
 export function ViewInvite() { 
 
     const { id } = useParams();

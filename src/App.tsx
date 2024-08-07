@@ -13,6 +13,8 @@ import { ViewInvite } from './pages/ViewInvite.tsx';
 import { SignUp } from './pages/SignUp.tsx';
 import { CreateNewAddress } from './pages/CreateAddress.tsx';
 import { ListAddresses } from './pages/ListAddresses.tsx';
+import { ListInvites } from './pages/ListInvites.tsx';
+
 
 export function App() {
 
@@ -32,6 +34,7 @@ export function App() {
                         <Route path={ frontUrls.base } element={ <Navigate replace to={ frontUrls.signup }/> }/>
                         <Route path={ frontUrls.publicInvite + ':id' } element={ <ViewPublicInvite/> }/>
                         <Route path={ frontUrls.invite + ':id' } element={ <ViewInvite/> }/>
+                        <Route path={ frontUrls.invite } element={ <ListInvites/> }/>
                         <Route path={ frontUrls.address + 'create' } element={ <CreateNewAddress/> }/>
                         <Route path={ frontUrls.address } element={ <ListAddresses/> }/>
 

@@ -2,6 +2,7 @@ import { Card, Typography } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { getInvite } from '../../data/Reducers.tsx';
+import { Map } from '../ShowInvite/Map.tsx';
 
 
 export function InviteInfo( { inviteID, cameraIsActive } : { inviteID : string, cameraIsActive : boolean } ) {
@@ -24,42 +25,7 @@ export function InviteInfo( { inviteID, cameraIsActive } : { inviteID : string, 
 
     const validate = (invite : Invite) => {
 
-        if (Object.keys(invite.days).length === 0) {
-
-            return true;
-
-        }
-
-        let now = new Date();
-        if (invite.days.includes(now.getDay().toString())) {
-            let hoursValidation = invite.hours.map( (hour) => {
-                let start = new Date();
-                start.setHours(Number(hour[0].split(':')[0]));
-                start.setMinutes(Number(hour[0].split(':')[1]));
-
-                let end = new Date();
-                end.setHours(Number(hour[1].split(':')[0]));
-                end.setMinutes(Number(hour[1].split(':')[1]));
-
-                if (start > now || now > end) {
-
-                    return false;
-
-                } else {
-
-                    return true;
-
-                }
-            } )
-
-            if (hoursValidation.includes(true)) {
-
-                return true;
-
-            }
-        }
-
-        return false;
+        return true;
 
     };
 
@@ -91,6 +57,7 @@ export function InviteInfo( { inviteID, cameraIsActive } : { inviteID : string, 
                     <Typography variant='body1'>Apellido: { invite.owner.lastName }.</Typography>
                     <Typography variant='body1'>Teléfono: { invite.owner.phone }.</Typography>
                     <Typography variant='body1'>Casa: { invite.owner.address.house.block } { invite.owner.address.house.house }.</Typography>
+                    <Map position={ { lat: invite.owner.address.location.coordinates[0], lng: invite.owner.address .location.coordinates[1] } }/>
 
                 </Card>
 

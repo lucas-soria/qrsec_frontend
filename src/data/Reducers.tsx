@@ -142,9 +142,49 @@ export const getInvite = async ( id : string | undefined ) => {
 
 }
 
+export const deleteInvite = async(id : string) => {
+
+    const response = await fetch( backUrls.base + backUrls.invite + '/' + id, {
+        mode: 'cors',
+        method: 'DELETE',
+        headers: defaultHeaders,
+    } ).then( (response) => {
+        if (response.status !== 204) {
+
+            console.log(response)
+
+        }
+    });
+
+    return response;
+
+}
+
 export const getPublicInvite = async ( id : string | undefined ) => {
     
     const response = await fetch( backUrls.base + backUrls.publicInvite + '/' + id, {
+        mode: 'cors',
+        method: 'GET',
+        headers: defaultHeaders,
+    } ).then( (response) => {
+        if (response.ok) {
+
+            return response.json();
+
+        } else {
+
+            return null;
+
+        }
+    } ).catch( (error) => console.error(error) );
+
+    return response;
+
+}
+
+export const getInvites = async () => {
+    
+    const response = await fetch( backUrls.base + backUrls.invite, {
         mode: 'cors',
         method: 'GET',
         headers: defaultHeaders,
