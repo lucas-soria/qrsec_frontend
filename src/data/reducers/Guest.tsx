@@ -1,5 +1,5 @@
 interface Guest {
-    id: string | null;
+    id: string;
     firstName: string;
     lastName: string;
     dni: string;

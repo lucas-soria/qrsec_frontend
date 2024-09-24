@@ -9,6 +9,7 @@ export const frontUrls = {
     invite: 'invite/',
     scan: 'scan/',
     user: 'user/',
+    guest: 'guest/',
 }
 
 export const backUrls = {

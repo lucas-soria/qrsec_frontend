@@ -315,3 +315,21 @@ export const createGuest = async( guest : Guest) => {
     return response;
 
 }
+
+export const deleteGuest = async(id : string) => {
+
+    const response = await fetch( backUrls.base + backUrls.guest + '/' + id, {
+        mode: 'cors',
+        method: 'DELETE',
+        headers: defaultHeaders,
+    } ).then( (response) => {
+        if (response.status !== 204) {
+
+            console.log(response)
+
+        }
+    });
+
+    return response;
+
+}
