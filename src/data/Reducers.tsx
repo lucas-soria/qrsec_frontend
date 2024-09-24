@@ -99,7 +99,7 @@ export const getUsers = async () => {
 
         } else {
 
-            return null;
+            return [];
 
         }
     } ).catch( (error) => console.error(error) );
@@ -246,6 +246,28 @@ export const getInvites = async () => {
 
 // # ---------- GUESTS ---------- #
 
+export const getGuest = async ( id : string | undefined ) => {
+
+    const response = await fetch( backUrls.base + backUrls.guest + '/' + id, {
+        mode: 'cors',
+        method: 'GET',
+        headers: defaultHeaders,
+    } ).then( (response) => {
+        if (response.ok) {
+
+            return response.json();
+
+        } else {
+
+            return null;
+
+        }
+    } ).catch( (error) => console.error(error) );
+
+    return response;
+
+}
+
 export const getGuests = async() => {
 
     const response = await fetch( backUrls.base + '/admin' + backUrls.guest, {
@@ -311,6 +333,22 @@ export const createGuest = async( guest : Guest) => {
 
         }
     } ).catch( (error) => console.error(error) );
+
+    return response;
+
+}
+
+export const updateGuest = async( guest : Guest ) => {
+
+    const response = await fetch( backUrls.base + backUrls.guest + '/' + guest.id, {
+        mode: 'cors',
+        method: 'PUT',
+        body: JSON.stringify(guest),
+        headers: {
+            ...defaultHeaders,
+            'Content-Type': 'application/json'
+        }
+    } ).then( (response) => response.json() );
 
     return response;
 

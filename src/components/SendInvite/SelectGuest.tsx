@@ -87,7 +87,7 @@ export function SelectGuest( { guests, setGuests } : { guests : Guest[], setGues
                         options={ options }
                         loading={ loading }
                         isOptionEqualToValue={ (option, value) => option.name === value.name }
-                        value={ guests.map( (guest) => {return {name: guest.firstName + " " + guest.lastName} as OptionGuest } ) }
+                        value={ guests.map( (guest) => {return {...guest, name: guest.firstName + ' ' + guest.lastName}} ) }
                         getOptionLabel={ (option) => option.name }
                         onChange={ handleSelect }
                         renderInput={ (guest) => <TextField variant='outlined' className='text-fields' {...guest} label='Seleccionar invitados'/> }

@@ -1,5 +1,5 @@
 import { List, ListItem } from '@mui/material';
-import { Delete, ExpandMore } from '@mui/icons-material';
+import { Delete, ExpandMore, Edit } from '@mui/icons-material';
 import { Fragment, useEffect, useState } from 'react';
 import { getGuests, deleteGuest } from '../data/Reducers.tsx';
 import Card from '@mui/material/Card';
@@ -112,7 +112,14 @@ export function ListGuests () {
                                                     </List>
                                                 </CardContent>
                                                 <CardActions sx={{ justifyContent: 'flex-end' }} >
-                                                    <IconButton aria-label="delete address" onClick={
+                                                    <IconButton aria-label="edit invite" onClick={
+                                                        () => {
+                                                            window.open(`/guest/${guest.id}`, '_self');
+                                                        }
+                                                    }>
+                                                        <Edit color='primary' fontSize='large' />
+                                                    </IconButton>
+                                                    <IconButton aria-label="delete invite" onClick={
                                                         () => {
                                                             setGuest(guest);
                                                             setOpen(true);
