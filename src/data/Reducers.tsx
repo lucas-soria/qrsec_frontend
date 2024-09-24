@@ -86,6 +86,46 @@ export const createUser = async( user : User ) => {
 
 }
 
+export const getUsers = async () => {
+    
+    const response = await fetch( backUrls.base + '/admin' + backUrls.user, {
+        mode: 'cors',
+        method: 'GET',
+        headers: defaultHeaders,
+    } ).then( (response) => {
+        if (response.ok) {
+
+            return response.json();
+
+        } else {
+
+            return null;
+
+        }
+    } ).catch( (error) => console.error(error) );
+
+    return response;
+
+}
+
+export const deleteUser = async(id : string) => {
+
+    const response = await fetch( backUrls.base + backUrls.user + '/' + id, {
+        mode: 'cors',
+        method: 'DELETE',
+        headers: defaultHeaders,
+    } ).then( (response) => {
+        if (response.status !== 204) {
+
+            console.log(response)
+
+        }
+    });
+
+    return response;
+
+}
+
 // # ---------- INVITES ---------- #
 
 export const createInvite = async( invite : Invite ) => {

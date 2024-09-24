@@ -14,6 +14,7 @@ import { SignUp } from './pages/SignUp.tsx';
 import { CreateNewAddress } from './pages/CreateAddress.tsx';
 import { ListAddresses } from './pages/ListAddresses.tsx';
 import { ListInvites } from './pages/ListInvites.tsx';
+import { ListUsers } from './pages/ListUsers.tsx';
 
 
 export function App() {
@@ -37,6 +38,7 @@ export function App() {
                         <Route path={ frontUrls.invite } element={ <ListInvites/> }/>
                         <Route path={ frontUrls.address + 'create' } element={ <CreateNewAddress/> }/>
                         <Route path={ frontUrls.address } element={ <ListAddresses/> }/>
+                        <Route path={ frontUrls.user } element={ <ListUsers/> }/>
 
                         {
                         /*  Original es con rutas protegidas

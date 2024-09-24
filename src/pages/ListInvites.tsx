@@ -87,7 +87,7 @@ export function ListInvites () {
 
     return (
         <>
-            {invites.length > 0 ? (
+            {invites?.length > 0 ? (
                 <>
                     <Fragment>
 

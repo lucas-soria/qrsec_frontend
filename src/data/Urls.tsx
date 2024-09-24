@@ -7,7 +7,8 @@ export const frontUrls = {
     address: 'address/',
     publicInvite: 'invite/view/',
     invite: 'invite/',
-    scan: 'scan/'
+    scan: 'scan/',
+    user: 'user/',
 }
 
 export const backUrls = {
@@ -16,5 +17,5 @@ export const backUrls = {
     publicInvite : '/public/invites',
     guest : '/guests',
     user : '/users',
-    address : '/addresses'
+    address : '/addresses',
 }
