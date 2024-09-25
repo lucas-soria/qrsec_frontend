@@ -129,7 +129,7 @@ export function ListInvites () {
                                                     <List>
                                                         {
                                                             invite.guests.map( ( guest ) => (
-                                                                <ListItem >
+                                                                <ListItem key={ guest.id } >
                                                                     <Typography>{ guest.firstName + ' ' + guest.lastName }</Typography>
                                                                 </ListItem>
                                                             ))
@@ -142,7 +142,7 @@ export function ListInvites () {
                                                             <List>
                                                                 {
                                                                     invite.days.sort( ( a : string, b : string ) => Number(a) - Number(b) ).map( ( day ) => (
-                                                                        <ListItem >
+                                                                        <ListItem key={ day }>
                                                                             <Typography>{ weekDays[day] }</Typography>
                                                                         </ListItem>
                                                                     ))
@@ -159,7 +159,7 @@ export function ListInvites () {
                                                             <List>
                                                                 {
                                                                     invite.hours.map( ( hourRange ) => (
-                                                                        <ListItem >
+                                                                        <ListItem key={ hourRange[0] + ' - ' + hourRange[1] } >
                                                                             <Typography>{ hourRange[0] + ' - ' + hourRange[1] }</Typography>
                                                                         </ListItem>
                                                                     ))

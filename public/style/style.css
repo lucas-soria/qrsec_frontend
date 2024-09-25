@@ -154,3 +154,11 @@ Now i can override material without !important
     display: flex;
     justify-content: center;
 }
+
+.signin-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}

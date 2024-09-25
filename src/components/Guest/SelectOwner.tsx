@@ -47,7 +47,7 @@ export function SelectOwner( { users, setUsers } : { users : User[], setUsers : 
         <Fragment>
 
             <div className='custom-component'>
-                <Typography variant='h6'>Invitado:</Typography>
+                <Typography variant='h6'>Propietarios relacionados:</Typography>
                 <Card elevation={6} id='card' className='autocomplete'>
                     <Autocomplete
                         multiple
@@ -67,7 +67,7 @@ export function SelectOwner( { users, setUsers } : { users : User[], setUsers : 
                         value={ users.map( (user) => {return {...user, name: user.firstName + ' ' + user.lastName}} ) }
                         getOptionLabel={ (option) => option.name }
                         onChange={ handleSelect }
-                        renderInput={ (user) => <TextField variant='outlined' className='text-fields' {...user} label='Seleccionar invitados'/> }
+                        renderInput={ (user) => <TextField variant='outlined' className='text-fields' {...user} label='Seleccionar propietarios'/> }
                     />
                 </Card>
             </div>
