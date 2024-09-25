@@ -1,18 +1,19 @@
 import { useParams } from 'react-router-dom';
-import { getGuest, updateGuest } from '../data/Reducers.tsx';
+import { getUser, updateUser } from '../data/Reducers.tsx';
 import { Fragment, useEffect, useState } from 'react';
 import React from 'react';
 import { AddLink } from '@mui/icons-material';
 import { Button, Card, Snackbar, TextField, Typography, Grid } from '@mui/material';
 import Alert from '@mui/material/Alert';
-import { SelectOwner } from '../components/Guest/SelectOwner.tsx';
+import { SelectAddress } from '../components/User/SelectAddress.tsx';
+import { SelectAuthority } from '../components/User/SelectAuthotity.tsx';
 
 
-export function ViewGuest() {
+export function ViewUser() {
 
     const { id } = useParams();
 
-	const [guest, setGuest] = useState<Guest>();
+	const [user, setUser] = useState<User>();
 
     const [lastName, setLastName] = useState<string>('');
     
@@ -22,7 +23,11 @@ export function ViewGuest() {
 
     const [phone, setPhone] = useState<string>('');
 
-    const [owners, setOwners] = useState<User[]>([]);
+    const [email, setEmail] = useState<string>('');
+
+    const [address, setAddress] = useState<Address>({} as Address);
+
+    const [authorities, setAuthorities] = useState<Authority[]>([]);
 
     const [openSnack, setOpenSnack] = useState<boolean>(false);
 
@@ -30,31 +35,35 @@ export function ViewGuest() {
 
 		const setInitialValues = async () => {
 	
-			let guest = await getGuest(id);
-			setGuest(guest);
-			setLastName(guest.lastName);
-			setFirstName(guest.firstName);
-			setDNI(guest.dni);
-			setPhone(guest.phone);
-			setOwners(guest.owners);
+			let user = await getUser(id);
+			setUser(user);
+			setLastName(user.lastName);
+			setFirstName(user.firstName);
+			setDNI(user.dni);
+			setPhone(user.phone);
+			setEmail(user.email);
+            setAddress(user.address);
+            setAuthorities(user.authorities);
 		
 		};
 
-		document.title = 'QRSec - Ver invitado';
+		document.title = 'QRSec - Ver usuario';
 		setInitialValues();
 
 	}, [ id ]);
 
     const handleUpdate = async () => {
-		if (!!guest) {
-			let guestToUpdate = guest;
-			guestToUpdate.lastName = lastName;
-			guestToUpdate.firstName = firstName;
-			guestToUpdate.dni = dni;
-			guestToUpdate.phone = phone;
-			guestToUpdate.owners =  owners;
+		if (!!user) {
+			let userToUpdate = user;
+			userToUpdate.lastName = lastName;
+			userToUpdate.firstName = firstName;
+			userToUpdate.dni = dni;
+			userToUpdate.phone = phone;
+            userToUpdate.email = email;
+            userToUpdate.address = address;
+			userToUpdate.authorities = authorities;
 
-			await updateGuest(guestToUpdate);
+			await updateUser(userToUpdate);
         	setOpenSnack(true);
 		}
     };
@@ -74,7 +83,7 @@ export function ViewGuest() {
     return (
 		<Fragment>
 
-			<br/>
+            <br/>
 
 			<Grid container rowSpacing={1} columnSpacing={ { xs: 1, sm: 2, md: 3 } }>
                 <Grid item xs={6}>
@@ -96,15 +105,22 @@ export function ViewGuest() {
                     </Card>
                 </Grid>
                 <Grid item xs={6}>
+                    <Typography>Email:</Typography>
+                    <Card elevation={6} id='card'>
+                        <TextField variant='filled' type='text' label='Ej: lucas@qrsec.com' className='text-fields' value={ email!=='' ? email : '' } autoFocus={ email !== '' } disabled={ true }/>
+                    </Card>
+                </Grid>
+                <Grid item xs={6}>
                     <Typography>Teléfono:</Typography>
                     <Card elevation={6} id='card'>
                     <TextField variant='filled' type='text' label='Ej: +54 9 261 389 3771' className='text-fields' value={ phone!=='' ? phone : '' } autoFocus={ phone !== '' } onChange={ handlePhone }/>
                     </Card>
                 </Grid>
             </Grid>
-			<SelectOwner users={ owners ? owners : [] } setUsers={ setOwners }/>
+			<SelectAddress address={ address ? address : {} as Address } setAddress={ setAddress }/>
+            <SelectAuthority authorities={ authorities ? authorities : [] } setAuthorities={ setAuthorities } />
 
-			<br/>
+            <br/>
 
 			<Card elevation={6} id='card' className='card-send'>
 				<Button variant='contained' id='button-send' startIcon={ <AddLink fontSize='large'/> } onClick={ handleUpdate }>Guardar</Button>

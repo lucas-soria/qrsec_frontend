@@ -11,6 +11,7 @@ import { SendInvite } from './pages/SendInvite.tsx';
 import { ViewPublicInvite } from './pages/ViewPublicInvite.tsx';
 import { ViewInvite } from './pages/ViewInvite.tsx';
 import { ViewGuest } from './pages/ViewGuest.tsx';
+import { ViewUser } from './pages/ViewUser.tsx';
 import { SignUp } from './pages/SignUp.tsx';
 import { CreateNewAddress } from './pages/CreateAddress.tsx';
 import { ListAddresses } from './pages/ListAddresses.tsx';
@@ -51,6 +52,7 @@ export function App() {
 
                         { /* Users */ }
                         <Route path={ frontUrls.user } element={ <ListUsers/> }/>
+                        <Route path={ frontUrls.user + ':id' } element={ <ViewUser/> }/>
 
                         { /* Guests */ }
                         <Route path={ frontUrls.guest } element={ <ListGuests/> }/>

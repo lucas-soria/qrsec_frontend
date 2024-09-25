@@ -1,5 +1,5 @@
 import { List, ListItem } from '@mui/material';
-import { Delete, ExpandMore } from '@mui/icons-material';
+import { Delete, ExpandMore, Edit } from '@mui/icons-material';
 import { Fragment, useEffect, useState } from 'react';
 import { Map } from '../components/ShowInvite/Map.tsx';
 import { getUsers, deleteUser } from '../data/Reducers.tsx';
@@ -123,7 +123,14 @@ export function ListUsers () {
                                                     }
                                                 </CardContent>
                                                 <CardActions sx={{ justifyContent: 'flex-end' }} >
-                                                    <IconButton aria-label="delete address" onClick={
+                                                    <IconButton aria-label="edit user" onClick={
+                                                        () => {
+                                                            window.open(`/user/${user.id}`, '_self');
+                                                        }
+                                                    }>
+                                                        <Edit color='primary' fontSize='large' />
+                                                    </IconButton>
+                                                    <IconButton aria-label="delete user" onClick={
                                                         () => {
                                                             setUser(user);
                                                             setOpen(true);

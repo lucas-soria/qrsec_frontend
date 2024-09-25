@@ -108,6 +108,44 @@ export const getUsers = async () => {
 
 }
 
+export const getUser = async ( id : string | undefined ) => {
+
+    const response = await fetch( backUrls.base + backUrls.user + '/' + id, {
+        mode: 'cors',
+        method: 'GET',
+        headers: defaultHeaders,
+    } ).then( (response) => {
+        if (response.ok) {
+
+            return response.json();
+
+        } else {
+
+            return null;
+
+        }
+    } ).catch( (error) => console.error(error) );
+
+    return response;
+
+}
+
+export const updateUser = async( user : User ) => {
+
+    const response = await fetch( backUrls.base + backUrls.user + '/' + user.id, {
+        mode: 'cors',
+        method: 'PUT',
+        body: JSON.stringify(user),
+        headers: {
+            ...defaultHeaders,
+            'Content-Type': 'application/json'
+        }
+    } ).then( (response) => response.json() );
+
+    return response;
+
+}
+
 export const deleteUser = async(id : string) => {
 
     const response = await fetch( backUrls.base + backUrls.user + '/' + id, {
