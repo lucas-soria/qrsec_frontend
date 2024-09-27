@@ -1,7 +1,6 @@
 import { ArrowDropDown } from '@mui/icons-material';
 import { Autocomplete, Card, TextField, Typography } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
-import { getUsers } from '../../data/Reducers.tsx';
 
 
 export function SelectAuthority( { authorities, setAuthorities } : { authorities : Authority[], setAuthorities : React.Dispatch<React.SetStateAction<Authority[]>> } ) { 
@@ -15,20 +14,20 @@ export function SelectAuthority( { authorities, setAuthorities } : { authorities
     const [options, setOptions] = useState<OptionAuthority[]>([]);
 
     const loading = open && options.length === 0;
-
-    const hardcodedAuthorities : Authority[] = [
-        {
-            authority: 'OWNER',
-        },
-        {
-            authority: 'GUARD',
-        },
-        {
-            authority: 'ADMIN',
-        }
-    ]
   
     useEffect( () => {
+
+        const hardcodedAuthorities : Authority[] = [
+            {
+                authority: 'OWNER',
+            },
+            {
+                authority: 'GUARD',
+            },
+            {
+                authority: 'ADMIN',
+            }
+        ]
   
         if (!loading) {
             return undefined;
@@ -40,7 +39,7 @@ export function SelectAuthority( { authorities, setAuthorities } : { authorities
 
         })();
   
-    }, [ loading, hardcodedAuthorities ]);
+    }, [ loading ]);
   
     useEffect( () => {
 
