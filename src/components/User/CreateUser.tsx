@@ -78,6 +78,7 @@ export function CreateUser( { user, setUser, data } : { user: User | null, setUs
 
     }, [ data, setUser ]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const memorizedUser = useMemo(() => updateMemorizedUser(), [ shouldCreateUser, updateMemorizedUser ]);
 
     return (
