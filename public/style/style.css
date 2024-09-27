@@ -1,15 +1,15 @@
 :root {
-    --blanco: #EBEBEB;
-    --verde: #6FEC82;
-    --rojo: #FF101F;
-    --azul-claro: #2251BF;
-    --azul-oscuro: #103C89;
+    --white: #EBEBEB;
+    --green: #6FEC82;
+    --red: #FF101F;
+    --blue: #2251BF;
+    --dark-blue: #103C89;
     --filter: invert(100%) sepia(1%) saturate(162%) hue-rotate(145deg) brightness(114%) contrast(84%);
 }
 
 body {
-    color: var(--blanco);
-    background-color: var(--azul-oscuro);
+    color: var(--white);
+    background-color: var(--dark-blue);
     margin: 0;
     padding: 0;
 }
@@ -25,25 +25,30 @@ body {
 }
 
 .text-fields {
-    background-color: var(--azul-claro);
+    background-color: var(--blue);
     border-radius: 5px 5px 0 0;
 }
 
 .text-fields label {
-    color: var(--blanco);
+    color: var(--white);
 }
 
 .text-fields input {
-    color: var(--blanco);
+    color: var(--white);
 }
 
 .button-icon {
-    color: var(--blanco);
+    color: var(--white);
 }
 
 .Mui-selected {
-    color: var(--blanco) !important;
-    background-color: var(--azul-claro) !important;
+    color: var(--white) !important;
+    background-color: var(--blue) !important;
+}
+
+.MuiAutocomplete-tag {
+    background-color: var(--dark-blue) !important;
+    color: var(--white) !important;
 }
 
 .card-days {
@@ -56,13 +61,13 @@ body {
 }
 
 #day {
-    color: var(--blanco);
-    border-color: var(--blanco);
+    color: var(--white);
+    border-color: var(--white);
     flex: 1;
 }
 
 #card {
-    background-color: var(--azul-oscuro);
+    background-color: var(--dark-blue);
     width: fit-content;
 }
 
@@ -81,11 +86,11 @@ input[type="time"]::-webkit-calendar-picker-indicator{
 }
 
 .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase {
-    color: var(--rojo) !important;
+    color: var(--red) !important;
 }
 
 .Mui-checked{
-    color: var(--verde) !important;
+    color: var(--green) !important;
 }
 
 .custom-component {
@@ -98,16 +103,16 @@ input[type="time"]::-webkit-calendar-picker-indicator{
 }
 
 #button-send {
-    background-color: var(--verde);
+    background-color: var(--green);
     color: black;
 }
 
 .avatar {
-    background-color: var(--azul-oscuro) !important;
+    background-color: var(--dark-blue) !important;
 }
 
 .app-bar {
-    background-color: var(--azul-claro) !important;
+    background-color: var(--blue) !important;
 }
 
 .map-container {
@@ -116,11 +121,11 @@ input[type="time"]::-webkit-calendar-picker-indicator{
 }
 
 #valid {
-    background-color: var(--verde);
+    background-color: var(--green);
 }
 
 #invalid {
-    background-color: var(--rojo);
+    background-color: var(--red);
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -139,3 +144,21 @@ input[type=number]::-webkit-outer-spin-button {
 THATS WHY YOU USE IDs!!! ID > CLASS
 Now i can override material without !important
 */
+
+/* Sign in button */
+.icons {
+    width: 100%;
+    align-items: center;
+    align-content: center;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+}
+
+.signin-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
