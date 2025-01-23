@@ -30,7 +30,7 @@ export const createAddress = async( address : Address ) => {
 
 export const getAddresses = async() => {
 
-    const response = await fetch( backUrls.base + '/admin' + backUrls.address, {
+    const response = await fetch( backUrls.base + backUrls.address, {
         mode: 'cors',
         method: 'GET',
         headers: defaultHeaders,
@@ -88,7 +88,7 @@ export const createUser = async( user : User ) => {
 
 export const getUsers = async () => {
     
-    const response = await fetch( backUrls.base + '/admin' + backUrls.user, {
+    const response = await fetch( backUrls.base + backUrls.user, {
         mode: 'cors',
         method: 'GET',
         headers: defaultHeaders,
@@ -289,7 +289,10 @@ export const getGuest = async ( id : string | undefined ) => {
     const response = await fetch( backUrls.base + backUrls.guest + '/' + id, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
+        headers: {
+            ...defaultHeaders,
+            'Content-Type': 'application/json'
+        }
     } ).then( (response) => {
         if (response.ok) {
 
@@ -307,28 +310,6 @@ export const getGuest = async ( id : string | undefined ) => {
 }
 
 export const getGuests = async() => {
-
-    const response = await fetch( backUrls.base + '/admin' + backUrls.guest, {
-        mode: 'cors',
-        method: 'GET',
-        headers: defaultHeaders,
-    } ).then( (response) => {
-        if (response.status === 200) {
-
-            return response.json();
-
-        } else {
-
-            return [];
-
-        }
-    });
-
-    return response;
-
-}
-
-export const getMyGuests = async() => {
 
     const response = await fetch( backUrls.base + backUrls.guest, {
         mode: 'cors',

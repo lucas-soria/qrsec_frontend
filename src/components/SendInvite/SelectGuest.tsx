@@ -1,7 +1,7 @@
 import { ArrowDropDown } from '@mui/icons-material';
 import { Autocomplete, Card, TextField, Typography } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
-import { getMyGuests } from '../../data/Reducers.tsx';
+import { getGuests } from '../../data/Reducers.tsx';
 import { CreateGuest } from './CreateGuest.tsx';
 
 
@@ -29,7 +29,7 @@ export function SelectGuest( { guests, setGuests } : { guests : Guest[], setGues
   
         (async () => {
 
-            const guests : Guest[] = await getMyGuests();
+            const guests : Guest[] = await getGuests();
             setOptions([{ name: addGuest }, ...guests.map( (guest : Guest) => ( { ...guest, name: guest.firstName + ' ' + guest.lastName } ))]);
 
         })();
