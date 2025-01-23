@@ -282,6 +282,44 @@ export const getInvites = async () => {
 
 }
 
+export const validateInvite = async ( id : string | undefined ) => {
+
+    const response = await fetch( backUrls.base + backUrls.invite + '/validate/' + id, {
+        mode: 'cors',
+        method: 'GET',
+        headers: {
+            ...defaultHeaders,
+            'X-Client-Timestamp': new Date().toISOString(),
+            'Content-Type': 'application/json'
+        },
+    } ).then( (response) => {
+        if (response.ok) {
+
+            console.log(response)
+
+            if (response.status === 200) {
+                console.log("is TRUE!!!")
+                return true;
+            }
+
+            return false;
+
+        } else {
+
+            return false;
+
+        }
+    } ).catch( (error) => {
+        
+        console.error(error);
+        return false;
+
+    } );
+
+    return response;
+
+}
+
 // # ---------- GUESTS ---------- #
 
 export const getGuest = async ( id : string | undefined ) => {
