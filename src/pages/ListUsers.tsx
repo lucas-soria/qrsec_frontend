@@ -121,6 +121,14 @@ export function ListUsers () {
                                                         </> :
                                                         <></>
                                                     }
+
+                                                    {!user.enabled ?
+                                                        <>
+                                                            <Typography variant='body1'>Usuario eliminado</Typography>
+                                                        </> : 
+                                                        <></>
+                                                    }
+
                                                 </CardContent>
                                                 <CardActions sx={{ justifyContent: 'flex-end' }} >
                                                     <IconButton aria-label="edit user" onClick={
