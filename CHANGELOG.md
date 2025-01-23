@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added invite validation endpoint.
 - Invite is now validated by the backend.
 
+### Added
+- Message that tells wheather a user is deleted or not.
+
 ## [0.0.1] - 2024-09-25 ([#3](https://github.com/soria-lucas/qrsec_frontend/pull/3))
 ### Added
 - CRUD Pages.
@@ -24,7 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Migrated from js to tsx.
-  - Added `tsconfig.json` file
+  - Added `tsconfig.json` file.
 
 ## [0.0.0] - 2023-12-25 ([#1](https://github.com/soria-lucas/qrsec_frontend/pull/1))
 ### Added
