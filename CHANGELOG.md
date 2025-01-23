@@ -7,7 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.0.1] - 2023-09-25 ([#3](https://github.com/soria-lucas/qrsec_frontend/pull/1))
+## [0.0.2] - 2025-01-23 ([#7](https://github.com/soria-lucas/qrsec_frontend/pull/7))
+### Removed
+- /admin/ endpoints.
+
+### Changed
+- Added invite validation endpoint.
+- Invite is now validated by the backend.
+
+## [0.0.1] - 2024-09-25 ([#3](https://github.com/soria-lucas/qrsec_frontend/pull/3))
 ### Added
 - CRUD Pages.
 - Reducers.
