@@ -1,11 +1,11 @@
 import { Card, Typography } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { getInvite } from '../../data/Reducers.tsx';
+import { getInvite, validateInvite } from '../../data/Reducers.tsx';
 import { Map } from '../ShowInvite/Map.tsx';
 
 
-export function InviteInfo( { inviteID, cameraIsActive } : { inviteID : string, cameraIsActive : boolean } ) {
+export function InviteInfo( { inviteID, cameraIsActive, isValid, setIsValid } : { inviteID : string, cameraIsActive : boolean, isValid : boolean, setIsValid : React.Dispatch<React.SetStateAction<boolean>> } ) {
 
     const [invite, setInvite] = useState<Invite>();
 
@@ -15,25 +15,21 @@ export function InviteInfo( { inviteID, cameraIsActive } : { inviteID : string, 
             (async () => {
 
                 setInvite(await getInvite(inviteID));
+                setIsValid(await validateInvite(inviteID));
 
             })();
         } else {
             setInvite(undefined);
+            setIsValid(false);
         }
 	
-	}, [ inviteID ]);
-
-    const validate = (invite : Invite) => {
-
-        return true;
-
-    };
+	}, [ inviteID, isValid, setIsValid ]);
 
     return (
         <>
         {!cameraIsActive ? (
             <>
-            {!!invite && validate(invite) ? (
+            {!!invite && isValid ? (
                 <>
 
                 <Card elevation={ 6 } id='valid'>
@@ -57,7 +53,7 @@ export function InviteInfo( { inviteID, cameraIsActive } : { inviteID : string, 
                     <Typography variant='body1'>Apellido: { invite.owner.lastName }.</Typography>
                     <Typography variant='body1'>Teléfono: { invite.owner.phone }.</Typography>
                     <Typography variant='body1'>Casa: { invite.owner.address.house.block } { invite.owner.address.house.house }.</Typography>
-                    <Map position={ { lat: invite.owner.address.location.coordinates[0], lng: invite.owner.address .location.coordinates[1] } }/>
+                    <Map position={ { lat: invite.owner.address.location.coordinates[0], lng: invite.owner.address.location.coordinates[1] } }/>
 
                 </Card>
 

@@ -4,7 +4,7 @@ import QRReader from 'qrreader';
 import { Fragment, useCallback, useEffect, useMemo } from 'react';
 
 
-export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive } : { setInviteID : React.Dispatch<React.SetStateAction<string>>, cameraIsActive : boolean, setCameraIsActive : React.Dispatch<React.SetStateAction<boolean>> } ) {
+export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive, setIsValid } : { setInviteID : React.Dispatch<React.SetStateAction<string>>, cameraIsActive : boolean, setCameraIsActive : React.Dispatch<React.SetStateAction<boolean>>, setIsValid : React.Dispatch<React.SetStateAction<boolean>> } ) {
 
     var qrCodeReader = useMemo( () => new QRReader(), []);
 
@@ -18,18 +18,20 @@ export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive } : 
         qrCodeReader.startCapture(videoElement)
             .then((result) => {
                 setInviteID(result);
+                setIsValid(false); // Still not validated
                 setCameraIsActive(false);
                 stopCapture();
             })
             .catch((error) => {
             });
-    }, [ qrCodeReader, setCameraIsActive, setInviteID, stopCapture ]);
+    }, [ qrCodeReader, setCameraIsActive, setInviteID, stopCapture, setIsValid ]);
 
     const handleClick = () => {
         if (cameraIsActive) {
             setCameraIsActive(false);
             stopCapture();
-            setInviteID('')
+            setInviteID('');
+            setIsValid(false);
         } else {
             setCameraIsActive(true);
         }

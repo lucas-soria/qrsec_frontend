@@ -9,6 +9,8 @@ export function ScanInvite () {
 
     const [inviteID, setInviteID] = useState<string>('');
 
+    const [isValid, setIsValid] = useState<boolean>(false);
+
     useEffect(() => {
 
         document.title = 'QRSec - Escanear invitaciones';
@@ -20,13 +22,13 @@ export function ScanInvite () {
 
             <br />
 
-            <QrScanner setInviteID={ setInviteID } cameraIsActive={ cameraIsActive } setCameraIsActive={ setCameraIsActive }/>
+            <QrScanner setInviteID={ setInviteID } cameraIsActive={ cameraIsActive } setCameraIsActive={ setCameraIsActive } setIsValid={ setIsValid }/>
 
             <br /><br />
 
             {inviteID && (
 
-                <InviteInfo inviteID={ inviteID } cameraIsActive={ cameraIsActive }/>
+                <InviteInfo inviteID={ inviteID } cameraIsActive={ cameraIsActive } isValid={ isValid } setIsValid={ setIsValid }/>
 
             )}
 
