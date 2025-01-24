@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.2] - 2025-01-23 ([#7](https://github.com/soria-lucas/qrsec_frontend/pull/7))
 ### Removed
 - /admin/ endpoints.
+- Random uuid appended to email on signup.
 
 ### Changed
 - Added invite validation endpoint.
