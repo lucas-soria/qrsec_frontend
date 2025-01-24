@@ -3,7 +3,6 @@ import Alert from '@mui/material/Alert';
 import HomeIcon from '@mui/icons-material/Home';
 import { Fragment, useState, useMemo, useEffect, useCallback } from 'react';
 import { createUser } from '../../data/Reducers.tsx';
-import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -29,7 +28,7 @@ export function CreateUser( { user, setUser, data } : { user: User | null, setUs
     useEffect( () => {
 
         // TODO: check if user exists
-        if (user?.email === 'luscasoria@hotmail.com') {
+        if (!!user?.email) {
             navigate('/invite');
         } else {
             setShouldCreateUser(true);
@@ -49,7 +48,7 @@ export function CreateUser( { user, setUser, data } : { user: User | null, setUs
 		let user1 : NewUser = {
             firstName: firstName,
             lastName: lastName,
-            email: user?.email + uuidv4(),
+            email: user?.email,
             password: mockPassword, // TODO: Remove password no longer needed
             phone: phone,
             dni: dni,
