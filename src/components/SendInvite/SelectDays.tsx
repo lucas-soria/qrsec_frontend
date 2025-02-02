@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 
 export function SelectDays( { days, setDays } : { days : string[], setDays : React.Dispatch<React.SetStateAction<string[]>> } ) {
 
-    const matches = useMediaQuery('(min-width:600px)');
+    const matches = useMediaQuery('(min-width:800px)');
 
     const handleDays = (event : React.MouseEvent<HTMLElement, MouseEvent>, newDays : string[] ) => {
         setDays(newDays);

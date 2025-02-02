@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getInvite, updateInvite } from '../data/Reducers.tsx';
 import { Fragment, useEffect, useState } from 'react';
 import { SelectDays } from '../components/SendInvite/SelectDays.tsx';
@@ -11,6 +11,7 @@ import { frontUrls } from '../data/Urls.tsx';
 import { AddLink, ContentCopy } from '@mui/icons-material';
 import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@mui/material';
 import Alert from '@mui/material/Alert';
+import { SelectDescription } from '../components/SendInvite/SelectDescription.tsx';
 
 
 export function ViewInvite() { 
@@ -21,7 +22,11 @@ export function ViewInvite() {
 
 	const base_url = frontUrls.wholeBase + frontUrls.publicInvite;
 
-    const [guests, setGuests] = useState<Guest[]>([]);
+	const navigate = useNavigate();
+
+    const [description, setDescription] = useState<string>('');
+
+	const [guests, setGuests] = useState<Guest[]>([]);
     
     const [days, setDays] = useState<string[]>([]);
 
@@ -45,6 +50,7 @@ export function ViewInvite() {
 	
 			let invite = await getInvite(id);
 			setInvite(invite);
+			setDescription(invite.description);
 			setGuests(invite.guests as Guest[]);
 			setDays(invite.days);
 			setHours(invite.hours.length === 0 ? [ [] ] : invite.hours);
@@ -65,11 +71,13 @@ export function ViewInvite() {
     
     const handleClose = () => {
         setOpen(false);
+		navigate(frontUrls.base + frontUrls.invite);
     };
 
     const handleUpdate = async () => {
 		if (!!invite) {
 			let inviteToUpdate = invite;
+			inviteToUpdate.description = description;
 			inviteToUpdate.guests = guests;
 			inviteToUpdate.days = days;
 			inviteToUpdate.hours = hours.filter( (hour) => hour.length > 0 );
@@ -90,6 +98,7 @@ export function ViewInvite() {
     return (
 		<Fragment>
 
+			<SelectDescription description={ description ? description : '' } setDescription={ setDescription } />
 			<SelectGuest guests={ guests ? guests : [] } setGuests={ setGuests }/>
 			<SelectDays days={ days } setDays={ setDays }/>
 			<SelectHours hours={ hours } setHours={ setHours }/>

@@ -20,7 +20,7 @@ export function SelectHours( { hours, setHours } : { hours : string[][], setHour
 
             <div className='custom-component'>
                 <Typography variant='h6'>Horario permitido:</Typography>
-                <Card elevation={6} id='card' className='card-hour'>
+                <Card elevation={6} id='card' className='card-hour' style={{width:'100%'}}>
                     <Hours hours={ hours }/>
                     <IconButton onClick={ handleAdd } ><AddCircleOutlineOutlined className='button-icon' fontSize='medium'/></IconButton>
                     { (hours.length > 1) ? <IconButton onClick={ handleRemove }><RemoveCircleOutlineOutlined className='button-icon' fontSize='medium'/></IconButton> : <></> }
