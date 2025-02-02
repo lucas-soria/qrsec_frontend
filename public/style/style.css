@@ -1,21 +1,21 @@
 :root {
-    --white: #EBEBEB;
-    --green: #6FEC82;
-    --red: #FF101F;
-    --blue: #2251BF;
-    --dark-blue: #103C89;
+    --qrsec-white: #EBEBEB;
+    --qrsec-green: #6FEC82;
+    --qrsec-red: #FF101F;
+    --qrsec-light-blue: #2251BF;
+    --qrsec-dark-blue: #103C89;
     --filter: invert(100%) sepia(1%) saturate(162%) hue-rotate(145deg) brightness(114%) contrast(84%);
 }
 
 body {
-    color: var(--white);
-    background-color: var(--dark-blue);
+    color: var(--qrsec-white);
+    background-color: var(--qrsec-dark-blue);
     margin: 0;
     padding: 0;
 }
 
 #logo {
-    height: 50px;
+    height: 10vw;
     filter: var(--filter);
 }
 
@@ -25,30 +25,34 @@ body {
 }
 
 .text-fields {
-    background-color: var(--blue);
+    background-color: var(--qrsec-light-blue);
     border-radius: 5px 5px 0 0;
 }
 
 .text-fields label {
-    color: var(--white);
+    color: var(--qrsec-white);
 }
 
 .text-fields input {
-    color: var(--white);
+    color: var(--qrsec-white);
+}
+
+.max-width {
+    width: 100%;
 }
 
 .button-icon {
-    color: var(--white);
+    color: var(--qrsec-white);
 }
 
 .Mui-selected {
-    color: var(--white) !important;
-    background-color: var(--blue) !important;
+    color: var(--qrsec-white) !important;
+    background-color: var(--qrsec-light-blue) !important;
 }
 
 .MuiAutocomplete-tag {
-    background-color: var(--dark-blue) !important;
-    color: var(--white) !important;
+    background-color: var(--qrsec-dark-blue) !important;
+    color: var(--qrsec-white) !important;
 }
 
 .card-days {
@@ -61,22 +65,24 @@ body {
 }
 
 #day {
-    color: var(--white);
-    border-color: var(--white);
+    color: var(--qrsec-white);
+    border-color: var(--qrsec-white);
     flex: 1;
 }
 
 #card {
-    background-color: var(--dark-blue);
+    background-color: var(--qrsec-dark-blue);
     width: fit-content;
 }
+
+/* Invite hour selector */
 
 .card-hour {
     padding: 10px;
     padding-top: 0;
 }
 
-input[type="time"]::-webkit-calendar-picker-indicator{
+input[type="time"]::-webkit-calendar-picker-indicator {
     filter: var(--filter);
     font-size: x-large;
 }
@@ -85,12 +91,12 @@ input[type="time"]::-webkit-calendar-picker-indicator{
     filter: var(--filter) !important;
 }
 
-.css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase {
-    color: var(--red) !important;
+.MuiSwitch-colorPrimary {
+    color: var(--qrsec-red) !important;
 }
 
 .Mui-checked{
-    color: var(--green) !important;
+    color: var(--qrsec-green) !important;
 }
 
 .custom-component {
@@ -103,16 +109,17 @@ input[type="time"]::-webkit-calendar-picker-indicator{
 }
 
 #button-send {
-    background-color: var(--green);
+    background-color: var(--qrsec-green);
     color: black;
 }
 
 .avatar {
-    background-color: var(--dark-blue) !important;
+    background-color: var(--qrsec-light-blue) !important;
+    margin: auto auto auto auto;
 }
 
 .app-bar {
-    background-color: var(--blue) !important;
+    background-color: var(--qrsec-light-blue) !important;
 }
 
 .map-container {
@@ -121,11 +128,11 @@ input[type="time"]::-webkit-calendar-picker-indicator{
 }
 
 #valid {
-    background-color: var(--green);
+    background-color: var(--qrsec-green);
 }
 
 #invalid {
-    background-color: var(--red);
+    background-color: var(--qrsec-red);
 }
 
 input[type=number]::-webkit-inner-spin-button,
@@ -161,4 +168,71 @@ Now i can override material without !important
     align-items: center;
     text-align: center;
     width: 100%;
+}
+
+#drawer {
+    background-color: var(--qrsec-dark-blue);
+    width: 25cqw;
+    min-height: 100vh;
+    height: 100%;
+    position: sticky;
+    top: 0;
+}
+
+#nav-bar {
+    background-color: var(--qrsec-dark-blue);
+    width: 100vw;
+    position: sticky;
+    z-index: 1;
+}
+
+#content {
+    width: 75cqw;
+    background-color: var(--qrsec-white);
+    height: 100%;
+    min-height: 100vh;
+}
+
+#layout {
+    min-height: 100vh;
+    height: 100%;
+    width: 100vw;
+    display: flex;
+}
+
+#drawer-item {
+    background-color: var(--qrsec-dark-blue);
+    color: var(--qrsec-white);
+    padding-top: 15px;
+    padding-bottom: 15px;
+    height: 100%;
+    width: 100%;
+}
+
+#drawer-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+    width: 100%;
+}
+
+.selected {
+    background-color: var(--qrsec-light-blue) !important;
+}
+
+.not-selected {
+    color: inherit;
+}
+
+.card-send-invite {
+    width: 100% !important;
+}
+
+.bottom-drawer {
+    height: 10vh;
+    width: 100%;
+    display: flex;
+    bottom: 0px;
+    position: absolute;
 }
