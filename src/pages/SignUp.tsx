@@ -2,11 +2,12 @@ import { Typography } from '@mui/material';
 import jwt_decode from 'jwt-decode';
 import { Fragment, useEffect, useState } from 'react';
 import { CreateUser } from '../components/User/CreateUser';
-import QRSecLogo from '../Screenshot_2021-10-07_184334.svg';
 
 /* global google */
 
 export function SignUp() {
+
+    let qrsecLogo = '/QRSec logo.svg';
 
     const [token, setToken] = useState<string>(localStorage.getItem('access_token') ?? '');
 
@@ -19,7 +20,6 @@ export function SignUp() {
         const googleOAuthElement = document.getElementById('google-oauth');
 
         const handleCallbackResponse = ( response :  google.accounts.id.CredentialResponse ) => {
-            localStorage.setItem('access_token', response.credential);
             setToken(response.credential);
         }
 
@@ -54,12 +54,12 @@ export function SignUp() {
 
             {!!decodedToken ?
                 <>
-                    <CreateUser user={ user } setUser={ setUser } data={ decodedToken } />
+                    <CreateUser user={ user } setUser={ setUser } data={ decodedToken } token={ token } />
                 </> :
                 <>
                     <br/>
                     <div className='signin-logo'>
-                        <img id='logo' src={ QRSecLogo } alt='QRSec Logo' style={ {width: '50%', height: 'auto' } } />
+                        <img id='logo' src={ qrsecLogo } alt='QRSec Logo' style={ {width: '50%', height: 'auto' } } />
                     </div>
                     <br/>
                     <Typography variant='h5'>Inicia Sesion</Typography>

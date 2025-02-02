@@ -164,6 +164,35 @@ export const deleteUser = async(id : string) => {
 
 }
 
+export const userExists = async ( email : string | undefined ) => {
+
+    const response = await fetch( backUrls.base + backUrls.user + '/exists/' + email, {
+        mode: 'cors',
+        method: 'GET',
+        headers: defaultHeaders,
+    } ).then( (response) => {
+        if (response.ok) {
+
+            if (response.status === 200) {
+                return true;
+            }
+
+            return false;
+
+        } else {
+
+            return false;
+
+        }
+    } ).catch( (error) => {
+        console.error(error);
+        return false;
+    } );
+
+    return response;
+
+}
+
 // # ---------- INVITES ---------- #
 
 export const createInvite = async( invite : Invite ) => {
@@ -295,10 +324,7 @@ export const validateInvite = async ( id : string | undefined ) => {
     } ).then( (response) => {
         if (response.ok) {
 
-            console.log(response)
-
             if (response.status === 200) {
-                console.log("is TRUE!!!")
                 return true;
             }
 
