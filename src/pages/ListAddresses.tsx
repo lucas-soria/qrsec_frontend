@@ -12,6 +12,7 @@ import { styled } from '@mui/material/styles';
 import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { Button, Dialog, DialogActions, DialogTitle, Snackbar, Typography } from '@mui/material';
+import FloatingAddButton from '../components/AddButton.tsx';
 
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -146,6 +147,8 @@ export function ListAddresses () {
                             </DialogActions>
 
                         </Dialog>
+
+                        <FloatingAddButton />
 
                     </Fragment>
                 </>

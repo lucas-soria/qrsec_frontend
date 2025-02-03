@@ -59,7 +59,7 @@ export function SignUp() {
                 <>
                     <br/>
                     <div className='signin-logo'>
-                        <img id='logo' src={ qrsecLogo } alt='QRSec Logo' style={ {width: '50%', height: 'auto' } } />
+                        <img id='blue-logo' src={ qrsecLogo } alt='QRSec Logo' />
                     </div>
                     <br/>
                     <Typography variant='h5'>Inicia Sesion</Typography>
