@@ -9,7 +9,7 @@ export function QRCodeComponent( { id } : { id : string } ) {
     	<Fragment>
 
 			<Typography variant='h5'>Mostrá este código en la entrada:</Typography>
-			<QRCode value={ id } bgColor='rgba(0,0,0,0)' fgColor='white' level='H' size={ 256 } style={{ height: "auto", maxWidth: "100%", width: "100%" }}/>
+			<QRCode className='qrcode' value={ id } bgColor='rgba(0,0,0,0)' fgColor='black' level='H' size={ 256 } />
 
 		</Fragment>
   	);
