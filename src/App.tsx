@@ -1,7 +1,9 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { frontUrls } from './data/Urls';
 import { SendInvite } from './pages/SendInvite';
-import { Layout } from './components/Layout';
+import { Layout as PermanentDrawer } from './components/Layout/LogedInPermanentDrawer';
+// import { Layout as TemporalDrawer } from './components/Layout/LogedInTemporalDrawer';
+import { Layout as AppBar } from './components/Layout/NotLogedInAppBar';
 import { CreateNewAddress } from './pages/CreateAddress';
 import { ListAddresses } from './pages/ListAddresses';
 import { ListGuests } from './pages/ListGuests';
@@ -19,7 +21,7 @@ export function App() {
     <BrowserRouter>
       <Routes>
 
-        <Route>
+        <Route element={ <AppBar /> }>
 
             { /* Session */ }
             <Route path={ frontUrls.signup } element={ <SignUp/> } />
@@ -31,17 +33,17 @@ export function App() {
 
         </Route>
 
-        <Route element={ <Layout /> }>
+        <Route element={ <PermanentDrawer /> }>
 
             { /* Invites */ }
-            <Route path={ frontUrls.create } element={ <SendInvite/> }/>
-            <Route path={ frontUrls.invite + ':id' } element={ <ViewInvite/> }/>
             <Route path={ frontUrls.invite } element={ <ListInvites/> }/>
+            <Route path={ frontUrls.invite + frontUrls.create } element={ <SendInvite/> }/>
+            <Route path={ frontUrls.invite + ':id' } element={ <ViewInvite/> }/>
             <Route path={ frontUrls.scan } element={ <ScanInvite/> }/>
 
             { /* Addresses */ }
-            <Route path={ frontUrls.address + 'create' } element={ <CreateNewAddress/> }/>
             <Route path={ frontUrls.address } element={ <ListAddresses/> }/>
+            <Route path={ frontUrls.address + frontUrls.create } element={ <CreateNewAddress/> }/>
 
             { /* Users */ }
             <Route path={ frontUrls.user } element={ <ListUsers/> }/>

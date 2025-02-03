@@ -1,10 +1,9 @@
-// Layout.tsx
-import { Drawer, List, ListItem, Container, Box, Link, Avatar, MenuItem, useMediaQuery, Button } from '@mui/material';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { frontUrls } from '../data/Urls';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { Avatar, Box, Button, Container, Drawer, Link, List, ListItem, MenuItem, useMediaQuery } from '@mui/material';
 import jwt_decode from 'jwt-decode';
 import { useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { frontUrls } from '../../data/Urls';
 
 export function Layout() {
 
@@ -116,7 +115,7 @@ export function Layout() {
             </div>
 
             {/* Main Content */}
-            <div id="content">
+            <div id="content-with-drawer">
                 <Container maxWidth='sm' fixed>
                     <Outlet />
                 </Container>
