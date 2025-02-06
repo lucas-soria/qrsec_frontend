@@ -1,7 +1,6 @@
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Avatar, Box, Button, Container, Drawer, Link, List, ListItem, MenuItem, useMediaQuery } from '@mui/material';
+import { Avatar, Box, Container, Drawer, Link, List, ListItem, MenuItem } from '@mui/material';
 import jwt_decode from 'jwt-decode';
-import { useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { frontUrls } from '../../data/Urls';
 
@@ -47,24 +46,16 @@ export function Layout() {
         navigate(frontUrls.base);
 
     }
-    
-    const [open, setOpen] = useState(false);
-    const isMobile = useMediaQuery("(max-width:800px)");
 
     return (
         <div id='layout' >
 
             
             {/* Drawer */}
-            <div id={isMobile ? 'temporary-drawer' : 'drawer'}>
-            {isMobile &&
-                <Button onClick={() => setOpen(true)}>Open Menu</Button>
-            }
+            <div id='drawer'>
                 <Drawer
-                    variant = {isMobile ? 'temporary' : 'permanent'}
+                    variant = 'permanent'
                     anchor = 'left'
-                    open={open}
-                    onClose={() => setOpen(false)}
                     PaperProps = {
                         {
                             style: {
