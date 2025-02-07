@@ -179,13 +179,17 @@ Now i can override material without !important
     width: 100%;
 }
 
-#drawer {
+#permanent-drawer {
     background-color: var(--qrsec-dark-blue);
     width: 25cqw;
     min-height: 100vh;
     height: 100%;
     position: sticky;
     top: 0;
+}
+
+#temporary-drawer {
+    top: inherit;
 }
 
 #navbar {
@@ -220,18 +224,20 @@ Now i can override material without !important
 #drawer-item {
     background-color: var(--qrsec-dark-blue);
     color: var(--qrsec-white);
-    padding-top: 15px;
-    padding-bottom: 15px;
-    height: 100%;
+    height: 10cqh;
     width: 100%;
+    padding: 0;
 }
 
 #drawer-link {
-    display: block;
     color: inherit;
     text-decoration: none;
     height: 100%;
     width: 100%;
+    min-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .selected {

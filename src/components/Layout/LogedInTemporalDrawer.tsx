@@ -1,12 +1,11 @@
-import { AppBar, Box, Container, Drawer, IconButton, Toolbar } from '@mui/material';
+import { Container, IconButton, Toolbar } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-import { frontUrls } from '../../data/Urls';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
+import { CustomAppBar } from './AppBar';
+import { CustomDrawer } from './Drawer';
 
 export function Layout() {
-
-    let qrsecLogo = '/QRSec logo.svg';
 
     const [open, setOpen] = useState(false);
 
@@ -22,7 +21,7 @@ export function Layout() {
             
             {/* App Bar */}
             <div>
-                <AppBar id='navbar' enableColorOnDark >
+                <CustomAppBar>
                     <Toolbar>
                         <IconButton
                             size='large'
@@ -34,24 +33,13 @@ export function Layout() {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Box display='flex' alignItems='center' gap={2}>
-                            <a href={ frontUrls.wholeBase } ><img id='navbar-logo' src={ qrsecLogo } alt='QRSec Logo' /></a>
-                        </Box>
                     </Toolbar>
-                </AppBar>
+                </CustomAppBar>
             </div>
 
+            {/* Drawer */}
             <div>
-            <Drawer
-                anchor='left'
-                open={open}
-                onClose={() => setOpen(false)}
-                variant={'temporary'}
-            >
-                <div style={{ width: 250, padding: 20 }}>
-                    <p>Menu Content</p>
-                </div>
-            </Drawer>
+                <CustomDrawer permanent={ false } open={ open } setOpen={ setOpen } />
             </div>
 
             {/* Main Content */}
