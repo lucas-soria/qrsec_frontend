@@ -5,22 +5,22 @@
   "description": "Sistema de Control de Acceso de Invitados a Barrios Privados",
   "icons": [
     {
-      "src": "/favicon/favicon_64x64.ico",
+      "src": "/favicon/QRIcon/favicon_64x64.ico",
       "sizes": "64x64",
       "type": "image/x-icon"
     },
     {
-      "src": "/favicon/favicon_32x32.ico",
+      "src": "/favicon/QRIcon/favicon_32x32.ico",
       "sizes": "32x32",
       "type": "image/x-icon"
     },
     {
-      "src": "/favicon/favicon_24x24.ico",
+      "src": "/favicon/QRIcon/favicon_24x24.ico",
       "sizes": "24x24",
       "type": "image/x-icon"
     },
     {
-      "src": "/favicon/favicon_16x16.ico",
+      "src": "/favicon/QRIcon/favicon_16x16.ico",
       "sizes": "16x16",
       "type": "image/x-icon"
     },
