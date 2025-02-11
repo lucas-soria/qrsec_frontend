@@ -59,7 +59,7 @@ export const deleteAddress = async(id : string) => {
     } ).then( (response) => {
         if (response.status !== 204) {
 
-            console.log(response)
+            // console.log(response);
 
         }
     });
@@ -155,7 +155,7 @@ export const deleteUser = async(id : string) => {
     } ).then( (response) => {
         if (response.status !== 204) {
 
-            console.log(response)
+            // console.log(response);
 
         }
     });
@@ -258,7 +258,7 @@ export const deleteInvite = async(id : string) => {
     } ).then( (response) => {
         if (response.status !== 204) {
 
-            console.log(response)
+            // console.log(response);
 
         }
     });
@@ -446,7 +446,7 @@ export const deleteGuest = async(id : string) => {
     } ).then( (response) => {
         if (response.status !== 204) {
 
-            console.log(response)
+            // console.log(response);
 
         }
     });

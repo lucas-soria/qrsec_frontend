@@ -16,10 +16,16 @@ import { ViewInvite } from './pages/ViewInvite';
 import { ViewPublicInvite } from './pages/ViewPublicInvite';
 import { ViewUser } from './pages/ViewUser';
 import { useMediaQuery } from '@mui/material';
+import { registerServiceWorker } from './serviceWorker';
+import { useEffect } from 'react';
 
 export function App() {
 
   	const isMobile = useMediaQuery("(max-width:800px)");
+
+	useEffect(() => {
+		registerServiceWorker();
+	}, [ ] );
 
   	return (
 		<BrowserRouter>
