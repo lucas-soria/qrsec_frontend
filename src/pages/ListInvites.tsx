@@ -100,6 +100,11 @@ export function ListInvites () {
                                         <Card sx={ [ { width: '100%' } ] } variant='outlined'>
                                             <CardHeader 
                                                 title={ invite.description }
+                                                titleTypographyProps={
+                                                    {
+                                                        fontSize: '2rem'
+                                                    }
+                                                }
                                                 subheader={
                                                     <>
                                                         ID: <a href={ `${ base_url }${ invite.id }` }  onClick={ (event) => handleCopy(event, base_url+invite.id) } > { `${ invite.id }` } </a>
@@ -108,7 +113,7 @@ export function ListInvites () {
                                                 subheaderTypographyProps={
                                                     {
                                                         style: {
-                                                            fontSize:14
+                                                            fontSize: 14
                                                         }
                                                     }
                                                 }

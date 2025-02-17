@@ -1,4 +1,4 @@
-import { Card, Typography } from '@mui/material';
+import { Card, CardHeader, CardContent, Typography } from '@mui/material';
 import { Fragment, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { getInvite, validateInvite } from '../../data/Reducers.tsx';
@@ -32,40 +32,62 @@ export function InviteInfo( { inviteID, cameraIsActive, isValid, setIsValid } : 
             {!!invite && isValid ? (
                 <>
 
-                <Card elevation={ 6 } id='valid'>
+                    <Card id='valid' sx={ { width: '100%' } } variant='outlined'>
 
-                    <Typography variant='h5'>Información de los invitados:</Typography>
+                        <CardHeader
+                            title='Información de la invitación'
+                            titleTypographyProps={
+                                {
+                                    fontSize: '2rem'
+                                }
+                            }
+                        />
 
-                    {invite.maxTimeAllowed ? <Typography variant='body1'>Tiempo máximo de estadía: { invite.maxTimeAllowed } hs.</Typography> : <></>}
-                    {invite.guests.map( (guest) => 
+                        <CardContent>
+                            <Typography variant='h5'>Información de los invitados:</Typography>
 
-                        <Fragment key={ uuidv4() }>
-                            <Typography variant='body1'>Nombre: { guest.firstName }.</Typography>
-                            <Typography variant='body1'>Apellido: { guest.lastName }.</Typography>
-                            <Typography variant='body1'>DNI: { guest.dni }.</Typography>
-                            <br />
-                        </Fragment>
+                            {invite.maxTimeAllowed ? <Typography variant='body1'>Tiempo máximo de estadía: { invite.maxTimeAllowed } hs.</Typography> : <></>}
+                            {invite.guests.map( (guest) => 
 
-                    )}
+                                <Fragment key={ uuidv4() }>
+                                    <Typography variant='body1'>Nombre: { guest.firstName }.</Typography>
+                                    <Typography variant='body1'>Apellido: { guest.lastName }.</Typography>
+                                    <Typography variant='body1'>DNI: { guest.dni }.</Typography>
+                                    <br />
+                                </Fragment>
 
-                    <Typography variant='h5'>Información del residente:</Typography>
-                    <Typography variant='body1'>Nombre: { invite.owner.firstName }.</Typography>
-                    <Typography variant='body1'>Apellido: { invite.owner.lastName }.</Typography>
-                    <Typography variant='body1'>Teléfono: { invite.owner.phone }.</Typography>
-                    <Typography variant='body1'>Casa: { invite.owner.address.house.block } { invite.owner.address.house.house }.</Typography>
-                    <Map position={ { lat: invite.owner.address.location.coordinates[0], lng: invite.owner.address.location.coordinates[1] } }/>
+                            )}
+                        </CardContent>
 
-                </Card>
+                        <CardContent>
+                            <Typography variant='h5'>Información del residente:</Typography>
+                            <Typography variant='body1'>Nombre: { invite.owner.firstName }.</Typography>
+                            <Typography variant='body1'>Apellido: { invite.owner.lastName }.</Typography>
+                            <Typography variant='body1'>Teléfono: { invite.owner.phone }.</Typography>
+                            <Typography variant='body1'>Casa: { invite.owner.address.house.block } { invite.owner.address.house.house }.</Typography>
+                            <Map position={ { lat: invite.owner.address.location.coordinates[0], lng: invite.owner.address.location.coordinates[1] } } />
+                        </CardContent>
+
+                    </Card>
+
+                    <br />
 
                 </>
-            ):
+            ) :
                 <>
 
-                <Card id='invalid'>
+                    <Card id='invalid'>
 
-                    <Typography>Invitación invalida</Typography>
+                        <CardHeader 
+                            title='Invitación invalida'
+                            titleTypographyProps={
+                                {
+                                    fontSize: '2rem'
+                                }
+                            }
+                        />
 
-                </Card>
+                    </Card>
 
                 </>
             }

@@ -22,16 +22,15 @@ export function Layout() {
             {/* App Bar */}
             <div>
                 <CustomAppBar>
-                    <Toolbar>
+                    <Toolbar className='custom-toolbar'>
                         <IconButton
                             size='large'
-                            edge='start'
                             color='inherit'
                             aria-label='menu'
-                            sx={{ mr: 2 }}
+                            sx={{ mr: 2, ml: 2 }}
                             onClick={ handleClick }
                         >
-                            <MenuIcon />
+                            <MenuIcon fontSize='large' />
                         </IconButton>
                     </Toolbar>
                 </CustomAppBar>

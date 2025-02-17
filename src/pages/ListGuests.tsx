@@ -80,6 +80,11 @@ export function ListGuests () {
                                         <Card sx={ [ { width: '100%' } ] } variant='outlined'>
                                             <CardHeader 
                                                 title={ guest.firstName + ' ' + guest.lastName }
+                                                titleTypographyProps={
+                                                    {
+                                                        fontSize: '2rem'
+                                                    }
+                                                }
                                             />
                                             <CardActions>
                                                 <ExpandMoreComponent

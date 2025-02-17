@@ -75,11 +75,10 @@ export function CustomDrawer( { permanent, open, setOpen } : { permanent : boole
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 flexDirection: 'column',
-                                py: 3,
                             }
                         }
                     >
-                        <a href={ frontUrls.wholeBase } ><img className='logo' id='logo' src={ qrsecLogo } alt='QRSec Logo' /></a>
+                        <a href={ frontUrls.wholeBase } ><img id='logo' src={ qrsecLogo } alt='QRSec Logo' /></a>
                     </Box>
                     <List>
                         {pages.map( (page) => (

@@ -81,6 +81,11 @@ export function ListAddresses () {
                                         <Card sx={ [ { width: '100%' } ] } variant='outlined'>
                                             <CardHeader 
                                                 title={ address.house.block + ' ' + address.house.house }
+                                                titleTypographyProps={
+                                                    {
+                                                        fontSize: '2rem'
+                                                    }
+                                                }
                                             />
                                             <CardActions>
                                                 <ExpandMoreComponent

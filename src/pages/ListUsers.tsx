@@ -1,17 +1,12 @@
-import { List, ListItem } from '@mui/material';
+import { List, ListItem, Card, CardActions, CardHeader, CardContent, Button, Dialog, DialogActions, DialogTitle, Snackbar, Typography } from '@mui/material';
 import { Delete, ExpandMore, Edit } from '@mui/icons-material';
 import { Fragment, useEffect, useState } from 'react';
 import { Map } from '../components/ShowInvite/Map.tsx';
 import { getUsers, deleteUser } from '../data/Reducers.tsx';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
-import { Button, Dialog, DialogActions, DialogTitle, Snackbar, Typography } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -81,6 +76,11 @@ export function ListUsers () {
                                         <Card sx={ [ { width: '100%' } ] } variant='outlined'>
                                             <CardHeader 
                                                 title={ user.firstName + ' ' + user.lastName }
+                                                titleTypographyProps={
+                                                    {
+                                                        fontSize: '2rem'
+                                                    }
+                                                }
                                             />
                                             <CardActions>
                                                 <ExpandMoreComponent

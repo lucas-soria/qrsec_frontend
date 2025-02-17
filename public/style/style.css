@@ -155,14 +155,15 @@ Now i can override material without !important
 }
 
 #logo {
-    height: 10vw;
+    height: 10vh;
     filter: var(--filter);
+    padding: 1ch;
 }
 
 #navbar-logo {
     height: 10vh;
     filter: var(--filter);
-    padding: 5px;
+    padding: 1ch;
 }
 
 #blue-logo {
@@ -195,6 +196,21 @@ Now i can override material without !important
     background-color: var(--qrsec-dark-blue);
     width: 100vw;
     height: 10vh;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.custom-toolbar {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+#logo-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    z-index: 10;
+    justify-content: right;
 }
 
 #content-with-drawer {

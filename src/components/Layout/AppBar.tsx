@@ -16,9 +16,9 @@ export function CustomAppBar({ children }: CustomAppBarProps) {
             {/* App Bar */}
             <div>
                 <AppBar id='navbar' enableColorOnDark >
-                    <Toolbar>
+                    <Toolbar className='custom-toolbar'>
                         { children }
-                        <Box display='flex' alignItems='center' gap={2}>
+                        <Box id='logo-box'>
                             <a href={ frontUrls.wholeBase } ><img id='navbar-logo' src={ qrsecLogo } alt='QRSec Logo' /></a>
                         </Box>
                     </Toolbar>

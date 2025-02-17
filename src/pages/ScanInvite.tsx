@@ -20,8 +20,6 @@ export function ScanInvite () {
     return (
         <Fragment>
 
-            <br />
-
             <QrScanner setInviteID={ setInviteID } cameraIsActive={ cameraIsActive } setCameraIsActive={ setCameraIsActive } setIsValid={ setIsValid }/>
 
             <br /><br />
