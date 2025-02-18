@@ -1,5 +1,5 @@
 import { DoDisturb, QrCodeScanner } from '@mui/icons-material';
-import { Box, Button, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import QRReader from 'qrreader';
 import { Fragment, useCallback, useEffect, useMemo } from 'react';
 

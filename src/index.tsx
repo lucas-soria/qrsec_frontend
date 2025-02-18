@@ -1,6 +1,5 @@
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
-import ServiceWorkerUpdate from './ServiceWorkerUpdate';
 
 
 const container = document.getElementById('root');
@@ -12,6 +11,5 @@ root.render(
 		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 		<App />
-		<ServiceWorkerUpdate />
   	</>
 );

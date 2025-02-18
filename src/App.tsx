@@ -1,23 +1,23 @@
+import { useMediaQuery } from '@mui/material';
+import { useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { frontUrls } from './data/Urls';
-import { SendInvite } from './pages/SendInvite';
 import { Layout as PermanentDrawer } from './components/Layout/LogedInPermanentDrawer';
 import { Layout as TemporalDrawer } from './components/Layout/LogedInTemporalDrawer';
 import { Layout as AppBar } from './components/Layout/NotLogedInAppBar';
+import { frontUrls } from './data/Urls';
 import { CreateNewAddress } from './pages/CreateAddress';
 import { ListAddresses } from './pages/ListAddresses';
 import { ListGuests } from './pages/ListGuests';
 import { ListInvites } from './pages/ListInvites';
 import { ListUsers } from './pages/ListUsers';
 import { ScanInvite } from './pages/ScanInvite';
+import { SendInvite } from './pages/SendInvite';
 import { SignUp } from './pages/SignUp';
 import { ViewGuest } from './pages/ViewGuest';
 import { ViewInvite } from './pages/ViewInvite';
 import { ViewPublicInvite } from './pages/ViewPublicInvite';
 import { ViewUser } from './pages/ViewUser';
-import { useMediaQuery } from '@mui/material';
 import { registerServiceWorker } from './serviceWorker';
-import { useEffect } from 'react';
 
 export function App() {
 
