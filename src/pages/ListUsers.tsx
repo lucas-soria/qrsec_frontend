@@ -194,8 +194,6 @@ export function ListUsers () {
 
             ) :
                 <>
-                    <br />
-                    <Typography variant='h5'>No hay usuarios disponibles</Typography>
                 </>
             }
         </>

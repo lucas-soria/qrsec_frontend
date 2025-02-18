@@ -180,8 +180,6 @@ export function ListGuests () {
 
             ) :
                 <>
-                    <br />
-                    <Typography variant='h5'>No hay invitados disponibles</Typography>
                 </>
             }
         </>

@@ -160,8 +160,6 @@ export function ListAddresses () {
 
             ) :
                 <>
-                    <br />
-                    <Typography variant='h5'>No hay direcciones disponibles</Typography>
                 </>
             }
         </>

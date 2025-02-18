@@ -253,8 +253,6 @@ export function ListInvites () {
 
             ) :
                 <>
-                    <br />
-                    <Typography variant='h5'>No hay invitaciones disponibles</Typography>
                 </>
             }
         </>
