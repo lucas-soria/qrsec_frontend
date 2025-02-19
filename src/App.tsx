@@ -18,6 +18,8 @@ import { ViewInvite } from './pages/ViewInvite';
 import { ViewPublicInvite } from './pages/ViewPublicInvite';
 import { ViewUser } from './pages/ViewUser';
 import { registerServiceWorker } from './serviceWorker';
+import { PageNotFound } from './pages/NotFound';
+import { ProtectedRoutes } from './components/ProtectedRoutes';
 
 
 export function App() {
@@ -37,49 +39,47 @@ export function App() {
 					{ /* Session */ }
 					<Route path={ frontUrls.signup } element={ <SignUp/> } />
 					<Route path={ frontUrls.signin } element={ <SignUp/> }/>
-					<Route path={ frontUrls.base } element={ <Navigate replace to={ frontUrls.signup }/> }/>
+					<Route path={ frontUrls.base } element={ <Navigate replace to={ frontUrls.invite }/> }/>
 
 					{ /* Invites */ }
 					<Route path={ frontUrls.publicInvite + ':id' } element={ <ViewPublicInvite/> }/>
 
+					{ /* Page Not Found  */ }
+					<Route path="*" element={<PageNotFound />} />
+
 				</Route>
 
-				<Route element={ 
-					<>
-						{isMobile ? (
-							<TemporalDrawer />
-						):
-							<PermanentDrawer />
-						}
-					</>
-				} >
+				<Route element={<ProtectedRoutes />}>
 
-					{ /* Invites */ }
-					<Route path={ frontUrls.invite } element={ <ListInvites/> }/>
-					<Route path={ frontUrls.invite + frontUrls.create } element={ <SendInvite/> }/>
-					<Route path={ frontUrls.invite + ':id' } element={ <ViewInvite/> }/>
-					<Route path={ frontUrls.scan } element={ <ScanInvite/> }/>
+					<Route element={ 
+						<>
+							{isMobile ? (
+								<TemporalDrawer />
+							):
+								<PermanentDrawer />
+							}
+						</>
+					} >
 
-					{ /* Addresses */ }
-					<Route path={ frontUrls.address } element={ <ListAddresses/> }/>
-					<Route path={ frontUrls.address + frontUrls.create } element={ <CreateNewAddress/> }/>
-
-					{ /* Users */ }
-					<Route path={ frontUrls.user } element={ <ListUsers/> }/>
-					<Route path={ frontUrls.user + ':id' } element={ <ViewUser/> }/>
-
-					{ /* Guests */ }
-					<Route path={ frontUrls.guest } element={ <ListGuests/> }/>
-					<Route path={ frontUrls.guest + ':id' } element={ <ViewGuest/> }/>
-
-					{
-					/*  Original es con rutas protegidas
-					<Route element={ <ProtectedRoutes/> }>
-						<Route path={ frontUrls.create } element={ <SendInvite/> }/>
+						{ /* Invites */ }
+						<Route path={ frontUrls.invite } element={ <ListInvites/> }/>
+						<Route path={ frontUrls.invite + frontUrls.create } element={ <SendInvite/> }/>
+						<Route path={ frontUrls.invite + ':id' } element={ <ViewInvite/> }/>
 						<Route path={ frontUrls.scan } element={ <ScanInvite/> }/>
+
+						{ /* Addresses */ }
+						<Route path={ frontUrls.address } element={ <ListAddresses/> }/>
+						<Route path={ frontUrls.address + frontUrls.create } element={ <CreateNewAddress/> }/>
+
+						{ /* Users */ }
+						<Route path={ frontUrls.user } element={ <ListUsers/> }/>
+						<Route path={ frontUrls.user + ':id' } element={ <ViewUser/> }/>
+
+						{ /* Guests */ }
+						<Route path={ frontUrls.guest } element={ <ListGuests/> }/>
+						<Route path={ frontUrls.guest + ':id' } element={ <ViewGuest/> }/>
+
 					</Route>
-					*/
-					}
 
 				</Route>
 

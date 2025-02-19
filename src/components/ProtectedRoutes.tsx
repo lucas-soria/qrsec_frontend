@@ -7,10 +7,10 @@ export function ProtectedRoutes() {
 
     const location = useLocation();
 
-    const isAuth = !!localStorage.getItem('access_token');
+    const isAuthenticated = !!localStorage.getItem('access_token');
 
     return (
-        isAuth ? <Outlet /> : <Navigate replace to={ frontUrls.signin } state={ { from: location } } />
+        isAuthenticated ? <Outlet /> : <Navigate replace to={ frontUrls.signin } state={ { from: location } } />
     );
 
 }

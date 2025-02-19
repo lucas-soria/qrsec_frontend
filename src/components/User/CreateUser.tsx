@@ -5,20 +5,27 @@ import { Fragment, useState, useMemo, useEffect, useCallback } from 'react';
 import { createUser, userExists } from '../../data/Reducers.tsx';
 import { useNavigate } from 'react-router-dom';
 import { frontUrls } from '../../data/Urls.tsx';
+import { useLocation } from 'react-router';
 
 
 export function CreateUser( { user, setUser, data, token } : { user: User | null, setUser : React.Dispatch<React.SetStateAction<User | null>>, data : GoogleJWT | null, token : string } ) {
 
     interface NewUser extends Partial<User> {};
 
+    interface State {
+        from: Location;
+    };
+
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [openSnack, setOpenSnack] = useState<boolean>(false);
 
     const setTokenAndRedirect = useCallback(() => {
         localStorage.setItem('access_token', token);
-        navigate(frontUrls.base + frontUrls.invite);
-    }, [ token, navigate ]);
+        let state = location.state as State;
+        navigate(frontUrls.base + state.from.pathname.substring(1, state.from.pathname.length));
+    }, [ token, navigate, location ]);
 
     const handler = () => {
         setOpenSnack(true);

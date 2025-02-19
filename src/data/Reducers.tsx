@@ -1,14 +1,17 @@
 import { backUrls } from './Urls.tsx';
 import jwt_decode from 'jwt-decode';
 
-const token : string = localStorage.getItem('access_token') ?? '';
 
-const user : GoogleJWT | null = !!token ? jwt_decode(token) : null;
+const defaultHeaders = () : HeadersInit => {
+    const token : string = localStorage.getItem('access_token') ?? '';
 
-let defaultHeaders : HeadersInit = {
-    'Accept': 'application/json',
-    'X-Email': user?.email ?? '',
-};
+    const user : GoogleJWT | null = !!token ? jwt_decode(token) : null;
+
+    return {
+        'Accept': 'application/json',
+        'X-Email': user?.email ?? '',
+    };
+}
 
 // # ---------- ADDRESS ---------- #
 
@@ -19,7 +22,7 @@ export const createAddress = async( address : Address ) => {
         method: 'POST',
         body: JSON.stringify(address),
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
     } ).then( (response) => response.json() );
@@ -33,7 +36,7 @@ export const getAddresses = async() => {
     const response = await fetch( backUrls.base + backUrls.address, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
         if (response.ok) {
 
@@ -55,7 +58,7 @@ export const deleteAddress = async(id : string) => {
     const response = await fetch( backUrls.base + backUrls.address + '/' + id, {
         mode: 'cors',
         method: 'DELETE',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
         if (response.status !== 204) {
 
@@ -77,7 +80,7 @@ export const createUser = async( user : User ) => {
         method: 'POST',
         body: JSON.stringify(user),
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
     } ).then( (response) => response.json() );
@@ -91,7 +94,7 @@ export const getUsers = async () => {
     const response = await fetch( backUrls.base + backUrls.user, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
         if (response.ok) {
 
@@ -113,7 +116,7 @@ export const getUser = async ( id : string | undefined ) => {
     const response = await fetch( backUrls.base + backUrls.user + '/' + id, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
         if (response.ok) {
 
@@ -137,7 +140,7 @@ export const updateUser = async( user : User ) => {
         method: 'PUT',
         body: JSON.stringify(user),
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
     } ).then( (response) => response.json() );
@@ -151,7 +154,7 @@ export const deleteUser = async(id : string) => {
     const response = await fetch( backUrls.base + backUrls.user + '/' + id, {
         mode: 'cors',
         method: 'DELETE',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
         if (response.status !== 204) {
 
@@ -169,7 +172,7 @@ export const userExists = async ( email : string | undefined ) => {
     const response = await fetch( backUrls.base + backUrls.user + '/exists/' + email, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
         if (response.ok) {
 
@@ -202,7 +205,7 @@ export const createInvite = async( invite : Invite ) => {
         method: 'POST',
         body: JSON.stringify(invite),
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
     } ).then( (response) => response.json() );
@@ -218,7 +221,7 @@ export const updateInvite = async( invite : Invite ) => {
         method: 'PUT',
         body: JSON.stringify(invite),
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
     } ).then( (response) => response.json() );
@@ -232,7 +235,7 @@ export const getInvite = async ( id : string | undefined ) => {
     const response = await fetch( backUrls.base + backUrls.invite + '/' + id, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
         if (response.ok) {
 
@@ -254,7 +257,7 @@ export const deleteInvite = async(id : string) => {
     const response = await fetch( backUrls.base + backUrls.invite + '/' + id, {
         mode: 'cors',
         method: 'DELETE',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
         if (response.status !== 204) {
 
@@ -272,7 +275,7 @@ export const getPublicInvite = async ( id : string | undefined ) => {
     const response = await fetch( backUrls.base + backUrls.publicInvite + '/' + id, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
         if (response.ok) {
 
@@ -294,7 +297,7 @@ export const getInvites = async () => {
     const response = await fetch( backUrls.base + backUrls.invite, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
         if (response.ok) {
 
@@ -317,7 +320,7 @@ export const validateInvite = async ( id : string | undefined ) => {
         mode: 'cors',
         method: 'GET',
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'X-Client-Timestamp': new Date().toISOString(),
             'Content-Type': 'application/json'
         },
@@ -354,7 +357,7 @@ export const getGuest = async ( id : string | undefined ) => {
         mode: 'cors',
         method: 'GET',
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
     } ).then( (response) => {
@@ -378,7 +381,7 @@ export const getGuests = async() => {
     const response = await fetch( backUrls.base + backUrls.guest, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
         if (response.ok) {
 
@@ -402,7 +405,7 @@ export const createGuest = async( guest : Guest) => {
         method: 'POST',
         body: JSON.stringify(guest),
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
     } ).then( (response) => {
@@ -428,7 +431,7 @@ export const updateGuest = async( guest : Guest ) => {
         method: 'PUT',
         body: JSON.stringify(guest),
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
     } ).then( (response) => response.json() );
@@ -442,7 +445,7 @@ export const deleteGuest = async(id : string) => {
     const response = await fetch( backUrls.base + backUrls.guest + '/' + id, {
         mode: 'cors',
         method: 'DELETE',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
         if (response.status !== 204) {
 
