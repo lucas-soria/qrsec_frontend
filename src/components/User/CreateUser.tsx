@@ -2,21 +2,23 @@ import { Button, Card, Grid, Snackbar, TextField, Typography } from '@mui/materi
 import Alert from '@mui/material/Alert';
 import HomeIcon from '@mui/icons-material/Home';
 import { Fragment, useState, useMemo, useEffect, useCallback } from 'react';
-import { createUser } from '../../data/Reducers.tsx';
+import { createUser, userExists } from '../../data/Reducers.tsx';
 import { useNavigate } from 'react-router-dom';
+import { frontUrls } from '../../data/Urls.tsx';
 
 
-export function CreateUser( { user, setUser, data } : { user: User | null, setUser : React.Dispatch<React.SetStateAction<User | null>>, data : GoogleJWT | null } ) {
+export function CreateUser( { user, setUser, data, token } : { user: User | null, setUser : React.Dispatch<React.SetStateAction<User | null>>, data : GoogleJWT | null, token : string } ) {
 
-    interface NewUser extends Partial<User> {
-        password: string,
-    };
-
-    const mockPassword : string = "mock la tremenda password";
+    interface NewUser extends Partial<User> {};
 
     const navigate = useNavigate();
 
     const [openSnack, setOpenSnack] = useState<boolean>(false);
+
+    const setTokenAndRedirect = useCallback(() => {
+        localStorage.setItem('access_token', token);
+        navigate(frontUrls.base + frontUrls.invite);
+    }, [ token, navigate ]);
 
     const handler = () => {
         setOpenSnack(true);
@@ -29,12 +31,18 @@ export function CreateUser( { user, setUser, data } : { user: User | null, setUs
 
         // TODO: check if user exists
         if (!!user?.email) {
-            navigate('/invite');
+            (async (email : string, setTokenAndRedirect : () => void ) => {
+                if (await userExists(email)) {
+                    setTokenAndRedirect();
+                } else {
+                    setShouldCreateUser(true);
+                }
+            })(user.email, setTokenAndRedirect);
         } else {
             setShouldCreateUser(true);
         }
 
-    }, [ setShouldCreateUser, user, navigate ]);
+    }, [ setShouldCreateUser, setTokenAndRedirect, user, navigate ]);
     
     const [firstName, setFirstName] = useState<string>('');
 
@@ -49,24 +57,22 @@ export function CreateUser( { user, setUser, data } : { user: User | null, setUs
             firstName: firstName,
             lastName: lastName,
             email: user?.email,
-            password: mockPassword, // TODO: Remove password no longer needed
             phone: phone,
             dni: dni,
 		};
 
         await createUser(user1 as User).then( (createdUser) => {
-            setUser(createdUser)
+            setUser(createdUser);
         } );
 
         setShouldCreateUser(false);
-        navigate('/invite');
+        setTokenAndRedirect();
     };
 
     const updateMemorizedUser = useCallback(() => {
 
         let user : NewUser = {
             email: data?.email,
-            password: "",
         }
 
         if (!!data) {

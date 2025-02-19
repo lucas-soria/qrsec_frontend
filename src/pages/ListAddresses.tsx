@@ -12,6 +12,8 @@ import { styled } from '@mui/material/styles';
 import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { Button, Dialog, DialogActions, DialogTitle, Snackbar, Typography } from '@mui/material';
+import { FloatingAddButton } from '../components/AddButton.tsx';
+import { NotFound } from '../components/NotFound.tsx';
 
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -80,6 +82,11 @@ export function ListAddresses () {
                                         <Card sx={ [ { width: '100%' } ] } variant='outlined'>
                                             <CardHeader 
                                                 title={ address.house.block + ' ' + address.house.house }
+                                                titleTypographyProps={
+                                                    {
+                                                        fontSize: '2rem'
+                                                    }
+                                                }
                                             />
                                             <CardActions>
                                                 <ExpandMoreComponent
@@ -147,13 +154,16 @@ export function ListAddresses () {
 
                         </Dialog>
 
+                        <FloatingAddButton />
+
                     </Fragment>
                 </>
 
             ) :
                 <>
-                    <br />
-                    <Typography variant='h5'>No hay direcciones disponibles</Typography>
+                    <NotFound>
+                        <Typography variant='h5'>No hay direcciones disponibles</Typography>
+                    </NotFound>
                 </>
             }
         </>

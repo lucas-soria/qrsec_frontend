@@ -12,8 +12,8 @@ export function SelectMaxTime( { maxTime, setMaxTime } : { maxTime: number|null,
         <div className='custom-component'>
 
             <Typography variant='h6'>Tiempo máximo de estadía:</Typography>
-            <Card elevation={6} id='card'>
-                <TextField variant='filled' type='number' label='Ej: 5hs' className='text-fields' value={ !!maxTime ? String(maxTime) : '' } autoFocus={ !!maxTime } onChange={ handleMaxTime } />
+            <Card elevation={6} id='card' className='card-send-invite'>
+                <TextField variant='filled' type='number' label='Ej: 5hs' className='text-fields max-width' value={ !!maxTime ? String(maxTime) : '' } autoFocus={ !!maxTime } onChange={ handleMaxTime } />
             </Card>
 
         </div>
