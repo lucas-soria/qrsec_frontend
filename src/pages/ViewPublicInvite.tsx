@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Map } from '../components/ShowInvite/Map.tsx';
 import { QRCodeComponent } from '../components/ShowInvite/QRCode.tsx';
 import { getPublicInvite } from '../data/Reducers.tsx';
+import { NotFound } from '../components/NotFound.tsx';
 
 
 export function ViewPublicInvite() { 
@@ -45,7 +46,10 @@ export function ViewPublicInvite() {
 
             </>
         ):
-			<Typography variant='h5'>Invitación invalida</Typography>
+			<NotFound>
+				<Typography variant='h2'>404</Typography>
+				<Typography variant='h6'>Invitación inválida</Typography>
+			</NotFound>
 		}
         </>
     );
