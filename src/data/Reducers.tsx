@@ -35,16 +35,16 @@ export const getAddresses = async() => {
         method: 'GET',
         headers: defaultHeaders,
     } ).then( (response) => {
-        if (response.status === 200) {
+        if (response.ok) {
 
             return response.json();
 
         } else {
 
-            return [];
+            return null;
 
         }
-    });
+    } ).catch( (error) => console.error(error) );
 
     return response;
 
@@ -99,7 +99,7 @@ export const getUsers = async () => {
 
         } else {
 
-            return [];
+            return null;
 
         }
     } ).catch( (error) => console.error(error) );
@@ -380,16 +380,16 @@ export const getGuests = async() => {
         method: 'GET',
         headers: defaultHeaders,
     } ).then( (response) => {
-        if (response.status === 200) {
+        if (response.ok) {
 
             return response.json();
 
         } else {
 
-            return [];
+            return null;
 
         }
-    });
+    } ).catch( (error) => console.error(error) );
 
     return response;
 

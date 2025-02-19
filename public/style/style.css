@@ -173,7 +173,7 @@ Now i can override material without !important
 }
 
 .signin-logo {
-    display: flex;
+    display: inline-block;
     justify-content: center;
     align-items: center;
     text-align: center;

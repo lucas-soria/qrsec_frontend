@@ -12,7 +12,8 @@ import { styled } from '@mui/material/styles';
 import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { Button, Dialog, DialogActions, DialogTitle, Snackbar, Typography } from '@mui/material';
-import FloatingAddButton from '../components/AddButton.tsx';
+import { FloatingAddButton } from '../components/AddButton.tsx';
+import { NotFound } from '../components/NotFound.tsx';
 
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -252,8 +253,11 @@ export function ListInvites () {
                 </>
 
             ) :
-                <>
-                </>
+            <>
+                <NotFound>
+                    <Typography variant='h5'>No hay invitaciones disponibles</Typography>
+                </NotFound>
+            </>
             }
         </>
     );

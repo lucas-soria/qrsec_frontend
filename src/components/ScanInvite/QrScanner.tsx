@@ -52,30 +52,34 @@ export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive, set
 
         <Fragment>
 
-            <br />
+            <br /><br />
 
-            <Typography variant='h5'>Escanee el código QR de la entrada</Typography>
+            <div style={ { display: 'flex', justifyContent: 'center' } } >
+                <Typography variant='h5'>Escanee el código QR de la entrada</Typography>
+            </div>
 
             <br />
 
             {cameraIsActive ? (
                 <>
-                    <video  
-                        autoPlay={true}
-                        id='video'
-                        muted={true}
-                        style={{width: '100%'}}
-                    />
-                    <br />
-                    <Typography>Asegurece de que la pantalla del telefono se encuentre bien iluminada</Typography>
-                    <br />
+                    <div style={ { display: 'inline-block', justifyItems: 'center' } } >
+                        <video  
+                            autoPlay={true}
+                            id='video'
+                            muted={true}
+                            style={{width: '100%'}}
+                        />
+                        <br />
+                            <Typography>Asegurece de que la pantalla del telefono se encuentre bien iluminada</Typography>
+                        <br />
+                    </div>
                 </>
             ) : 
                 <>
                     <div className='signin-logo'>
                         <img id='blue-logo' src={ qrsecLogo } alt='QRSec Logo' />
                     </div>
-                    <br />
+                    <br /><br />
                 </>
             }
 

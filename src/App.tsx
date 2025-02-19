@@ -19,6 +19,7 @@ import { ViewPublicInvite } from './pages/ViewPublicInvite';
 import { ViewUser } from './pages/ViewUser';
 import { registerServiceWorker } from './serviceWorker';
 
+
 export function App() {
 
   	const isMobile = useMediaQuery("(max-width:800px)");

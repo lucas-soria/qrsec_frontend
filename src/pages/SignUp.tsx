@@ -62,7 +62,10 @@ export function SignUp() {
                         <img id='blue-logo' src={ qrsecLogo } alt='QRSec Logo' />
                     </div>
                     <br/>
-                    <Typography variant='h4'>Inicia Sesion</Typography>
+                    <br/>
+                    <div style={ { display: 'flex', justifyContent: 'center' } } >
+                        <Typography variant='h4'>Inicia sesión</Typography>
+                    </div>
                     <div className='icons custom-component' id='google-oauth'></div>
                 </>
             }

@@ -12,6 +12,7 @@ import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { Button, Dialog, DialogActions, DialogTitle, Snackbar, Typography } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
+import { NotFound } from '../components/NotFound.tsx';
 
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -68,7 +69,7 @@ export function ListGuests () {
 
     return (
         <>
-            {guests.length > 0 ? (
+            {guests?.length > 0 ? (
                 <>
                     <Fragment>
 
@@ -180,6 +181,9 @@ export function ListGuests () {
 
             ) :
                 <>
+                    <NotFound>
+                        <Typography variant='h5'>No hay invitados disponibles</Typography>
+                    </NotFound>
                 </>
             }
         </>

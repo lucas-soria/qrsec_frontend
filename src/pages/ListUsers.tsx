@@ -8,6 +8,7 @@ import { styled } from '@mui/material/styles';
 import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { v4 as uuidv4 } from 'uuid';
+import { NotFound } from '../components/NotFound.tsx';
 
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -64,7 +65,7 @@ export function ListUsers () {
 
     return (
         <>
-            {users.length > 0 ? (
+            {users?.length > 0 ? (
                 <>
                     <Fragment>
 
@@ -194,6 +195,9 @@ export function ListUsers () {
 
             ) :
                 <>
+                    <NotFound>
+                        <Typography variant='h5'>No hay usuarios disponibles</Typography>
+                    </NotFound>
                 </>
             }
         </>
