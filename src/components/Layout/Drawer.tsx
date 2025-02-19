@@ -1,8 +1,8 @@
 import { Avatar, Box, Drawer, Link, List, ListItem, MenuItem } from "@mui/material";
 import { frontUrls } from "../../data/Urls";
-import jwt_decode from 'jwt-decode';
 import { useLocation, useNavigate } from "react-router-dom";
 import LogoutIcon from '@mui/icons-material/Logout';
+import { Pages } from "../UserPagesByAuthorities";
 
 export function CustomDrawer( { permanent, open, setOpen } : { permanent : boolean, open : boolean, setOpen : React.Dispatch<React.SetStateAction<boolean>> } ) {
 
@@ -10,19 +10,13 @@ export function CustomDrawer( { permanent, open, setOpen } : { permanent : boole
 
     const navigate = useNavigate();
 
-    var token : string = localStorage.getItem('access_token') ?? '';
+    var firstName : string = localStorage.getItem('first_name') ?? '';
     
-    var decoded_token : GoogleJWT | null = !!token ? jwt_decode(token) : null;
-    
-    var user : [string, string] = !!decoded_token ? [ decoded_token.given_name, decoded_token.family_name ] : [ '', '' ];
+    var lastName : string = localStorage.getItem('last_name') ?? '';
 
-    const pages : string[][] = [
-        [ frontUrls.wholeBase + frontUrls.invite, 'Invitaciones'],
-        [ frontUrls.wholeBase + frontUrls.guest, 'Invitados'],
-        [ frontUrls.wholeBase + frontUrls.scan, 'Escanear'],
-        [ frontUrls.wholeBase + frontUrls.user, 'Usuarios'],
-        [ frontUrls.wholeBase + frontUrls.address, 'Direcciones'],
-    ]
+    var picture : string = localStorage.getItem('picture') ?? '';
+    
+    var user : [string, string] = [ firstName, lastName ];
 
     let location = useLocation();
 
@@ -81,17 +75,17 @@ export function CustomDrawer( { permanent, open, setOpen } : { permanent : boole
                         <a href={ frontUrls.wholeBase } ><img id='logo' src={ qrsecLogo } alt='QRSec Logo' /></a>
                     </Box>
                     <List>
-                        {pages.map( (page) => (
-                            <ListItem key={ page[1] } id='drawer-item' className={isSelected(page[0])} >
-                                <Link id='drawer-link' href={ page[0] } >
-                                    { page[1] }
+                        {Pages().map( (page) => (
+                            <ListItem key={ page.name } id='drawer-item' className={isSelected(page.url)} >
+                                <Link id='drawer-link' href={ page.url } >
+                                    { page.name }
                                 </Link>
                             </ListItem>
                         ))}
                     </List>
                     <div className='bottom-drawer'>
                     
-                        <Avatar className='avatar' src={decoded_token?.picture} { ...stringAvatar(user) } />
+                        <Avatar className='avatar' src={picture} { ...stringAvatar(user) } />
                     
                         <MenuItem key={ 'log-out' } onClick={ handleLogOut } style={
                             {

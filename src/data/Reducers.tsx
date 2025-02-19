@@ -133,6 +133,31 @@ export const getUser = async ( id : string | undefined ) => {
 
 }
 
+export const validateGoogleJWT = async ( email : string | undefined ) : Promise<User> => {
+
+    const response = await fetch( backUrls.base + '/auth/google', {
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'X-Email': email ?? '',
+        },
+    } ).then( (response) => {
+        if (response.ok) {
+
+            return response.json();
+
+        } else {
+
+            return null;
+
+        }
+    } ).catch( (error) => console.error(error) );
+
+    return response;
+
+}
+
 export const updateUser = async( user : User ) => {
 
     const response = await fetch( backUrls.base + backUrls.user + '/' + user.id, {

@@ -2,10 +2,11 @@ import { Button, Card, Grid, Snackbar, TextField, Typography } from '@mui/materi
 import Alert from '@mui/material/Alert';
 import HomeIcon from '@mui/icons-material/Home';
 import { Fragment, useState, useMemo, useEffect, useCallback } from 'react';
-import { createUser, userExists } from '../../data/Reducers.tsx';
+import { createUser, validateGoogleJWT, userExists } from '../../data/Reducers.tsx';
 import { useNavigate } from 'react-router-dom';
 import { frontUrls } from '../../data/Urls.tsx';
 import { useLocation } from 'react-router';
+import jwt_decode from 'jwt-decode';
 
 
 export function CreateUser( { user, setUser, data, token } : { user: User | null, setUser : React.Dispatch<React.SetStateAction<User | null>>, data : GoogleJWT | null, token : string } ) {
@@ -21,8 +22,20 @@ export function CreateUser( { user, setUser, data, token } : { user: User | null
 
     const [openSnack, setOpenSnack] = useState<boolean>(false);
 
-    const setTokenAndRedirect = useCallback(() => {
+    const setTokenAndRedirect = useCallback( async () => {
         localStorage.setItem('access_token', token);
+        let decoded_token : GoogleJWT | null = !!token ? jwt_decode(token) : null;
+
+        let user : NewUser = await validateGoogleJWT(decoded_token?.email);
+        let authorities : string[] = [];
+        if (!!user?.authorities) {
+            authorities = user.authorities.map( (authority) => authority.authority );
+        }
+        localStorage.setItem('authorities', authorities.join(','));
+        localStorage.setItem('first_name', decoded_token?.given_name ?? '');
+        localStorage.setItem('last_name', decoded_token?.family_name ?? '');
+        localStorage.setItem('picture', decoded_token?.picture ?? '');
+
         let state = location.state as State;
         navigate(frontUrls.base + state.from.pathname.substring(1, state.from.pathname.length));
     }, [ token, navigate, location ]);
@@ -40,7 +53,7 @@ export function CreateUser( { user, setUser, data, token } : { user: User | null
         if (!!user?.email) {
             (async (email : string, setTokenAndRedirect : () => void ) => {
                 if (await userExists(email)) {
-                    setTokenAndRedirect();
+                    await setTokenAndRedirect();
                 } else {
                     setShouldCreateUser(true);
                 }
