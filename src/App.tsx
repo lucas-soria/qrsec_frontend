@@ -1,76 +1,89 @@
-import { Container } from '@mui/material';
-
-import { Fragment } from 'react';
-
+import { useMediaQuery } from '@mui/material';
+import { useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-
-import { ResponsiveAppBar } from './components/ResponsiveAppBar.tsx';
-import { frontUrls } from './data/Urls.tsx';
-import { ScanInvite } from './pages/ScanInvite.tsx';
-import { SendInvite } from './pages/SendInvite.tsx';
-import { ViewPublicInvite } from './pages/ViewPublicInvite.tsx';
-import { ViewInvite } from './pages/ViewInvite.tsx';
-import { ViewGuest } from './pages/ViewGuest.tsx';
-import { ViewUser } from './pages/ViewUser.tsx';
-import { SignUp } from './pages/SignUp.tsx';
-import { CreateNewAddress } from './pages/CreateAddress.tsx';
-import { ListAddresses } from './pages/ListAddresses.tsx';
-import { ListInvites } from './pages/ListInvites.tsx';
-import { ListUsers } from './pages/ListUsers.tsx';
-import { ListGuests } from './pages/ListGuests.tsx';
+import { Layout as PermanentDrawer } from './components/Layout/LogedInPermanentDrawer';
+import { Layout as TemporalDrawer } from './components/Layout/LogedInTemporalDrawer';
+import { Layout as AppBar } from './components/Layout/NotLogedInAppBar';
+import { frontUrls } from './data/Urls';
+import { CreateNewAddress } from './pages/CreateAddress';
+import { ListAddresses } from './pages/ListAddresses';
+import { ListGuests } from './pages/ListGuests';
+import { ListInvites } from './pages/ListInvites';
+import { ListUsers } from './pages/ListUsers';
+import { ScanInvite } from './pages/ScanInvite';
+import { SendInvite } from './pages/SendInvite';
+import { SignUp } from './pages/SignUp';
+import { ViewGuest } from './pages/ViewGuest';
+import { ViewInvite } from './pages/ViewInvite';
+import { ViewPublicInvite } from './pages/ViewPublicInvite';
+import { ViewUser } from './pages/ViewUser';
+import { registerServiceWorker } from './serviceWorker';
 
 
 export function App() {
 
-    // var token = localStorage.getItem('access_token');
-    
-    // var user_authorities = !!token ? jwtDecode(token).authorities : []
+  	const isMobile = useMediaQuery("(max-width:800px)");
 
-    return (
-        <Fragment>
+	useEffect(() => {
+		registerServiceWorker();
+	}, [ ] );
 
-            <ResponsiveAppBar/>
-            <Container maxWidth='sm'>
-                <BrowserRouter>
-                    <Routes>
+  	return (
+		<BrowserRouter>
+			<Routes>
 
-                        { /* Session */ }
-                        <Route path={ frontUrls.signup } element={ <SignUp/> }/>
-                        <Route path={ frontUrls.signin } element={ <SignUp/> }/>
-                        <Route path={ frontUrls.base } element={ <Navigate replace to={ frontUrls.signup }/> }/>
+				<Route element={ <AppBar /> }>
 
-                        { /* Invites */ }
-                        <Route path={ frontUrls.create } element={ <SendInvite/> }/>
-                        <Route path={ frontUrls.publicInvite + ':id' } element={ <ViewPublicInvite/> }/>
-                        <Route path={ frontUrls.invite + ':id' } element={ <ViewInvite/> }/>
-                        <Route path={ frontUrls.invite } element={ <ListInvites/> }/>
-                        <Route path={ frontUrls.scan } element={ <ScanInvite/> }/>
+					{ /* Session */ }
+					<Route path={ frontUrls.signup } element={ <SignUp/> } />
+					<Route path={ frontUrls.signin } element={ <SignUp/> }/>
+					<Route path={ frontUrls.base } element={ <Navigate replace to={ frontUrls.signup }/> }/>
 
-                        { /* Addresses */ }
-                        <Route path={ frontUrls.address + 'create' } element={ <CreateNewAddress/> }/>
-                        <Route path={ frontUrls.address } element={ <ListAddresses/> }/>
+					{ /* Invites */ }
+					<Route path={ frontUrls.publicInvite + ':id' } element={ <ViewPublicInvite/> }/>
 
-                        { /* Users */ }
-                        <Route path={ frontUrls.user } element={ <ListUsers/> }/>
-                        <Route path={ frontUrls.user + ':id' } element={ <ViewUser/> }/>
+				</Route>
 
-                        { /* Guests */ }
-                        <Route path={ frontUrls.guest } element={ <ListGuests/> }/>
-                        <Route path={ frontUrls.guest + ':id' } element={ <ViewGuest/> }/>
+				<Route element={ 
+					<>
+						{isMobile ? (
+							<TemporalDrawer />
+						):
+							<PermanentDrawer />
+						}
+					</>
+				} >
 
-                        {
-                        /*  Original es con rutas protegidas
-                        <Route element={ <ProtectedRoutes/> }>
-                            <Route path={ frontUrls.create } element={ <SendInvite/> }/>
-                            <Route path={ frontUrls.scan } element={ <ScanInvite/> }/>
-                        </Route>
-                        */
-                        }
+					{ /* Invites */ }
+					<Route path={ frontUrls.invite } element={ <ListInvites/> }/>
+					<Route path={ frontUrls.invite + frontUrls.create } element={ <SendInvite/> }/>
+					<Route path={ frontUrls.invite + ':id' } element={ <ViewInvite/> }/>
+					<Route path={ frontUrls.scan } element={ <ScanInvite/> }/>
 
-                    </Routes>
-                </BrowserRouter>
-            </Container>
+					{ /* Addresses */ }
+					<Route path={ frontUrls.address } element={ <ListAddresses/> }/>
+					<Route path={ frontUrls.address + frontUrls.create } element={ <CreateNewAddress/> }/>
 
-        </Fragment>
-    );
-}
+					{ /* Users */ }
+					<Route path={ frontUrls.user } element={ <ListUsers/> }/>
+					<Route path={ frontUrls.user + ':id' } element={ <ViewUser/> }/>
+
+					{ /* Guests */ }
+					<Route path={ frontUrls.guest } element={ <ListGuests/> }/>
+					<Route path={ frontUrls.guest + ':id' } element={ <ViewGuest/> }/>
+
+					{
+					/*  Original es con rutas protegidas
+					<Route element={ <ProtectedRoutes/> }>
+						<Route path={ frontUrls.create } element={ <SendInvite/> }/>
+						<Route path={ frontUrls.scan } element={ <ScanInvite/> }/>
+					</Route>
+					*/
+					}
+
+				</Route>
+
+			</Routes>
+		</BrowserRouter>
+	);
+};

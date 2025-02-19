@@ -12,6 +12,8 @@ import { styled } from '@mui/material/styles';
 import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { Button, Dialog, DialogActions, DialogTitle, Snackbar, Typography } from '@mui/material';
+import { FloatingAddButton } from '../components/AddButton.tsx';
+import { NotFound } from '../components/NotFound.tsx';
 
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -99,6 +101,11 @@ export function ListInvites () {
                                         <Card sx={ [ { width: '100%' } ] } variant='outlined'>
                                             <CardHeader 
                                                 title={ invite.description }
+                                                titleTypographyProps={
+                                                    {
+                                                        fontSize: '2rem'
+                                                    }
+                                                }
                                                 subheader={
                                                     <>
                                                         ID: <a href={ `${ base_url }${ invite.id }` }  onClick={ (event) => handleCopy(event, base_url+invite.id) } > { `${ invite.id }` } </a>
@@ -107,7 +114,7 @@ export function ListInvites () {
                                                 subheaderTypographyProps={
                                                     {
                                                         style: {
-                                                            fontSize:14
+                                                            fontSize: 14
                                                         }
                                                     }
                                                 }
@@ -241,13 +248,16 @@ export function ListInvites () {
                         </Alert>
                     </Snackbar>
 
+                    <FloatingAddButton />
+
                 </>
 
             ) :
-                <>
-                    <br />
+            <>
+                <NotFound>
                     <Typography variant='h5'>No hay invitaciones disponibles</Typography>
-                </>
+                </NotFound>
+            </>
             }
         </>
     );

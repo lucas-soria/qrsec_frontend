@@ -35,16 +35,16 @@ export const getAddresses = async() => {
         method: 'GET',
         headers: defaultHeaders,
     } ).then( (response) => {
-        if (response.status === 200) {
+        if (response.ok) {
 
             return response.json();
 
         } else {
 
-            return [];
+            return null;
 
         }
-    });
+    } ).catch( (error) => console.error(error) );
 
     return response;
 
@@ -59,7 +59,7 @@ export const deleteAddress = async(id : string) => {
     } ).then( (response) => {
         if (response.status !== 204) {
 
-            console.log(response)
+            // console.log(response);
 
         }
     });
@@ -99,7 +99,7 @@ export const getUsers = async () => {
 
         } else {
 
-            return [];
+            return null;
 
         }
     } ).catch( (error) => console.error(error) );
@@ -155,10 +155,39 @@ export const deleteUser = async(id : string) => {
     } ).then( (response) => {
         if (response.status !== 204) {
 
-            console.log(response)
+            // console.log(response);
 
         }
     });
+
+    return response;
+
+}
+
+export const userExists = async ( email : string | undefined ) => {
+
+    const response = await fetch( backUrls.base + backUrls.user + '/exists/' + email, {
+        mode: 'cors',
+        method: 'GET',
+        headers: defaultHeaders,
+    } ).then( (response) => {
+        if (response.ok) {
+
+            if (response.status === 200) {
+                return true;
+            }
+
+            return false;
+
+        } else {
+
+            return false;
+
+        }
+    } ).catch( (error) => {
+        console.error(error);
+        return false;
+    } );
 
     return response;
 
@@ -229,7 +258,7 @@ export const deleteInvite = async(id : string) => {
     } ).then( (response) => {
         if (response.status !== 204) {
 
-            console.log(response)
+            // console.log(response);
 
         }
     });
@@ -295,10 +324,7 @@ export const validateInvite = async ( id : string | undefined ) => {
     } ).then( (response) => {
         if (response.ok) {
 
-            console.log(response)
-
             if (response.status === 200) {
-                console.log("is TRUE!!!")
                 return true;
             }
 
@@ -354,16 +380,16 @@ export const getGuests = async() => {
         method: 'GET',
         headers: defaultHeaders,
     } ).then( (response) => {
-        if (response.status === 200) {
+        if (response.ok) {
 
             return response.json();
 
         } else {
 
-            return [];
+            return null;
 
         }
-    });
+    } ).catch( (error) => console.error(error) );
 
     return response;
 
@@ -420,7 +446,7 @@ export const deleteGuest = async(id : string) => {
     } ).then( (response) => {
         if (response.status !== 204) {
 
-            console.log(response)
+            // console.log(response);
 
         }
     });

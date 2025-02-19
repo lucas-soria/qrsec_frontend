@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.3] - 2025-02-18 ([#9](https://github.com/soria-lucas/qrsec_frontend/pull/9))
+### Changed
+- Colors, style and layout.
+- Manifest.
+- Use of Card component on ScanInvite page.
+
+### Added
+- Created a new layout.
+  - Drawer.
+  - App Bar.
+  - App Bar with temporal drawer for mobile devices.
+- Made app installable (PWA).
+- New favicon.
+- Created Logo.
+- Added not found component.
+- Added the "Add" button.
+
+### Removed
+- White and empty spaces.
+- Old ResponsiveAppBar component.
+
 ## [0.0.2] - 2025-01-23 ([#7](https://github.com/soria-lucas/qrsec_frontend/pull/7))
 ### Removed
 - /admin/ endpoints.

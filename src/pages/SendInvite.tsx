@@ -10,13 +10,19 @@ import { SwitchDrop } from '../components/SendInvite/SwitchDrop.tsx';
 import { createInvite } from '../data/Reducers.tsx';
 import { frontUrls } from '../data/Urls.tsx';
 import Alert from '@mui/material/Alert';
+import { SelectDescription } from '../components/SendInvite/SelectDescription.tsx';
+import { useNavigate } from 'react-router-dom';
 
 
 export function SendInvite() {
 
     const base_url = frontUrls.wholeBase + frontUrls.publicInvite;
 
+    const navigate = useNavigate();
+
     interface NewInvite extends Partial<Invite> {}
+
+    const [description, setDescription] = useState<string>('');
 
     const [guests, setGuests] = useState<Guest[]>([]);
     
@@ -48,10 +54,12 @@ export function SendInvite() {
     
     const handleClose = () => {
         setOpen(false);
+        navigate(frontUrls.base + frontUrls.invite);
     };
 
     const handleCreate = async () => {
         let invite : NewInvite = {
+            description: description,
             guests: guests,
             days: days,
             hours: hours.filter( (hour) => hour.length > 0 ),
@@ -72,6 +80,7 @@ export function SendInvite() {
     return (
         <Fragment>
 
+            <SelectDescription description={ description } setDescription={ setDescription } />
             <SelectGuest guests={ guests } setGuests={ setGuests }/>
             <SelectDays days={ days } setDays={ setDays }/>
             <SelectHours hours={ hours } setHours={ setHours }/>

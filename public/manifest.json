@@ -1,10 +1,27 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "id": "/",
+  "short_name": "QRSec",
+  "name": "QRSec",
+  "description": "Sistema de Control de Acceso de Invitados a Barrios Privados",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "src": "/favicon/QRIcon/favicon_64x64.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon/QRIcon/favicon_32x32.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon/QRIcon/favicon_24x24.ico",
+      "sizes": "24x24",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon/QRIcon/favicon_16x16.ico",
+      "sizes": "16x16",
       "type": "image/x-icon"
     },
     {
@@ -18,8 +35,23 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot_mobile.png",
+      "sizes": "738x1600",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshots/screenshot_desktop.png",
+      "sizes": "2880x1510",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "start_url": "/",
   "display": "standalone",
-  "theme_color": "#000000",
+  "orientation": "any",
+  "theme_color": "#103C89",
   "background_color": "#ffffff"
 }
