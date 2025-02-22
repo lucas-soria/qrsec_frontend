@@ -24,6 +24,8 @@ export function ViewPublicInvite() {
 	const handleValidate = () => {
 		(async () => {
 		  	setInvite(await validateAccessToPublicInvite(id, guestDNI));
+			console.log(!!invite)
+			console.log(invite)
 			setContentFound(!!invite);
 		})();
 	};
@@ -52,7 +54,7 @@ export function ViewPublicInvite() {
 				</>
 			):
 				<>
-					{!(!!guestDNI && !!invite) ? (
+					{contentFound === null ? (
 						<>
 							<div className='custom-component' style={{ alignContent:'center', height:'90cqh'}}>
 							
@@ -60,22 +62,18 @@ export function ViewPublicInvite() {
 								<Card elevation={6} id='card' className='card-send-invite'>
 									<TextField variant='filled' type='number' label='Ej: 42670490' className='text-fields max-width' onChange={ handleDNI } />
 								</Card>
+
 								<br />
+
 								<Button variant='contained' onClick={ handleValidate } style={{float:'right'}}>Validar</Button>
 							
 							</div>
 						</>
 					) :
-						<>
-							{contentFound === null ? (
-								<></>
-							) :
-								<NotFound>
-									<Typography variant='h2'>404</Typography>
-									<Typography variant='h6'>Invitación inválida</Typography>
-								</NotFound>
-							}
-						</>
+						<NotFound>
+							<Typography variant='h2'>404</Typography>
+							<Typography variant='h6'>Invitación inválida</Typography>
+						</NotFound>
 					}
 				</>
 			}
