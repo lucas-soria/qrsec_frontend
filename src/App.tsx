@@ -20,6 +20,7 @@ import { ViewUser } from './pages/ViewUser';
 import { registerServiceWorker } from './serviceWorker';
 import { PageNotFound } from './pages/NotFound';
 import { ProtectedRoutes } from './components/ProtectedRoutes';
+import { ValidObjectIdParam } from './components/IDValidationWrapper';
 
 
 export function App() {
@@ -34,22 +35,22 @@ export function App() {
 		<BrowserRouter>
 			<Routes>
 
-				<Route element={ <AppBar /> }>
+				<Route element={ <AppBar /> } >
 
 					{ /* Session */ }
 					<Route path={ frontUrls.signup } element={ <SignUp/> } />
-					<Route path={ frontUrls.signin } element={ <SignUp/> }/>
-					<Route path={ frontUrls.base } element={ <Navigate replace to={ frontUrls.invite }/> }/>
+					<Route path={ frontUrls.signin } element={ <SignUp/> } />
+					<Route path={ frontUrls.base } element={ <Navigate replace to={ frontUrls.invite } /> } />
 
 					{ /* Invites */ }
-					<Route path={ frontUrls.publicInvite + ':id' } element={ <ViewPublicInvite/> }/>
+					<Route path={ frontUrls.publicInvite + ':id' } element={ <ValidObjectIdParam element={ <ViewPublicInvite/> } /> } />
 
 					{ /* Page Not Found  */ }
 					<Route path="*" element={<PageNotFound />} />
 
 				</Route>
 
-				<Route element={<ProtectedRoutes />}>
+				<Route element={<ProtectedRoutes />} >
 
 					<Route element={ 
 						<>
@@ -62,22 +63,22 @@ export function App() {
 					} >
 
 						{ /* Invites */ }
-						<Route path={ frontUrls.invite } element={ <ListInvites/> }/>
-						<Route path={ frontUrls.invite + frontUrls.create } element={ <SendInvite/> }/>
-						<Route path={ frontUrls.invite + ':id' } element={ <ViewInvite/> }/>
-						<Route path={ frontUrls.scan } element={ <ScanInvite/> }/>
+						<Route path={ frontUrls.invite } element={ <ListInvites/> } />
+						<Route path={ frontUrls.invite + frontUrls.create } element={ <SendInvite/> } />
+						<Route path={ frontUrls.invite + ':id' } element={ <ValidObjectIdParam element={ <ViewInvite/> } /> } />
+						<Route path={ frontUrls.scan } element={ <ScanInvite/> } />
 
 						{ /* Addresses */ }
-						<Route path={ frontUrls.address } element={ <ListAddresses/> }/>
-						<Route path={ frontUrls.address + frontUrls.create } element={ <CreateNewAddress/> }/>
+						<Route path={ frontUrls.address } element={ <ListAddresses/> } />
+						<Route path={ frontUrls.address + frontUrls.create } element={ <CreateNewAddress/> } />
 
 						{ /* Users */ }
-						<Route path={ frontUrls.user } element={ <ListUsers/> }/>
-						<Route path={ frontUrls.user + ':id' } element={ <ViewUser/> }/>
+						<Route path={ frontUrls.user } element={ <ListUsers/> } />
+						<Route path={ frontUrls.user + ':id' } element={ <ValidObjectIdParam element={ <ViewUser/> } /> } />
 
 						{ /* Guests */ }
-						<Route path={ frontUrls.guest } element={ <ListGuests/> }/>
-						<Route path={ frontUrls.guest + ':id' } element={ <ViewGuest/> }/>
+						<Route path={ frontUrls.guest } element={ <ListGuests/> } />
+						<Route path={ frontUrls.guest + ':id' } element={ <ValidObjectIdParam element={ <ViewGuest/> } /> } />
 
 					</Route>
 

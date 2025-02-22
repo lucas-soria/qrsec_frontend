@@ -341,12 +341,30 @@ export const getInvites = async () => {
 
 export const validateInvite = async ( id : string | undefined ) => {
 
+    const toIsoString = ( date : Date ) : string => {
+        var tzo = -date.getTimezoneOffset(),
+            dif = tzo >= 0 ? '+' : '-',
+            pad = function(num : number) {
+                return (num < 10 ? '0' : '') + num;
+            };
+      
+        return date.getFullYear() +
+            '-' + pad(date.getMonth() + 1) +
+            '-' + pad(date.getDate()) +
+            'T' + pad(date.getHours()) +
+            ':' + pad(date.getMinutes()) +
+            ':' + pad(date.getSeconds()) +
+            '.' + pad(date.getMilliseconds()) +
+            dif + pad(Math.floor(Math.abs(tzo) / 60)) +
+            ':' + pad(Math.abs(tzo) % 60);
+      }
+
     const response = await fetch( backUrls.base + backUrls.invite + '/validate/' + id, {
         mode: 'cors',
         method: 'GET',
         headers: {
             ...defaultHeaders(),
-            'X-Client-Timestamp': new Date().toISOString(),
+            'X-Client-Timestamp': toIsoString(new Date()),
             'Content-Type': 'application/json'
         },
     } ).then( (response) => {
