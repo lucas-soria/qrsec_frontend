@@ -80,7 +80,7 @@ export const createUser = async( user : User ) => {
         method: 'POST',
         body: JSON.stringify(user),
         headers: {
-            ...defaultHeaders(),
+            'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
     } ).then( (response) => response.json() );
@@ -295,12 +295,18 @@ export const deleteInvite = async(id : string) => {
 
 }
 
-export const getPublicInvite = async ( id : string | undefined ) => {
+export const validateAccessToPublicInvite = async ( id : string | undefined, guestDNI : string | undefined ) => {
     
     const response = await fetch( backUrls.base + backUrls.publicInvite + '/' + id, {
         mode: 'cors',
-        method: 'GET',
-        headers: defaultHeaders(),
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'dni': guestDNI,
+        }),
     } ).then( (response) => {
         if (response.ok) {
 
