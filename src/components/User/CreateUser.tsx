@@ -21,6 +21,8 @@ export function CreateUser( { user, setUser, data, token } : { user: User | null
     const location = useLocation();
 
     const [openSnack, setOpenSnack] = useState<boolean>(false);
+    
+    const [settingToken, setSettingToken] = useState<boolean>(true);
 
     const setTokenAndRedirect = useCallback( async () => {
         localStorage.setItem('access_token', token);
@@ -49,13 +51,15 @@ export function CreateUser( { user, setUser, data, token } : { user: User | null
 
     useEffect( () => {
 
-        // TODO: check if user exists
         if (!!user?.email) {
             (async (email : string, setTokenAndRedirect : () => void ) => {
                 if (await userExists(email)) {
                     await setTokenAndRedirect();
+                    setShouldCreateUser(false);
+                    setSettingToken(false);
                 } else {
                     setShouldCreateUser(true);
+                    setSettingToken(false);
                 }
             })(user.email, setTokenAndRedirect);
         } else {
@@ -109,7 +113,7 @@ export function CreateUser( { user, setUser, data, token } : { user: User | null
     return (
         <Fragment>
 
-            {shouldCreateUser ?
+            {shouldCreateUser && !settingToken ?
                 <>
                     <Grid container rowSpacing={1} columnSpacing={ { xs: 1, sm: 2, md: 3 } }>
                         <Grid item xs={6}>
