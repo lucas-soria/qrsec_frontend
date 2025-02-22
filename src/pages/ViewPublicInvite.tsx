@@ -24,8 +24,6 @@ export function ViewPublicInvite() {
 	const handleValidate = () => {
 		(async () => {
 		  	setInvite(await validateAccessToPublicInvite(id, guestDNI));
-			console.log(!!invite)
-			console.log(invite)
 			setContentFound(!!invite);
 		})();
 	};

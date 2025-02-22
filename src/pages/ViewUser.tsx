@@ -3,7 +3,7 @@ import { getUser, updateUser } from '../data/Reducers.tsx';
 import { Fragment, useEffect, useState } from 'react';
 import React from 'react';
 import { AddLink } from '@mui/icons-material';
-import { Button, Card, Snackbar, TextField, Typography, Grid } from '@mui/material';
+import { Button, Card, Snackbar, TextField, Typography, Grid, Switch } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import { SelectAddress } from '../components/User/SelectAddress.tsx';
 import { SelectAuthority } from '../components/User/SelectAuthotity.tsx';
@@ -29,6 +29,8 @@ export function ViewUser() {
 
     const [authorities, setAuthorities] = useState<Authority[]>([]);
 
+    const [enabled, setEnabled] = useState<boolean>(false);
+
     const [openSnack, setOpenSnack] = useState<boolean>(false);
 
 	useEffect( () => {
@@ -44,6 +46,7 @@ export function ViewUser() {
 			setEmail(user.email);
             setAddress(user.address);
             setAuthorities(user.authorities);
+            setEnabled(user.enabled);
 		
 		};
 
@@ -62,6 +65,7 @@ export function ViewUser() {
             userToUpdate.email = email;
             userToUpdate.address = address;
 			userToUpdate.authorities = authorities;
+            userToUpdate.enabled = enabled;
 
 			await updateUser(userToUpdate);
         	setOpenSnack(true);
@@ -80,6 +84,10 @@ export function ViewUser() {
         setPhone(String(event.target.value));
     };
 
+    const handleEnabled = (event : React.ChangeEvent<HTMLInputElement>) => {
+        setEnabled(Boolean(event.target.checked));
+    };
+
     return (
 		<Fragment>
 
@@ -95,7 +103,7 @@ export function ViewUser() {
                 <Grid item xs={6}>
                     <Typography>Apellido:</Typography>
                     <Card elevation={6} id='card'>
-                    <TextField variant='filled' type='text' label='Ej: Soria Gava' className='text-fields' value={ lastName!=='' ? lastName : '' } autoFocus={ lastName !== '' } onChange={ handleLastName }/>
+                        <TextField variant='filled' type='text' label='Ej: Soria Gava' className='text-fields' value={ lastName!=='' ? lastName : '' } autoFocus={ lastName !== '' } onChange={ handleLastName }/>
                     </Card>
                 </Grid>
                 <Grid item xs={6}>
@@ -113,12 +121,16 @@ export function ViewUser() {
                 <Grid item xs={6}>
                     <Typography>Teléfono:</Typography>
                     <Card elevation={6} id='card'>
-                    <TextField variant='filled' type='text' label='Ej: +54 9 261 389 3771' className='text-fields' value={ phone!=='' ? phone : '' } autoFocus={ phone !== '' } onChange={ handlePhone }/>
+                        <TextField variant='filled' type='text' label='Ej: +54 9 261 389 3771' className='text-fields' value={ phone!=='' ? phone : '' } autoFocus={ phone !== '' } onChange={ handlePhone }/>
                     </Card>
                 </Grid>
             </Grid>
 			<SelectAddress address={ address ? address : {} as Address } setAddress={ setAddress }/>
             <SelectAuthority authorities={ authorities ? authorities : [] } setAuthorities={ setAuthorities } />
+            <div className='custom-component'>
+                <Typography variant='h6' style={ { display: 'inline-block' } } >Habilitado:</Typography>
+                <Switch checked={ enabled } value={ enabled } onChange={ handleEnabled }/>
+            </div>
 
             <br/>
 

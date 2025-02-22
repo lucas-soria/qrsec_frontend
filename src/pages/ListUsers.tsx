@@ -128,7 +128,7 @@ export function ListUsers () {
 
                                                     {!user.enabled ?
                                                         <>
-                                                            <Typography variant='body1'>Usuario eliminado</Typography>
+                                                            <Typography variant='body1'>Usuario deshabilitado</Typography>
                                                         </> : 
                                                         <></>
                                                     }
