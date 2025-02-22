@@ -1,18 +1,17 @@
-import { List, ListItem } from '@mui/material';
-import { Delete, ExpandMore, Edit } from '@mui/icons-material';
-import { Fragment, useEffect, useState } from 'react';
-import { getGuests, deleteGuest } from '../data/Reducers.tsx';
+import { Delete, Edit, ExpandMore } from '@mui/icons-material';
+import { Button, Dialog, DialogActions, DialogTitle, List, ListItem, Skeleton, Snackbar, Typography } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Collapse from '@mui/material/Collapse';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
-import Collapse from '@mui/material/Collapse';
-import Alert from '@mui/material/Alert';
-import { Button, Dialog, DialogActions, DialogTitle, Snackbar, Typography } from '@mui/material';
+import { Fragment, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { NotFound } from '../components/NotFound.tsx';
+import { deleteGuest, getGuests } from '../data/Reducers.tsx';
 
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -46,6 +45,7 @@ export function ListGuests () {
         const doRequest = async() => {
             await getGuests().then( (guests) => {
                 setGuests(guests);
+                setFoundContent(guests?.length > 0);
             } );
         };
 
@@ -62,6 +62,13 @@ export function ListGuests () {
     const [open, setOpen] = useState<boolean>(false);
 
     const [expandedGuest, setExpandedGuest] = useState<string>('');
+
+    const [foundContent, setFoundContent] = useState<boolean | null>(null);
+
+    let authoritiesString : string = localStorage.getItem('authorities') ?? '';
+    let authorities : string[] = authoritiesString.split(',');
+    const OWNER = 'OWNER';
+    const ADMIN = 'ADMIN';
 
     const handleExpandClick = ( id: string ) => {
         setExpandedGuest(id !== expandedGuest ? id : '')
@@ -118,21 +125,33 @@ export function ListGuests () {
                                                     </List>
                                                 </CardContent>
                                                 <CardActions sx={{ justifyContent: 'flex-end' }} >
-                                                    <IconButton aria-label="edit invite" onClick={
-                                                        () => {
-                                                            window.open(`/guest/${guest.id}`, '_self');
+                                                    <>
+                                                        { authorities.includes(OWNER) ? (
+                                                            <IconButton aria-label="delete invite" onClick={
+                                                                () => {
+                                                                    setGuest(guest);
+                                                                    setOpen(true);
+                                                                }
+                                                            }>
+                                                                <Delete color='error' fontSize='large' />
+                                                            </IconButton>
+                                                        ) :
+                                                            <></>
                                                         }
-                                                    }>
-                                                        <Edit color='primary' fontSize='large' />
-                                                    </IconButton>
-                                                    <IconButton aria-label="delete invite" onClick={
-                                                        () => {
-                                                            setGuest(guest);
-                                                            setOpen(true);
+                                                    </>
+                                                    <>
+                                                        { authorities.includes(ADMIN) ? (
+                                                            <IconButton aria-label="edit invite" onClick={
+                                                                () => {
+                                                                    window.open(`/guest/${guest.id}`, '_self');
+                                                                }
+                                                            }>
+                                                                <Edit color='primary' fontSize='large' />
+                                                            </IconButton>
+                                                        ) :
+                                                            <></>
                                                         }
-                                                    }>
-                                                        <Delete color='error' fontSize='large' />
-                                                    </IconButton>
+                                                    </>
                                                 </CardActions>
                                             </Collapse> 
                                         </Card>
@@ -181,9 +200,56 @@ export function ListGuests () {
 
             ) :
                 <>
-                    <NotFound>
-                        <Typography variant='h5'>No hay invitados disponibles</Typography>
-                    </NotFound>
+                    {foundContent === null ? (
+                        <div>
+                            <br />
+                            <Skeleton variant='rounded' animation='wave' width='100%' >
+                                <Card>
+                                    <CardHeader />
+                                    <Collapse in={true} timeout="auto" unmountOnExit>
+                                        <CardContent />
+                                        <CardActions>
+                                            <IconButton>
+                                                <Delete />
+                                            </IconButton>
+                                        </CardActions>
+                                    </Collapse> 
+                                </Card>
+                            </Skeleton>
+                            <br />
+                            <Skeleton variant='rounded' animation='wave' width='100%' >
+                                <Card>
+                                    <CardHeader />
+                                    <Collapse in={true} timeout="auto" unmountOnExit>
+                                        <CardContent />
+                                        <CardActions>
+                                            <IconButton>
+                                                <Delete />
+                                            </IconButton>
+                                        </CardActions>
+                                    </Collapse> 
+                                </Card>
+                            </Skeleton>
+                            <br />
+                            <Skeleton variant='rounded' animation='wave' width='100%' >
+                                <Card>
+                                    <CardHeader />
+                                    <Collapse in={true} timeout="auto" unmountOnExit>
+                                        <CardContent />
+                                        <CardActions>
+                                            <IconButton>
+                                                <Delete />
+                                            </IconButton>
+                                        </CardActions>
+                                    </Collapse> 
+                                </Card>
+                            </Skeleton>
+                        </div>
+                    ) : (
+                        <NotFound>
+                            <Typography variant='h5'>No hay invitados disponibles</Typography>
+                        </NotFound>
+                    )}
                 </>
             }
         </>

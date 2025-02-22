@@ -95,6 +95,11 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     color: var(--qrsec-green) !important;
 }
 
+.MuiButtonBase-root {
+    border: none !important;
+    outline: none !important;
+}
+
 .custom-component {
     padding: 20px 0 10px 0;
 }

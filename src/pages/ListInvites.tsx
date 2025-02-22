@@ -1,19 +1,18 @@
-import { List, ListItem } from '@mui/material';
-import { Delete, ExpandMore, Edit } from '@mui/icons-material';
-import { Fragment, useEffect, useState } from 'react';
-import { frontUrls } from '../data/Urls.tsx';
-import { getInvites, deleteInvite } from '../data/Reducers.tsx';
+import { Delete, Edit, ExpandMore, Visibility } from '@mui/icons-material';
+import { Button, Dialog, DialogActions, DialogTitle, List, ListItem, Skeleton, Snackbar, Typography } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Collapse from '@mui/material/Collapse';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
-import Collapse from '@mui/material/Collapse';
-import Alert from '@mui/material/Alert';
-import { Button, Dialog, DialogActions, DialogTitle, Snackbar, Typography } from '@mui/material';
+import { Fragment, useEffect, useState } from 'react';
 import { FloatingAddButton } from '../components/AddButton.tsx';
 import { NotFound } from '../components/NotFound.tsx';
+import { deleteInvite, getInvites } from '../data/Reducers.tsx';
+import { frontUrls } from '../data/Urls.tsx';
 
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -56,6 +55,7 @@ export function ListInvites () {
         const doRequest = async() => {
             await getInvites().then( (invites) => {
                 setInvites(invites);
+                setFoundContent(invites?.length > 0);
             } );
         };
 
@@ -76,6 +76,12 @@ export function ListInvites () {
     const [expandedInvite, setExpandedInvite] = useState<string>('');
 
     const [openCopySnack, setOpenCopySnack] = useState<boolean>(false);
+
+    const [foundContent, setFoundContent] = useState<boolean | null>(null);
+
+    let authoritiesString : string = localStorage.getItem('authorities') ?? '';
+    let authorities : string[] = authoritiesString.split(',');
+    const OWNER = 'OWNER';
 
     const handleExpandClick = ( id: string ) => {
         setExpandedInvite(id !== expandedInvite ? id : '')
@@ -108,7 +114,7 @@ export function ListInvites () {
                                                 }
                                                 subheader={
                                                     <>
-                                                        ID: <a href={ `${ base_url }${ invite.id }` }  onClick={ (event) => handleCopy(event, base_url+invite.id) } > { `${ invite.id }` } </a>
+                                                        Haz click <a href={ `${ base_url }${ invite.id }` }  onClick={ (event) => handleCopy(event, base_url+invite.id) } > aquí </a> para copiar el link a la invitación
                                                     </>
                                                     }
                                                 subheaderTypographyProps={
@@ -183,16 +189,28 @@ export function ListInvites () {
                                                             window.open(`/invite/${invite.id}`, '_self');
                                                         }
                                                     }>
-                                                        <Edit color='primary' fontSize='large' />
+                                                        <>
+                                                            { authorities.includes(OWNER) ? (
+                                                                <Edit color='primary' fontSize='large' />
+                                                            ) :
+                                                                <Visibility color='primary' fontSize='large' />
+                                                            }
+                                                        </>
                                                     </IconButton>
-                                                    <IconButton aria-label="delete invite" onClick={
-                                                        () => {
-                                                            setInvite(invite);
-                                                            setOpen(true);
+                                                    <>
+                                                        { authorities.includes(OWNER) ? (
+                                                            <IconButton aria-label="delete invite" onClick={
+                                                                () => {
+                                                                    setInvite(invite);
+                                                                    setOpen(true);
+                                                                }
+                                                            }>
+                                                                <Delete color='error' fontSize='large' />
+                                                            </IconButton>
+                                                        ) :
+                                                            <></>
                                                         }
-                                                    }>
-                                                        <Delete color='error' fontSize='large' />
-                                                    </IconButton>
+                                                    </>
                                                 </CardActions>
                                             </Collapse> 
                                         </Card>
@@ -248,16 +266,69 @@ export function ListInvites () {
                         </Alert>
                     </Snackbar>
 
-                    <FloatingAddButton />
+                    <>
+                        {authorities.includes(OWNER) ? (
+                            <FloatingAddButton />
+                        ) :
+                            <></>
+                        }
+                    </>
 
                 </>
 
             ) :
-            <>
-                <NotFound>
-                    <Typography variant='h5'>No hay invitaciones disponibles</Typography>
-                </NotFound>
-            </>
+                <>
+                    {foundContent === null ? (
+                        <div>
+                            <br />
+                            <Skeleton variant='rounded' animation='wave' width='100%' >
+                                <Card>
+                                    <CardHeader />
+                                    <Collapse in={true} timeout="auto" unmountOnExit>
+                                        <CardContent />
+                                        <CardActions>
+                                            <IconButton>
+                                                <Delete />
+                                            </IconButton>
+                                        </CardActions>
+                                    </Collapse> 
+                                </Card>
+                            </Skeleton>
+                            <br />
+                            <Skeleton variant='rounded' animation='wave' width='100%' >
+                                <Card>
+                                    <CardHeader />
+                                    <Collapse in={true} timeout="auto" unmountOnExit>
+                                        <CardContent />
+                                        <CardActions>
+                                            <IconButton>
+                                                <Delete />
+                                            </IconButton>
+                                        </CardActions>
+                                    </Collapse> 
+                                </Card>
+                            </Skeleton>
+                            <br />
+                            <Skeleton variant='rounded' animation='wave' width='100%' >
+                                <Card>
+                                    <CardHeader />
+                                    <Collapse in={true} timeout="auto" unmountOnExit>
+                                        <CardContent />
+                                        <CardActions>
+                                            <IconButton>
+                                                <Delete />
+                                            </IconButton>
+                                        </CardActions>
+                                    </Collapse> 
+                                </Card>
+                            </Skeleton>
+                        </div>
+                    ) : (
+                        <NotFound>
+                            <Typography variant='h5'>No hay invitaciones disponibles</Typography>
+                        </NotFound>
+                    )}
+                </>
             }
         </>
     );
