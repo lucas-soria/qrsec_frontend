@@ -1,17 +1,17 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { getInvite, updateInvite } from '../data/Reducers.tsx';
+import { AddLink, ContentCopy } from '@mui/icons-material';
+import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import { Fragment, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { SelectDays } from '../components/SendInvite/SelectDays.tsx';
+import { SelectDescription } from '../components/SendInvite/SelectDescription.tsx';
 import { SelectGuest } from '../components/SendInvite/SelectGuest.tsx';
 import { SelectHours } from '../components/SendInvite/SelectHours.tsx';
 import { SelectMaxTime } from '../components/SendInvite/SelectMaxTime.tsx';
 import { SelectPassengers } from '../components/SendInvite/SelectPassengers.tsx';
 import { SwitchDrop } from '../components/SendInvite/SwitchDrop.tsx';
+import { getInvite, updateInvite } from '../data/Reducers.tsx';
 import { frontUrls } from '../data/Urls.tsx';
-import { AddLink, ContentCopy } from '@mui/icons-material';
-import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@mui/material';
-import Alert from '@mui/material/Alert';
-import { SelectDescription } from '../components/SendInvite/SelectDescription.tsx';
 
 
 export function ViewInvite() { 
@@ -43,6 +43,10 @@ export function ViewInvite() {
 	const [open, setOpen] = useState<boolean>(false);
 
     const [openSnack, setOpenSnack] = useState<boolean>(false);
+
+	let authoritiesString : string = localStorage.getItem('authorities') ?? '';
+    let authorities : string[] = authoritiesString.split(',');
+	const OWNER = 'OWNER';
 
 	useEffect( () => {
 
@@ -106,9 +110,15 @@ export function ViewInvite() {
 			<SelectPassengers passengers={ passengers } setPassengers={ setPassengers }/>
 			<SwitchDrop drop={ drop } setDrop={ setDrop }/>
 
-			<Card elevation={6} id='card' className='card-send'>
-				<Button variant='contained' id='button-send' startIcon={ <AddLink fontSize='large'/> } onClick={ handleUpdate }>Guardar</Button>
-			</Card>
+			<>
+				{ authorities.includes(OWNER) ? (
+					<Card elevation={6} id='card' className='card-send'>
+						<Button variant='contained' id='button-send' startIcon={ <AddLink fontSize='large'/> } onClick={ handleUpdate }>Guardar</Button>
+					</Card>
+				) :
+					<></>
+				}
+			</>
 
 			<Dialog open={open} onClose={ handleClose }>
 				<DialogTitle id='responsive-dialog-title'>Copiá y compartí la invitación!</DialogTitle>

@@ -5,7 +5,7 @@ declare const self: ServiceWorkerGlobalScope;
 const CACHE_NAME = "qrsec-cache-v1";
 const urlsToCache = [
     "/",
-    "/invite/view/*",
+    "/invite/",
     "/index.html",
     "/manifest.json",
     "/icons/icon-192x192.png",
