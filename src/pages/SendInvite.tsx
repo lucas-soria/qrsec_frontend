@@ -40,7 +40,9 @@ export function SendInvite() {
 
     const [open, setOpen] = useState<boolean>(false);
 
-    const [openSnack, setOpenSnack] = useState<boolean>(false);
+    const [openSnackCopied, setOpenSnackCopied] = useState<boolean>(false);
+
+    const [openSnackCreated, setOpenSnackCreated] = useState<boolean>(false);
 
     useEffect( () => {
 
@@ -54,7 +56,6 @@ export function SendInvite() {
     
     const handleClose = () => {
         setOpen(false);
-        navigate(frontUrls.base + frontUrls.invite);
     };
 
     const handleCreate = async () => {
@@ -68,13 +69,27 @@ export function SendInvite() {
             dropsTrueGuest: drop
         };
 
-        await createInvite(invite as Invite).then( (createdInvite) => setUrl(base_url + createdInvite.id) );
-        handleClickOpen();
+        await createInvite(invite as Invite)
+            .then( (createdInvite) => {
+                if (createdInvite !== null) {
+                    setUrl(base_url + createdInvite.id);
+                    setOpenSnackCreated(true);
+                    handleClickOpen();
+                } else {
+                    setOpenSnackCreated(true);
+                    setTimeout(function(){
+                        navigate(frontUrls.base + frontUrls.invite);
+                    }, 2000);
+                }
+            } );
+
     };
 
     const handleCopy = () => {
-        setOpenSnack(true);
+        setOpen(false);
+        setOpenSnackCopied(true);
         navigator.clipboard.writeText(url);
+		navigate(frontUrls.base + frontUrls.invite);
     };
 
     return (
@@ -93,25 +108,48 @@ export function SendInvite() {
             </Card>
 
             <Dialog open={open} onClose={ handleClose }>
-                <DialogTitle id='responsive-dialog-title'>Copiá y compartí la invitación!</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        {url} <Button variant='contained' startIcon={ <ContentCopy fontSize='large'/> } onClick={ handleCopy }>Copiar</Button>
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant='contained' onClick={ handleClose } autoFocus>Hecho</Button>
-                </DialogActions>
-            </Dialog>
+				<DialogTitle id='responsive-dialog-title'>Copiá y compartí la invitación!</DialogTitle>
+				<DialogContent>
+					<DialogContentText sx={{ 
+							overflow: 'hidden', 
+							textOverflow: 'ellipsis', 
+							whiteSpace: 'nowrap', 
+							display: 'inline-block', 
+							maxWidth: '100%' 
+						}}
+					>
+						{url}
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions>
+					<Button variant='contained' startIcon={ <ContentCopy fontSize='large'/> } onClick={ handleCopy }>Copiar</Button>
+				</DialogActions>
+			</Dialog>
 
             <Snackbar
-                open={ openSnack }
-                onClose={ () => setOpenSnack(false) }
+                open={ openSnackCopied }
+                onClose={ () => setOpenSnackCopied(false) }
                 autoHideDuration={ 2000 }
             >
                 <Alert severity='success'>
                     Copiado al portapapeles!
                 </Alert>
+            </Snackbar>
+
+            <Snackbar
+                open={ openSnackCreated }
+                onClose={ () => setOpenSnackCreated(false) }
+                autoHideDuration={ 2000 }
+            >
+                {url !== '' ? (
+                    <Alert severity='success'>
+                        Invitación creada!
+                    </Alert>
+                ) :
+                    <Alert severity='error'>
+                        Error creando la invitación.
+                    </Alert>
+                }
             </Snackbar>
 
         </Fragment>

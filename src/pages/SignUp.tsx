@@ -9,11 +9,9 @@ export function SignUp() {
 
     let qrsecLogo = '/QRSec logo.svg';
 
-    const [token, setToken] = useState<string>(localStorage.getItem('access_token') ?? '');
+    const [token, setToken] = useState<string | null>(localStorage.getItem('access_token') ?? null);
 
     const [decodedToken, setDecodedToken] = useState<GoogleJWT | null>(null);
-
-    const [user, setUser] = useState<User | null>(null);
 
     useEffect( () => {
 
@@ -32,8 +30,8 @@ export function SignUp() {
             itp_support: true
         });
 
-        if (!!!decodedToken) {
-            if (token) {
+        if (decodedToken === null) {
+            if (token !== null) {
                 setDecodedToken(jwt_decode(token));
             } else {
                 google.accounts.id.prompt();
@@ -47,14 +45,14 @@ export function SignUp() {
             );
         }
 
-    }, [ decodedToken, setDecodedToken, token, user ]);
+    }, [ decodedToken, setDecodedToken, token ]);
 
     return (
         <Fragment>
 
-            {!!decodedToken ?
+            {token !== null && decodedToken !== null ?
                 <>
-                    <CreateUser user={ user } setUser={ setUser } data={ decodedToken } token={ token } />
+                    <CreateUser token={ token } decodedToken={ decodedToken } />
                 </> :
                 <>
                     <br/>

@@ -17,6 +17,7 @@ export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive, set
     }, [ qrCodeReader ]);
 
     const startCapture = useCallback( (videoElement : HTMLVideoElement) => {
+        setInviteID('');
         qrCodeReader.startCapture(videoElement)
             .then((result) => {
                 setInviteID(result);
@@ -24,7 +25,11 @@ export function QrScanner( { setInviteID, cameraIsActive, setCameraIsActive, set
                 setCameraIsActive(false);
                 stopCapture();
             })
-            .catch((error) => {
+            .catch(() => {
+                setInviteID('');
+                setIsValid(false); // Still not validated
+                setCameraIsActive(false);
+                stopCapture();
             });
     }, [ qrCodeReader, setCameraIsActive, setInviteID, stopCapture, setIsValid ]);
 

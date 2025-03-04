@@ -1,14 +1,17 @@
 import { backUrls } from './Urls.tsx';
 import jwt_decode from 'jwt-decode';
 
-const token : string = localStorage.getItem('access_token') ?? '';
 
-const user : GoogleJWT | null = !!token ? jwt_decode(token) : null;
+const defaultHeaders = () : HeadersInit => {
+    const token : string = localStorage.getItem('access_token') ?? '';
 
-let defaultHeaders : HeadersInit = {
-    'Accept': 'application/json',
-    'X-Email': user?.email ?? '',
-};
+    const user : GoogleJWT | null = !!token ? jwt_decode(token) : null;
+
+    return {
+        'Accept': 'application/json',
+        'X-Email': user?.email ?? '',
+    };
+}
 
 // # ---------- ADDRESS ---------- #
 
@@ -19,10 +22,21 @@ export const createAddress = async( address : Address ) => {
         method: 'POST',
         body: JSON.stringify(address),
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
-    } ).then( (response) => response.json() );
+    } )
+        .then( (response) => {
+            if (response.status === 201) {
+
+                return response.json();
+
+            }
+
+            return null;
+
+        } )
+        .catch( () => null);
 
     return response;
 
@@ -33,18 +47,20 @@ export const getAddresses = async() => {
     const response = await fetch( backUrls.base + backUrls.address, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
-    } ).then( (response) => {
-        if (response.ok) {
+        headers: defaultHeaders(),
+    } )
+        .then( (response) => {
+            if (response.status === 200) {
 
-            return response.json();
+                return response.json();
 
-        } else {
+            } else {
 
-            return null;
+                return [];
 
-        }
-    } ).catch( (error) => console.error(error) );
+            }
+        } )
+        .catch( () => [] );
 
     return response;
 
@@ -52,19 +68,25 @@ export const getAddresses = async() => {
 
 export const deleteAddress = async(id : string) => {
 
-    const response = await fetch( backUrls.base + backUrls.address + '/' + id, {
+    let result = await fetch( backUrls.base + backUrls.address + '/' + id, {
         mode: 'cors',
         method: 'DELETE',
-        headers: defaultHeaders,
-    } ).then( (response) => {
-        if (response.status !== 204) {
+        headers: defaultHeaders(),
+    } )
+    .then( (response) => {
 
-            // console.log(response);
+        if (response.status === 204) {
+
+            return true;
 
         }
-    });
 
-    return response;
+        return false;
+
+    })
+    .catch( () => false );
+
+    return result;
 
 }
 
@@ -77,10 +99,24 @@ export const createUser = async( user : User ) => {
         method: 'POST',
         body: JSON.stringify(user),
         headers: {
-            ...defaultHeaders,
+            'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
-    } ).then( (response) => response.json() );
+    } )
+        .then( (response) => {
+
+            if (response.status !== 409) {
+                return response.json();
+            }
+
+            if (response.status === 409) {
+                return null;
+            }
+            
+            return null;
+        
+        } )
+        .catch( () => null );
 
     return response;
 
@@ -91,18 +127,20 @@ export const getUsers = async () => {
     const response = await fetch( backUrls.base + backUrls.user, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
-    } ).then( (response) => {
-        if (response.ok) {
+        headers: defaultHeaders(),
+    } )
+        .then( (response) => {
+            if (response.status === 200) {
 
-            return response.json();
+                return response.json();
 
-        } else {
+            } else {
 
-            return null;
+                return [];
 
-        }
-    } ).catch( (error) => console.error(error) );
+            }
+        } )
+        .catch( () => [] );
 
     return response;
 
@@ -113,9 +151,9 @@ export const getUser = async ( id : string | undefined ) => {
     const response = await fetch( backUrls.base + backUrls.user + '/' + id, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 200) {
 
             return response.json();
 
@@ -124,7 +162,39 @@ export const getUser = async ( id : string | undefined ) => {
             return null;
 
         }
-    } ).catch( (error) => console.error(error) );
+    } ).catch( () => null );
+
+    return response;
+
+}
+
+export const validateGoogleJWT = async ( email : string | undefined ) => {
+
+    const response = await fetch( backUrls.base + '/auth/google', {
+        mode: 'cors',
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'X-Email': email ?? '',
+        },
+    } )
+        .then( (response) => {
+            if (response.status === 200) {
+
+                return response.json();
+
+            }
+
+            if (response.status === 404) {
+
+                return {};
+                    
+            }
+
+            return null;
+
+        } )
+        .catch( () => null );
 
     return response;
 
@@ -137,10 +207,21 @@ export const updateUser = async( user : User ) => {
         method: 'PUT',
         body: JSON.stringify(user),
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
-    } ).then( (response) => response.json() );
+    } )
+        .then( (response) => {
+            if (response.status === 200) {
+
+                return response.json();
+
+            }
+
+            return null;
+
+        })
+        .catch( () => null );
 
     return response;
 
@@ -148,48 +229,25 @@ export const updateUser = async( user : User ) => {
 
 export const deleteUser = async(id : string) => {
 
-    const response = await fetch( backUrls.base + backUrls.user + '/' + id, {
+    const result = await fetch( backUrls.base + backUrls.user + '/' + id, {
         mode: 'cors',
         method: 'DELETE',
-        headers: defaultHeaders,
-    } ).then( (response) => {
-        if (response.status !== 204) {
+        headers: defaultHeaders(),
+    } )
+        .then( (response) => {
 
-            // console.log(response);
+            if (response.status === 204) {
 
-        }
-    });
-
-    return response;
-
-}
-
-export const userExists = async ( email : string | undefined ) => {
-
-    const response = await fetch( backUrls.base + backUrls.user + '/exists/' + email, {
-        mode: 'cors',
-        method: 'GET',
-        headers: defaultHeaders,
-    } ).then( (response) => {
-        if (response.ok) {
-
-            if (response.status === 200) {
                 return true;
+
             }
 
             return false;
 
-        } else {
+        })
+        .catch( () => false );
 
-            return false;
-
-        }
-    } ).catch( (error) => {
-        console.error(error);
-        return false;
-    } );
-
-    return response;
+    return result;
 
 }
 
@@ -202,10 +260,21 @@ export const createInvite = async( invite : Invite ) => {
         method: 'POST',
         body: JSON.stringify(invite),
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
-    } ).then( (response) => response.json() );
+    } )
+        .then( (response) => {
+            if (response.status === 201) {
+
+                return response.json();
+
+            }
+
+            return null;
+
+        } )
+        .catch( () => null);
 
     return response;
 
@@ -218,10 +287,21 @@ export const updateInvite = async( invite : Invite ) => {
         method: 'PUT',
         body: JSON.stringify(invite),
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
-    } ).then( (response) => response.json() );
+    } )
+        .then( (response) => {
+            if (response.status === 200) {
+
+                return response.json();
+
+            }
+
+            return null;
+
+        } )
+        .catch( () => null);
 
     return response;
 
@@ -232,9 +312,9 @@ export const getInvite = async ( id : string | undefined ) => {
     const response = await fetch( backUrls.base + backUrls.invite + '/' + id, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 200) {
 
             return response.json();
 
@@ -243,7 +323,7 @@ export const getInvite = async ( id : string | undefined ) => {
             return null;
 
         }
-    } ).catch( (error) => console.error(error) );
+    } ).catch( () => null );
 
     return response;
 
@@ -254,27 +334,38 @@ export const deleteInvite = async(id : string) => {
     const response = await fetch( backUrls.base + backUrls.invite + '/' + id, {
         mode: 'cors',
         method: 'DELETE',
-        headers: defaultHeaders,
-    } ).then( (response) => {
-        if (response.status !== 204) {
+        headers: defaultHeaders(),
+    } )
+        .then( (response) => {
+            if (response.status === 204 || response.status === 200) {
 
-            // console.log(response);
+                return true;
 
-        }
-    });
+            }
+
+            return false;
+
+        } )
+        .catch( () => false );
 
     return response;
 
 }
 
-export const getPublicInvite = async ( id : string | undefined ) => {
+export const validateAccessToPublicInvite = async ( id : string | undefined, guestDNI : string | undefined ) => {
     
     const response = await fetch( backUrls.base + backUrls.publicInvite + '/' + id, {
         mode: 'cors',
-        method: 'GET',
-        headers: defaultHeaders,
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            'dni': guestDNI,
+        }),
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 200) {
 
             return response.json();
 
@@ -283,7 +374,7 @@ export const getPublicInvite = async ( id : string | undefined ) => {
             return null;
 
         }
-    } ).catch( (error) => console.error(error) );
+    } ).catch( () => null );
 
     return response;
 
@@ -294,18 +385,18 @@ export const getInvites = async () => {
     const response = await fetch( backUrls.base + backUrls.invite, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 200) {
 
             return response.json();
 
         } else {
 
-            return null;
+            return [];
 
         }
-    } ).catch( (error) => console.error(error) );
+    } ).catch( () => [] );
 
     return response;
 
@@ -313,12 +404,30 @@ export const getInvites = async () => {
 
 export const validateInvite = async ( id : string | undefined ) => {
 
+    const toIsoString = ( date : Date ) : string => {
+        var tzo = -date.getTimezoneOffset(),
+            dif = tzo >= 0 ? '+' : '-',
+            pad = function(num : number) {
+                return (num < 10 ? '0' : '') + num;
+            };
+      
+        return date.getFullYear() +
+            '-' + pad(date.getMonth() + 1) +
+            '-' + pad(date.getDate()) +
+            'T' + pad(date.getHours()) +
+            ':' + pad(date.getMinutes()) +
+            ':' + pad(date.getSeconds()) +
+            '.' + pad(date.getMilliseconds()) +
+            dif + pad(Math.floor(Math.abs(tzo) / 60)) +
+            ':' + pad(Math.abs(tzo) % 60);
+      }
+
     const response = await fetch( backUrls.base + backUrls.invite + '/validate/' + id, {
         mode: 'cors',
         method: 'GET',
         headers: {
-            ...defaultHeaders,
-            'X-Client-Timestamp': new Date().toISOString(),
+            ...defaultHeaders(),
+            'X-Client-Timestamp': toIsoString(new Date()),
             'Content-Type': 'application/json'
         },
     } ).then( (response) => {
@@ -335,12 +444,7 @@ export const validateInvite = async ( id : string | undefined ) => {
             return false;
 
         }
-    } ).catch( (error) => {
-        
-        console.error(error);
-        return false;
-
-    } );
+    } ).catch( () => false );
 
     return response;
 
@@ -354,11 +458,11 @@ export const getGuest = async ( id : string | undefined ) => {
         mode: 'cors',
         method: 'GET',
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 200) {
 
             return response.json();
 
@@ -367,7 +471,7 @@ export const getGuest = async ( id : string | undefined ) => {
             return null;
 
         }
-    } ).catch( (error) => console.error(error) );
+    } ).catch( () => null );
 
     return response;
 
@@ -378,18 +482,18 @@ export const getGuests = async() => {
     const response = await fetch( backUrls.base + backUrls.guest, {
         mode: 'cors',
         method: 'GET',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 200) {
 
             return response.json();
 
         } else {
 
-            return null;
+            return [];
 
         }
-    } ).catch( (error) => console.error(error) );
+    } ).catch( () => [] );
 
     return response;
 
@@ -402,11 +506,11 @@ export const createGuest = async( guest : Guest) => {
         method: 'POST',
         body: JSON.stringify(guest),
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 201) {
 
             return response.json();
 
@@ -415,7 +519,7 @@ export const createGuest = async( guest : Guest) => {
             return null;
 
         }
-    } ).catch( (error) => console.error(error) );
+    } ).catch( () => null );
 
     return response;
 
@@ -428,10 +532,21 @@ export const updateGuest = async( guest : Guest ) => {
         method: 'PUT',
         body: JSON.stringify(guest),
         headers: {
-            ...defaultHeaders,
+            ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
-    } ).then( (response) => response.json() );
+    } )
+        .then( (response) => {
+            if (response.status === 200) {
+
+                return response.json();
+
+            }
+
+            return null;
+
+        } )
+        .catch( () => null );
 
     return response;
 
@@ -439,18 +554,22 @@ export const updateGuest = async( guest : Guest ) => {
 
 export const deleteGuest = async(id : string) => {
 
-    const response = await fetch( backUrls.base + backUrls.guest + '/' + id, {
+    let result = await fetch( backUrls.base + backUrls.guest + '/' + id, {
         mode: 'cors',
         method: 'DELETE',
-        headers: defaultHeaders,
+        headers: defaultHeaders(),
     } ).then( (response) => {
-        if (response.status !== 204) {
+        if (response.status === 204) {
 
-            // console.log(response);
+            return true;
 
         }
-    });
 
-    return response;
+        return false;
+
+    } )
+    .catch( () => false );
+
+    return result;
 
 }

@@ -1,48 +1,93 @@
 import { Button, Card, Grid, Snackbar, TextField, Typography } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import HomeIcon from '@mui/icons-material/Home';
-import { Fragment, useState, useMemo, useEffect, useCallback } from 'react';
-import { createUser, userExists } from '../../data/Reducers.tsx';
+import { Fragment, useState, useEffect, useRef, useCallback } from 'react';
+import { createUser, validateGoogleJWT } from '../../data/Reducers.tsx';
 import { useNavigate } from 'react-router-dom';
 import { frontUrls } from '../../data/Urls.tsx';
+import { useLocation } from 'react-router';
 
 
-export function CreateUser( { user, setUser, data, token } : { user: User | null, setUser : React.Dispatch<React.SetStateAction<User | null>>, data : GoogleJWT | null, token : string } ) {
+export function CreateUser( { token, decodedToken } : { token : string, decodedToken : GoogleJWT } ) {
 
     interface NewUser extends Partial<User> {};
 
-    const navigate = useNavigate();
-
-    const [openSnack, setOpenSnack] = useState<boolean>(false);
-
-    const setTokenAndRedirect = useCallback(() => {
-        localStorage.setItem('access_token', token);
-        navigate(frontUrls.base + frontUrls.invite);
-    }, [ token, navigate ]);
-
-    const handler = () => {
-        setOpenSnack(true);
-        handleClick();
+    interface State {
+        from: Location;
     };
 
-    const [shouldCreateUser, setShouldCreateUser] = useState<boolean>(true);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const user = useRef<User | null>(null);
+
+    const [openSnack, setOpenSnack] = useState<boolean>(false);
+    
+    const [settingToken, setSettingToken] = useState<boolean>(false);
+
+    const validatedUser = useRef<NewUser | null>(null);
+
+    const [email, setEmail] = useState<string>('');
+
+    const objectIsEmpty = (object : Object) => {
+        return Object.keys(object).length === 0;
+    };
+
+    const setTokenAndRedirect = useCallback( () => {
+        if (user.current === null) {
+            if (validatedUser.current !== null) {
+                if (objectIsEmpty(validatedUser.current as NewUser) && user.current === null) {
+                    setEmail(decodedToken.email);
+                    user.current = {email: decodedToken.email} as User;
+                    setSettingToken(true);
+                    return;
+                }
+                validatedUser.current.email = decodedToken.email;
+                user.current = validatedUser.current as User;
+            } else {
+                debugger
+                return;
+            }
+        }
+        if ( user.current === null) {
+            return;
+        }
+
+        localStorage.setItem('access_token', token);
+
+        let authorities : string[] = [];
+        authorities = user.current.authorities.map( (authority) => authority.authority );
+        localStorage.setItem('authorities', authorities.join(','));
+        localStorage.setItem('first_name', decodedToken?.given_name ?? '');
+        localStorage.setItem('last_name', decodedToken?.family_name ?? '');
+        localStorage.setItem('picture', decodedToken?.picture ?? '');
+
+        let state = location.state as State;
+        let url = frontUrls.base;
+        if (!!state){
+            url += state.from.pathname.substring(1, state.from.pathname.length);
+        }
+        navigate(url);
+    }, [ user, validatedUser, setSettingToken, token, decodedToken, location.state, navigate, setEmail ]);
 
     useEffect( () => {
 
-        // TODO: check if user exists
-        if (!!user?.email) {
-            (async (email : string, setTokenAndRedirect : () => void ) => {
-                if (await userExists(email)) {
-                    setTokenAndRedirect();
-                } else {
-                    setShouldCreateUser(true);
-                }
-            })(user.email, setTokenAndRedirect);
-        } else {
-            setShouldCreateUser(true);
-        }
+        const validateToken = () => {
+            if (validatedUser.current === null) {
+                validateGoogleJWT(decodedToken.email)
+                    .then( (validatedEntity) => {
+                        if (validatedEntity === null) {
+                            return;
+                        }
+                        validatedUser.current = validatedEntity as NewUser;
+                        setTokenAndRedirect();
+                    })
+                    .catch( () => null);
+            }
+        };
+        validateToken();
 
-    }, [ setShouldCreateUser, setTokenAndRedirect, user, navigate ]);
+    }, [ setTokenAndRedirect, decodedToken ]);
     
     const [firstName, setFirstName] = useState<string>('');
 
@@ -53,43 +98,31 @@ export function CreateUser( { user, setUser, data, token } : { user: User | null
     const [dni, setDNI] = useState<string>('');
 
 	const handleClick = async() => {
-		let user1 : NewUser = {
+        if (user.current === null) {
+            return;
+        }
+		let userToCreate : NewUser = {
             firstName: firstName,
             lastName: lastName,
-            email: user?.email,
+            email: email,
             phone: phone,
             dni: dni,
 		};
 
-        await createUser(user1 as User).then( (createdUser) => {
-            setUser(createdUser);
-        } );
-
-        setShouldCreateUser(false);
-        setTokenAndRedirect();
+        await createUser(userToCreate as User)
+            .then( (createdUser) => {
+                user.current = createdUser;
+            } );
+        setOpenSnack(true);
+        setTimeout(function(){
+            setSettingToken(false);
+            navigate(frontUrls.base);
+        }, 2000);
     };
-
-    const updateMemorizedUser = useCallback(() => {
-
-        let user : NewUser = {
-            email: data?.email,
-        }
-
-        if (!!data) {
-            setUser(user as User);
-        }
-
-        return user
-
-    }, [ data, setUser ]);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const memorizedUser = useMemo(() => updateMemorizedUser(), [ shouldCreateUser, updateMemorizedUser ]);
 
     return (
         <Fragment>
-
-            {shouldCreateUser ?
+            { settingToken ?
                 <>
                     <Grid container rowSpacing={1} columnSpacing={ { xs: 1, sm: 2, md: 3 } }>
                         <Grid item xs={6}>
@@ -107,7 +140,7 @@ export function CreateUser( { user, setUser, data, token } : { user: User | null
                         <Grid item xs={6}>
                             <Typography>Email:</Typography>
                             <Card elevation={6} id='card'>
-                                <TextField variant='filled' type='text' label='Ej: lucas@qrsec.com' className='text-fields' value={ memorizedUser?.email!=='' ? memorizedUser?.email : '' } autoFocus={ memorizedUser?.email !== '' } disabled={ true }/>
+                                <TextField variant='filled' type='text' label='Ej: lucas@qrsec.com' className='text-fields' value={ email } disabled={ true }/>
                             </Card>
                         </Grid>
                         <Grid item xs={6}>
@@ -127,7 +160,7 @@ export function CreateUser( { user, setUser, data, token } : { user: User | null
                     <br />
 
                     <Card elevation={6} id='card' className='card-send'>
-                        <Button variant='contained' id='button-send' startIcon={ <HomeIcon fontSize='large'/> } onClick={ handler }>Crear usuario</Button>
+                        <Button variant='contained' id='button-send' startIcon={ <HomeIcon fontSize='large'/> } onClick={ handleClick }>Crear usuario</Button>
                     </Card>
                 </> :
                 <></>
@@ -138,9 +171,16 @@ export function CreateUser( { user, setUser, data, token } : { user: User | null
                 onClose={ () => setOpenSnack(false) }
                 autoHideDuration={ 2000 }
             >
-                <Alert severity='success'>
-                    Usuario creado!
-                </Alert>
+                {user.current !== null ? (
+                    <Alert severity='success'>
+                        <Typography variant='body1'>Usuario creado!</Typography>
+                        <Typography variant='body1'>Pidele a tu administrador que te otorgue un rol antes de ingresar</Typography>
+                    </Alert>
+                ) :
+                    <Alert severity='error'>
+                        Error creando usuario, volver a intentar mas tarde!
+                    </Alert>
+                }
             </Snackbar>
 
         </Fragment>

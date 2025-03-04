@@ -3,9 +3,11 @@ import Alert from '@mui/material/Alert';
 import HomeIcon from '@mui/icons-material/Home';
 import { Fragment, useState } from 'react';
 import { createAddress } from '../../data/Reducers.tsx';
+import { frontUrls } from '../../data/Urls.tsx';
+import { useNavigate } from 'react-router-dom';
 
 
-export function CreateAddress( { setAddress } : { setAddress : React.Dispatch<React.SetStateAction<Address | null>> } ) {
+export function CreateAddress( { address, setAddress } : { address : Address | null, setAddress : React.Dispatch<React.SetStateAction<Address | null>> } ) {
 
     interface NewAddress extends Partial<Address> {};
 
@@ -15,6 +17,8 @@ export function CreateAddress( { setAddress } : { setAddress : React.Dispatch<Re
         setOpenSnack(true);
         handleClick();
     };
+
+    const navigate = useNavigate();
     
     const [street, setStreet] = useState<string>('');
 
@@ -49,9 +53,11 @@ export function CreateAddress( { setAddress } : { setAddress : React.Dispatch<Re
             }
 		};
 
-        await createAddress(address as Address).then( (createdAddress) => {
-            setAddress(createdAddress)
-        } );
+        let createdAddress = await createAddress(address as Address);
+        setAddress(createdAddress);
+        setTimeout(function(){
+            navigate(frontUrls.base + frontUrls.address);
+        }, 5000);
     };
 
     return (
@@ -107,9 +113,15 @@ export function CreateAddress( { setAddress } : { setAddress : React.Dispatch<Re
                 onClose={ () => setOpenSnack(false) }
                 autoHideDuration={ 2000 }
             >
-                <Alert severity='success'>
-                    Dirección creada!
-                </Alert>
+                {address !== null ? (
+                    <Alert severity='success'>
+                        Dirección creada!
+                    </Alert>
+                ) :
+                    <Alert severity='error'>
+                        Error creando la dirección.
+                    </Alert>
+                }
             </Snackbar>
 
         </Fragment>

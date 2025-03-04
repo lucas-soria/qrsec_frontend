@@ -5,11 +5,17 @@ declare const self: ServiceWorkerGlobalScope;
 const CACHE_NAME = "qrsec-cache-v1";
 const urlsToCache = [
     "/",
-    "/invite/view/*",
+    "/invite/",
     "/index.html",
     "/manifest.json",
-    "/icons/icon-192x192.png",
-    "/icons/icon-512x512.png",
+    "/logo192.png",
+    "/logo512.png",
+    "/favicon_64x64.ico",
+    "/favicon_32x32.ico",
+    "/favicon_24x24.ico",
+    "/favicon_16x16.ico",
+    "/QRSec%20logo.svg",
+    "/QRSec%20sad%20logo.svg"
 ];
 
 // Install Event - Caches assets

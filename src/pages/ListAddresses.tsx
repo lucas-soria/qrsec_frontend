@@ -1,19 +1,18 @@
-import { List, ListItem } from '@mui/material';
 import { Delete, ExpandMore } from '@mui/icons-material';
-import { Fragment, useEffect, useState } from 'react';
-import { Map } from '../components/ShowInvite/Map.tsx';
-import { getAddresses, deleteAddress } from '../data/Reducers.tsx';
+import { Button, Dialog, DialogActions, DialogTitle, List, ListItem, Skeleton, Snackbar, Typography } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Collapse from '@mui/material/Collapse';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
-import Collapse from '@mui/material/Collapse';
-import Alert from '@mui/material/Alert';
-import { Button, Dialog, DialogActions, DialogTitle, Snackbar, Typography } from '@mui/material';
+import { Fragment, useEffect, useState } from 'react';
 import { FloatingAddButton } from '../components/AddButton.tsx';
 import { NotFound } from '../components/NotFound.tsx';
+import { Map } from '../components/ShowInvite/Map.tsx';
+import { deleteAddress, getAddresses } from '../data/Reducers.tsx';
 
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -47,6 +46,7 @@ export function ListAddresses () {
         const doRequest = async() => {
             await getAddresses().then( (addresses) => {
                 setAddresses(addresses);
+                setFoundContent(addresses?.length > 0);
             } );
         };
 
@@ -64,13 +64,17 @@ export function ListAddresses () {
 
     const [expandedAddress, setExpandedAddress] = useState<string>('');
 
+    const [foundContent, setFoundContent] = useState<boolean | null>(null);
+
+    const [deleted, setDeleted] = useState<boolean>(false);
+
     const handleExpandClick = ( id: string ) => {
         setExpandedAddress(id !== expandedAddress ? id : '')
     };
 
     return (
         <>
-            {addresses?.length > 0 ? (
+            {addresses?.length > 0 && (foundContent !== null && foundContent) ? (
                 <>
                     <Fragment>
 
@@ -125,9 +129,15 @@ export function ListAddresses () {
                             onClose={ () => setOpenSnack(false) }
                             autoHideDuration={ 2000 }
                         >
-                            <Alert severity='info'>
-                                Dirección eliminada!
-                            </Alert>
+                            { deleted ? (
+                                <Alert severity='success'>
+                                    Dirección eliminada!
+                                </Alert>
+                            ):
+                                <Alert severity='error'>
+                                    Error al eliminar la dirección.
+                                </Alert>
+                            }
                         </Snackbar>
 
                         <Dialog
@@ -136,17 +146,21 @@ export function ListAddresses () {
                         >
 
                             <DialogTitle id='responsive-dialog-title'>
-                                ¿Desea borrar la dirección {address?.house.block} {address?.house.house}?
+                                ¿Desea borrar la dirección "{address?.house.block} {address?.house.house}"?
                             </DialogTitle>
 
                             <DialogActions>
                                 <Button color='error' variant='contained' onClick={
                                     async() => {
                                         if (address !== null) {
-                                            await deleteAddress(address.id).then( () => setOpenSnack(true) );
+                                            let deleted = await deleteAddress(address.id);
+                                            setDeleted(deleted);
+                                            setOpenSnack(true);
+                                            setOpen(false);
+                                            setTimeout(function(){
+                                                window.location.reload();
+                                            }, 2000);
                                         }
-                                        setOpen(false);
-                                        window.location.reload();
                                     }
                                 }>Eliminar</Button>
                                 <Button variant='contained' onClick={ () => setOpen(false) }>Salir</Button>
@@ -161,9 +175,60 @@ export function ListAddresses () {
 
             ) :
                 <>
-                    <NotFound>
-                        <Typography variant='h5'>No hay direcciones disponibles</Typography>
-                    </NotFound>
+                    {foundContent === null ? (
+                        <div>
+                            <br />
+                            <Skeleton variant='rounded' animation='wave' width='100%' >
+                                <Card>
+                                    <CardHeader />
+                                    <Collapse in={true} timeout="auto" unmountOnExit>
+                                        <CardContent />
+                                        <CardActions>
+                                            <IconButton>
+                                                <Delete />
+                                            </IconButton>
+                                        </CardActions>
+                                    </Collapse> 
+                                </Card>
+                            </Skeleton>
+                            <br />
+                            <Skeleton variant='rounded' animation='wave' width='100%' >
+                                <Card>
+                                    <CardHeader />
+                                    <Collapse in={true} timeout="auto" unmountOnExit>
+                                        <CardContent />
+                                        <CardActions>
+                                            <IconButton>
+                                                <Delete />
+                                            </IconButton>
+                                        </CardActions>
+                                    </Collapse> 
+                                </Card>
+                            </Skeleton>
+                            <br />
+                            <Skeleton variant='rounded' animation='wave' width='100%' >
+                                <Card>
+                                    <CardHeader />
+                                    <Collapse in={true} timeout="auto" unmountOnExit>
+                                        <CardContent />
+                                        <CardActions>
+                                            <IconButton>
+                                                <Delete />
+                                            </IconButton>
+                                        </CardActions>
+                                    </Collapse> 
+                                </Card>
+                            </Skeleton>
+                        </div>
+                    ) : (
+                        <>
+                            <NotFound>
+                                <Typography variant='h5'>No hay direcciones disponibles</Typography>
+                            </NotFound>
+
+                            <FloatingAddButton />
+                        </>
+                    )}
                 </>
             }
         </>
