@@ -65,6 +65,8 @@ export function ListGuests () {
 
     const [foundContent, setFoundContent] = useState<boolean | null>(null);
 
+    const [deleted, setDeleted] = useState<boolean>(false);
+
     let authoritiesString : string = localStorage.getItem('authorities') ?? '';
     let authorities : string[] = authoritiesString.split(',');
     const OWNER = 'OWNER';
@@ -166,9 +168,15 @@ export function ListGuests () {
                             onClose={ () => setOpenSnack(false) }
                             autoHideDuration={ 2000 }
                         >
-                            <Alert severity='info'>
-                                Invitado eliminado!
-                            </Alert>
+                            { deleted ? (
+                                <Alert severity='success'>
+                                    Invitado eliminado!
+                                </Alert>
+                            ):
+                                <Alert severity='error'>
+                                    Error al eliminar el invitado.
+                                </Alert>
+                            }
                         </Snackbar>
 
                         <Dialog
@@ -177,17 +185,21 @@ export function ListGuests () {
                         >
 
                             <DialogTitle id='responsive-dialog-title'>
-                                ¿Desea borrar el invitado {guest?.firstName} {guest?.lastName}?
+                                ¿Desea borrar el invitado "{guest?.firstName} {guest?.lastName}"?
                             </DialogTitle>
 
                             <DialogActions>
                                 <Button color='error' variant='contained' onClick={
                                     async() => {
                                         if (guest !== null) {
-                                            await deleteGuest(guest.id).then( () => setOpenSnack(true) );
+                                            let deleted = await deleteGuest(guest.id);
+                                            setDeleted(deleted);
+                                            setOpenSnack(true);
+                                            setOpen(false);
+                                            setTimeout(function(){
+                                                window.location.reload();
+                                            }, 2000);
                                         }
-                                        setOpen(false);
-                                        window.location.reload();
                                     }
                                 }>Eliminar</Button>
                                 <Button variant='contained' onClick={ () => setOpen(false) }>Salir</Button>

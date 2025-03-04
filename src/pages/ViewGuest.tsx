@@ -1,16 +1,19 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getGuest, updateGuest } from '../data/Reducers.tsx';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import React from 'react';
 import { AddLink } from '@mui/icons-material';
 import { Button, Card, Snackbar, TextField, Typography, Grid } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import { SelectOwner } from '../components/Guest/SelectOwner.tsx';
+import { frontUrls } from '../data/Urls.tsx';
 
 
 export function ViewGuest() {
 
     const { id } = useParams();
+
+	const navigate = useNavigate();
 
 	const [guest, setGuest] = useState<Guest>();
 
@@ -26,24 +29,37 @@ export function ViewGuest() {
 
     const [openSnack, setOpenSnack] = useState<boolean>(false);
 
+	const openSnackAndNavigate = useCallback( () => {
+		setOpenSnack(true);
+		setTimeout(function(){
+			navigate(frontUrls.base + frontUrls.guest);
+		}, 2000);
+	}, [ navigate ] );
+
 	useEffect( () => {
 
 		const setInitialValues = async () => {
 	
 			let guest = await getGuest(id);
+			if (guest === null) {
+				openSnackAndNavigate();
+			}
 			setGuest(guest);
-			setLastName(guest.lastName);
-			setFirstName(guest.firstName);
-			setDNI(guest.dni);
-			setPhone(guest.phone);
-			setOwners(guest.owners);
+			
+			if (guest !== null) {
+				setLastName(guest.lastName);
+				setFirstName(guest.firstName);
+				setDNI(guest.dni);
+				setPhone(guest.phone);
+				setOwners(guest.owners);
+			}
 		
 		};
 
 		document.title = 'QRSec - Ver invitado';
 		setInitialValues();
 
-	}, [ id ]);
+	}, [ id, openSnackAndNavigate ]);
 
     const handleUpdate = async () => {
 		if (!!guest) {
@@ -54,8 +70,9 @@ export function ViewGuest() {
 			guestToUpdate.phone = phone;
 			guestToUpdate.owners =  owners;
 
-			await updateGuest(guestToUpdate);
-        	setOpenSnack(true);
+			let updatedGuest = await updateGuest(guestToUpdate);
+			setGuest(updatedGuest);
+			openSnackAndNavigate();
 		}
     };
 
@@ -115,9 +132,15 @@ export function ViewGuest() {
 				onClose={ () => setOpenSnack(false) }
 				autoHideDuration={ 2000 }
 			>
-				<Alert severity='success'>
-					Invitado actualizado!
-				</Alert>
+				{guest !== null ? (
+					<Alert severity='success'>
+						Invitado actualizado!
+					</Alert>
+				) :
+					<Alert severity='error'>
+						Error actualizando el invitado.
+					</Alert>
+				}
 			</Snackbar>
 
 		</Fragment>
