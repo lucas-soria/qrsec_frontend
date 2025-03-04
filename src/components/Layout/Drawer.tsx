@@ -37,6 +37,10 @@ export function CustomDrawer( { permanent, open, setOpen } : { permanent : boole
     const handleLogOut = () => {
         
         localStorage.removeItem('access_token');
+        localStorage.removeItem('authorities');
+        localStorage.removeItem('first_name');
+        localStorage.removeItem('last_name');
+        localStorage.removeItem('picture');
         navigate(frontUrls.base);
 
     }
