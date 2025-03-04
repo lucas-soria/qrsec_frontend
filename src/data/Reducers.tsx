@@ -25,7 +25,18 @@ export const createAddress = async( address : Address ) => {
             ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
-    } ).then( (response) => response.json() );
+    } )
+        .then( (response) => {
+            if (response.status === 201) {
+
+                return response.json();
+
+            }
+
+            return null;
+
+        } )
+        .catch( () => null);
 
     return response;
 
@@ -37,17 +48,19 @@ export const getAddresses = async() => {
         mode: 'cors',
         method: 'GET',
         headers: defaultHeaders(),
-    } ).then( (response) => {
-        if (response.ok) {
+    } )
+        .then( (response) => {
+            if (response.status === 200) {
 
-            return response.json();
+                return response.json();
 
-        } else {
+            } else {
 
-            return null;
+                return [];
 
-        }
-    } ).catch( (error) => console.error(error) );
+            }
+        } )
+        .catch( () => [] );
 
     return response;
 
@@ -55,19 +68,25 @@ export const getAddresses = async() => {
 
 export const deleteAddress = async(id : string) => {
 
-    const response = await fetch( backUrls.base + backUrls.address + '/' + id, {
+    let result = await fetch( backUrls.base + backUrls.address + '/' + id, {
         mode: 'cors',
         method: 'DELETE',
         headers: defaultHeaders(),
-    } ).then( (response) => {
-        if (response.status !== 204) {
+    } )
+    .then( (response) => {
 
-            // console.log(response);
+        if (response.status === 204) {
+
+            return true;
 
         }
-    });
 
-    return response;
+        return false;
+
+    })
+    .catch( () => false );
+
+    return result;
 
 }
 
@@ -83,7 +102,21 @@ export const createUser = async( user : User ) => {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
-    } ).then( (response) => response.json() );
+    } )
+        .then( (response) => {
+
+            if (response.status !== 409) {
+                return response.json();
+            }
+
+            if (response.status === 409) {
+                return null;
+            }
+            
+            return null;
+        
+        } )
+        .catch( () => null );
 
     return response;
 
@@ -95,17 +128,19 @@ export const getUsers = async () => {
         mode: 'cors',
         method: 'GET',
         headers: defaultHeaders(),
-    } ).then( (response) => {
-        if (response.ok) {
+    } )
+        .then( (response) => {
+            if (response.status === 200) {
 
-            return response.json();
+                return response.json();
 
-        } else {
+            } else {
 
-            return null;
+                return [];
 
-        }
-    } ).catch( (error) => console.error(error) );
+            }
+        } )
+        .catch( () => [] );
 
     return response;
 
@@ -118,7 +153,7 @@ export const getUser = async ( id : string | undefined ) => {
         method: 'GET',
         headers: defaultHeaders(),
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 200) {
 
             return response.json();
 
@@ -127,13 +162,13 @@ export const getUser = async ( id : string | undefined ) => {
             return null;
 
         }
-    } ).catch( (error) => console.error(error) );
+    } ).catch( () => null );
 
     return response;
 
 }
 
-export const validateGoogleJWT = async ( email : string | undefined ) : Promise<User> => {
+export const validateGoogleJWT = async ( email : string | undefined ) => {
 
     const response = await fetch( backUrls.base + '/auth/google', {
         mode: 'cors',
@@ -142,17 +177,24 @@ export const validateGoogleJWT = async ( email : string | undefined ) : Promise<
             'Accept': 'application/json',
             'X-Email': email ?? '',
         },
-    } ).then( (response) => {
-        if (response.ok) {
+    } )
+        .then( (response) => {
+            if (response.status === 200) {
 
-            return response.json();
+                return response.json();
 
-        } else {
+            }
+
+            if (response.status === 404) {
+
+                return {};
+                    
+            }
 
             return null;
 
-        }
-    } ).catch( (error) => console.error(error) );
+        } )
+        .catch( () => null );
 
     return response;
 
@@ -168,7 +210,18 @@ export const updateUser = async( user : User ) => {
             ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
-    } ).then( (response) => response.json() );
+    } )
+        .then( (response) => {
+            if (response.status === 200) {
+
+                return response.json();
+
+            }
+
+            return null;
+
+        })
+        .catch( () => null );
 
     return response;
 
@@ -176,48 +229,25 @@ export const updateUser = async( user : User ) => {
 
 export const deleteUser = async(id : string) => {
 
-    const response = await fetch( backUrls.base + backUrls.user + '/' + id, {
+    const result = await fetch( backUrls.base + backUrls.user + '/' + id, {
         mode: 'cors',
         method: 'DELETE',
         headers: defaultHeaders(),
-    } ).then( (response) => {
-        if (response.status !== 204) {
+    } )
+        .then( (response) => {
 
-            // console.log(response);
+            if (response.status === 204) {
 
-        }
-    });
-
-    return response;
-
-}
-
-export const userExists = async ( email : string | undefined ) => {
-
-    const response = await fetch( backUrls.base + backUrls.user + '/exists/' + email, {
-        mode: 'cors',
-        method: 'GET',
-        headers: defaultHeaders(),
-    } ).then( (response) => {
-        if (response.ok) {
-
-            if (response.status === 200) {
                 return true;
+
             }
 
             return false;
 
-        } else {
+        })
+        .catch( () => false );
 
-            return false;
-
-        }
-    } ).catch( (error) => {
-        console.error(error);
-        return false;
-    } );
-
-    return response;
+    return result;
 
 }
 
@@ -233,7 +263,18 @@ export const createInvite = async( invite : Invite ) => {
             ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
-    } ).then( (response) => response.json() );
+    } )
+        .then( (response) => {
+            if (response.status === 201) {
+
+                return response.json();
+
+            }
+
+            return null;
+
+        } )
+        .catch( () => null);
 
     return response;
 
@@ -249,7 +290,18 @@ export const updateInvite = async( invite : Invite ) => {
             ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
-    } ).then( (response) => response.json() );
+    } )
+        .then( (response) => {
+            if (response.status === 200) {
+
+                return response.json();
+
+            }
+
+            return null;
+
+        } )
+        .catch( () => null);
 
     return response;
 
@@ -262,7 +314,7 @@ export const getInvite = async ( id : string | undefined ) => {
         method: 'GET',
         headers: defaultHeaders(),
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 200) {
 
             return response.json();
 
@@ -271,7 +323,7 @@ export const getInvite = async ( id : string | undefined ) => {
             return null;
 
         }
-    } ).catch( (error) => console.error(error) );
+    } ).catch( () => null );
 
     return response;
 
@@ -283,13 +335,18 @@ export const deleteInvite = async(id : string) => {
         mode: 'cors',
         method: 'DELETE',
         headers: defaultHeaders(),
-    } ).then( (response) => {
-        if (response.status !== 204) {
+    } )
+        .then( (response) => {
+            if (response.status === 204 || response.status === 200) {
 
-            // console.log(response);
+                return true;
 
-        }
-    });
+            }
+
+            return false;
+
+        } )
+        .catch( () => false );
 
     return response;
 
@@ -308,7 +365,7 @@ export const validateAccessToPublicInvite = async ( id : string | undefined, gue
             'dni': guestDNI,
         }),
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 200) {
 
             return response.json();
 
@@ -317,7 +374,7 @@ export const validateAccessToPublicInvite = async ( id : string | undefined, gue
             return null;
 
         }
-    } ).catch( (error) => console.error(error) );
+    } ).catch( () => null );
 
     return response;
 
@@ -330,16 +387,16 @@ export const getInvites = async () => {
         method: 'GET',
         headers: defaultHeaders(),
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 200) {
 
             return response.json();
 
         } else {
 
-            return null;
+            return [];
 
         }
-    } ).catch( (error) => console.error(error) );
+    } ).catch( () => [] );
 
     return response;
 
@@ -387,12 +444,7 @@ export const validateInvite = async ( id : string | undefined ) => {
             return false;
 
         }
-    } ).catch( (error) => {
-        
-        console.error(error);
-        return false;
-
-    } );
+    } ).catch( () => false );
 
     return response;
 
@@ -410,7 +462,7 @@ export const getGuest = async ( id : string | undefined ) => {
             'Content-Type': 'application/json'
         }
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 200) {
 
             return response.json();
 
@@ -419,7 +471,7 @@ export const getGuest = async ( id : string | undefined ) => {
             return null;
 
         }
-    } ).catch( (error) => console.error(error) );
+    } ).catch( () => null );
 
     return response;
 
@@ -432,16 +484,16 @@ export const getGuests = async() => {
         method: 'GET',
         headers: defaultHeaders(),
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 200) {
 
             return response.json();
 
         } else {
 
-            return null;
+            return [];
 
         }
-    } ).catch( (error) => console.error(error) );
+    } ).catch( () => [] );
 
     return response;
 
@@ -458,7 +510,7 @@ export const createGuest = async( guest : Guest) => {
             'Content-Type': 'application/json'
         }
     } ).then( (response) => {
-        if (response.ok) {
+        if (response.status === 201) {
 
             return response.json();
 
@@ -467,7 +519,7 @@ export const createGuest = async( guest : Guest) => {
             return null;
 
         }
-    } ).catch( (error) => console.error(error) );
+    } ).catch( () => null );
 
     return response;
 
@@ -483,7 +535,18 @@ export const updateGuest = async( guest : Guest ) => {
             ...defaultHeaders(),
             'Content-Type': 'application/json'
         }
-    } ).then( (response) => response.json() );
+    } )
+        .then( (response) => {
+            if (response.status === 200) {
+
+                return response.json();
+
+            }
+
+            return null;
+
+        } )
+        .catch( () => null );
 
     return response;
 
@@ -491,18 +554,22 @@ export const updateGuest = async( guest : Guest ) => {
 
 export const deleteGuest = async(id : string) => {
 
-    const response = await fetch( backUrls.base + backUrls.guest + '/' + id, {
+    let result = await fetch( backUrls.base + backUrls.guest + '/' + id, {
         mode: 'cors',
         method: 'DELETE',
         headers: defaultHeaders(),
     } ).then( (response) => {
-        if (response.status !== 204) {
+        if (response.status === 204) {
 
-            // console.log(response);
+            return true;
 
         }
-    });
 
-    return response;
+        return false;
+
+    } )
+    .catch( () => false );
+
+    return result;
 
 }
