@@ -13,7 +13,7 @@ export function SelectDescription( { description, setDescription } : { descripti
 
             <Typography variant='h6'>Nombre descriptivo de la invitación:</Typography>
             <Card elevation={6} id='card' className='card-send-invite'>
-                <TextField variant='filled' type='text' label='Ej: Invitación Oracio (todos los días)' className='text-fields max-width' value={ !!description ? description : '' } autoFocus={ !!description } onChange={ handleDescription } />
+                <TextField variant='filled' type='text' label='Ej: Invitación Carlos (todos los días)' className='text-fields max-width' value={ !!description ? description : '' } autoFocus={ !!description } onChange={ handleDescription } />
             </Card>
 
         </div>

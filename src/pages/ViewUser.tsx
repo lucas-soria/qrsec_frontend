@@ -1,17 +1,19 @@
-import { useParams } from 'react-router-dom';
-import { getUser, updateUser } from '../data/Reducers.tsx';
-import { Fragment, useEffect, useState } from 'react';
-import React from 'react';
 import { AddLink } from '@mui/icons-material';
-import { Button, Card, Snackbar, TextField, Typography, Grid } from '@mui/material';
+import { Button, Card, Grid, Snackbar, Switch, TextField, Typography } from '@mui/material';
 import Alert from '@mui/material/Alert';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { SelectAddress } from '../components/User/SelectAddress.tsx';
 import { SelectAuthority } from '../components/User/SelectAuthotity.tsx';
+import { getUser, updateUser } from '../data/Reducers.tsx';
+import { frontUrls } from '../data/Urls.tsx';
 
 
 export function ViewUser() {
 
     const { id } = useParams();
+
+    const navigate = useNavigate();
 
 	const [user, setUser] = useState<User>();
 
@@ -29,28 +31,44 @@ export function ViewUser() {
 
     const [authorities, setAuthorities] = useState<Authority[]>([]);
 
+    const [enabled, setEnabled] = useState<boolean>(false);
+
     const [openSnack, setOpenSnack] = useState<boolean>(false);
+
+    const openSnackAndNavigate = useCallback( () => {
+        setOpenSnack(true);
+        setTimeout(function(){
+            navigate(frontUrls.base + frontUrls.user);
+        }, 2000);
+    }, [ navigate ] );
 
 	useEffect( () => {
 
 		const setInitialValues = async () => {
 	
 			let user = await getUser(id);
+            if (user === null) {
+                openSnackAndNavigate();
+            }
 			setUser(user);
-			setLastName(user.lastName);
-			setFirstName(user.firstName);
-			setDNI(user.dni);
-			setPhone(user.phone);
-			setEmail(user.email);
-            setAddress(user.address);
-            setAuthorities(user.authorities);
+
+            if (user !== null) {
+                setLastName(user.lastName);
+                setFirstName(user.firstName);
+                setDNI(user.dni);
+                setPhone(user.phone);
+                setEmail(user.email);
+                setAddress(user.address);
+                setAuthorities(user.authorities);
+                setEnabled(user.enabled);
+            }
 		
 		};
 
 		document.title = 'QRSec - Ver usuario';
 		setInitialValues();
 
-	}, [ id ]);
+	}, [ id, openSnackAndNavigate ]);
 
     const handleUpdate = async () => {
 		if (!!user) {
@@ -62,9 +80,11 @@ export function ViewUser() {
             userToUpdate.email = email;
             userToUpdate.address = address;
 			userToUpdate.authorities = authorities;
+            userToUpdate.enabled = enabled;
 
-			await updateUser(userToUpdate);
-        	setOpenSnack(true);
+			let updatedUser = await updateUser(userToUpdate);
+            setUser(updatedUser);
+        	openSnackAndNavigate();
 		}
     };
 
@@ -78,6 +98,10 @@ export function ViewUser() {
 
 	const handlePhone = (event : React.ChangeEvent<HTMLInputElement>) => {
         setPhone(String(event.target.value));
+    };
+
+    const handleEnabled = (event : React.ChangeEvent<HTMLInputElement>) => {
+        setEnabled(Boolean(event.target.checked));
     };
 
     return (
@@ -95,7 +119,7 @@ export function ViewUser() {
                 <Grid item xs={6}>
                     <Typography>Apellido:</Typography>
                     <Card elevation={6} id='card'>
-                    <TextField variant='filled' type='text' label='Ej: Soria Gava' className='text-fields' value={ lastName!=='' ? lastName : '' } autoFocus={ lastName !== '' } onChange={ handleLastName }/>
+                        <TextField variant='filled' type='text' label='Ej: Soria Gava' className='text-fields' value={ lastName!=='' ? lastName : '' } autoFocus={ lastName !== '' } onChange={ handleLastName }/>
                     </Card>
                 </Grid>
                 <Grid item xs={6}>
@@ -113,12 +137,16 @@ export function ViewUser() {
                 <Grid item xs={6}>
                     <Typography>Teléfono:</Typography>
                     <Card elevation={6} id='card'>
-                    <TextField variant='filled' type='text' label='Ej: +54 9 261 389 3771' className='text-fields' value={ phone!=='' ? phone : '' } autoFocus={ phone !== '' } onChange={ handlePhone }/>
+                        <TextField variant='filled' type='text' label='Ej: +54 9 261 389 3771' className='text-fields' value={ phone!=='' ? phone : '' } autoFocus={ phone !== '' } onChange={ handlePhone }/>
                     </Card>
                 </Grid>
             </Grid>
 			<SelectAddress address={ address ? address : {} as Address } setAddress={ setAddress }/>
             <SelectAuthority authorities={ authorities ? authorities : [] } setAuthorities={ setAuthorities } />
+            <div className='custom-component'>
+                <Typography variant='h6' style={ { display: 'inline-block' } } >Habilitado:</Typography>
+                <Switch checked={ enabled } value={ enabled } onChange={ handleEnabled }/>
+            </div>
 
             <br/>
 
@@ -131,9 +159,15 @@ export function ViewUser() {
 				onClose={ () => setOpenSnack(false) }
 				autoHideDuration={ 2000 }
 			>
-				<Alert severity='success'>
-					Invitado actualizado!
-				</Alert>
+                {user !== null ? (
+                    <Alert severity='success'>
+					    Usuario actualizado!
+				    </Alert>
+                ) :
+                    <Alert severity='error'>
+                        Error actualizando el usuario.
+                    </Alert>
+                }
 			</Snackbar>
 
 		</Fragment>

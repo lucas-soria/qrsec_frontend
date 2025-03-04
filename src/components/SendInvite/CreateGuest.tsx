@@ -1,5 +1,5 @@
 import { PersonAdd } from '@mui/icons-material';
-import { Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField } from '@mui/material';
+import { Alert, Button, Card, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Snackbar, TextField } from '@mui/material';
 import { Fragment, useState } from 'react';
 import { createGuest } from '../../data/Reducers.tsx';
 
@@ -13,6 +13,10 @@ export function CreateGuest( { open, setOpen } : { open : boolean, setOpen : Rea
     const [lastName, setLastName] = useState<string>('');
 
 	const [phone, setPhone] = useState<string>('');
+
+    const [openSnack, setOpenSnack] = useState<boolean>(false);
+    
+    const [guest, setGuest] = useState<Guest | null>(null);
 
 	const handleDNI = (event : React.ChangeEvent<HTMLInputElement>) => {
         setDNI(event.target.value);
@@ -36,7 +40,7 @@ export function CreateGuest( { open, setOpen } : { open : boolean, setOpen : Rea
 
     interface NewGuest extends Partial<Guest> {}
 
-	const handleClick = () => {
+	const handleClick = async () => {
 		let guest : NewGuest = {
             dni: dni,
 			firstName: firstName,
@@ -44,17 +48,19 @@ export function CreateGuest( { open, setOpen } : { open : boolean, setOpen : Rea
 			phone: phone
 		};
 
-        createGuest(guest as Guest);
-		handleClose();
+        let createdGuest = await createGuest(guest as Guest);
+        setGuest(createdGuest);
+        handleClose();
+        setOpenSnack(true);
     };
 
     return (
         <Fragment>
 
             <Dialog
-            open={open}
-            onClose={handleClose}
-            scroll='paper'
+                open={open}
+                onClose={handleClose}
+                scroll='paper'
             >
 
                 <DialogTitle id='responsive-dialog-title'>
@@ -95,6 +101,22 @@ export function CreateGuest( { open, setOpen } : { open : boolean, setOpen : Rea
                 </DialogActions>
 
             </Dialog>
+
+            <Snackbar
+                open={ openSnack }
+                onClose={ () => setOpenSnack(false) }
+                autoHideDuration={ 2000 }
+            >
+                {guest !== null ? (
+                    <Alert severity='success'>
+                        Invitado creado!
+                    </Alert>
+                ) :
+                    <Alert severity='error'>
+                        Error creando el invitado.
+                    </Alert>
+                }
+            </Snackbar>
 
         </Fragment>
     );

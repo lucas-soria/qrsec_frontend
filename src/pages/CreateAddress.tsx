@@ -18,7 +18,7 @@ export function CreateNewAddress () {
 
             <br />
 
-            <CreateAddress setAddress={ setAddress }/>
+            <CreateAddress address={ address } setAddress={ setAddress }/>
 
             {address && (
                 <div>
