@@ -1,17 +1,19 @@
-import { useParams } from 'react-router-dom';
-import { getUser, updateUser } from '../data/Reducers.tsx';
-import { Fragment, useEffect, useState } from 'react';
-import React from 'react';
 import { AddLink } from '@mui/icons-material';
-import { Button, Card, Snackbar, TextField, Typography, Grid, Switch } from '@mui/material';
+import { Button, Card, Grid, Snackbar, Switch, TextField, Typography } from '@mui/material';
 import Alert from '@mui/material/Alert';
+import React, { Fragment, useCallback, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { SelectAddress } from '../components/User/SelectAddress.tsx';
 import { SelectAuthority } from '../components/User/SelectAuthotity.tsx';
+import { getUser, updateUser } from '../data/Reducers.tsx';
+import { frontUrls } from '../data/Urls.tsx';
 
 
 export function ViewUser() {
 
     const { id } = useParams();
+
+    const navigate = useNavigate();
 
 	const [user, setUser] = useState<User>();
 
@@ -33,27 +35,40 @@ export function ViewUser() {
 
     const [openSnack, setOpenSnack] = useState<boolean>(false);
 
+    const openSnackAndNavigate = useCallback( () => {
+        setOpenSnack(true);
+        setTimeout(function(){
+            navigate(frontUrls.base + frontUrls.user);
+        }, 2000);
+    }, [ navigate ] );
+
 	useEffect( () => {
 
 		const setInitialValues = async () => {
 	
 			let user = await getUser(id);
+            if (user === null) {
+                openSnackAndNavigate();
+            }
 			setUser(user);
-			setLastName(user.lastName);
-			setFirstName(user.firstName);
-			setDNI(user.dni);
-			setPhone(user.phone);
-			setEmail(user.email);
-            setAddress(user.address);
-            setAuthorities(user.authorities);
-            setEnabled(user.enabled);
+
+            if (user !== null) {
+                setLastName(user.lastName);
+                setFirstName(user.firstName);
+                setDNI(user.dni);
+                setPhone(user.phone);
+                setEmail(user.email);
+                setAddress(user.address);
+                setAuthorities(user.authorities);
+                setEnabled(user.enabled);
+            }
 		
 		};
 
 		document.title = 'QRSec - Ver usuario';
 		setInitialValues();
 
-	}, [ id ]);
+	}, [ id, openSnackAndNavigate ]);
 
     const handleUpdate = async () => {
 		if (!!user) {
@@ -67,8 +82,9 @@ export function ViewUser() {
 			userToUpdate.authorities = authorities;
             userToUpdate.enabled = enabled;
 
-			await updateUser(userToUpdate);
-        	setOpenSnack(true);
+			let updatedUser = await updateUser(userToUpdate);
+            setUser(updatedUser);
+        	openSnackAndNavigate();
 		}
     };
 
@@ -143,9 +159,15 @@ export function ViewUser() {
 				onClose={ () => setOpenSnack(false) }
 				autoHideDuration={ 2000 }
 			>
-				<Alert severity='success'>
-					Invitado actualizado!
-				</Alert>
+                {user !== null ? (
+                    <Alert severity='success'>
+					    Usuario actualizado!
+				    </Alert>
+                ) :
+                    <Alert severity='error'>
+                        Error actualizando el usuario.
+                    </Alert>
+                }
 			</Snackbar>
 
 		</Fragment>

@@ -62,6 +62,8 @@ export function ListUsers () {
 
     const [foundContent, setFoundContent] = useState<boolean | null>(null);
 
+    const [deleted, setDeleted] = useState<boolean>(false);
+
     const handleExpandClick = ( id: string ) => {
         setExpandedUser(id !== expandedUser ? id : '')
     };
@@ -164,9 +166,15 @@ export function ListUsers () {
                             onClose={ () => setOpenSnack(false) }
                             autoHideDuration={ 2000 }
                         >
-                            <Alert severity='info'>
-                                Usuario eliminado!
-                            </Alert>
+                            { deleted ? (
+                                <Alert severity='success'>
+                                    Usuario eliminado!
+                                </Alert>
+                            ):
+                                <Alert severity='error'>
+                                    Error al eliminar el usuario.
+                                </Alert>
+                            }
                         </Snackbar>
 
                         <Dialog
@@ -175,17 +183,21 @@ export function ListUsers () {
                         >
 
                             <DialogTitle id='responsive-dialog-title'>
-                                ¿Desea borrar el usuario {user?.firstName} {user?.lastName}?
+                                ¿Desea borrar el usuario "{user?.firstName} {user?.lastName}"?
                             </DialogTitle>
 
                             <DialogActions>
                                 <Button color='error' variant='contained' onClick={
                                     async() => {
                                         if (user !== null) {
-                                            await deleteUser(user.id).then( () => setOpenSnack(true) );
+                                            let deleted = await deleteUser(user.id);
+                                            setDeleted(deleted);
+                                            setOpenSnack(true);
+                                            setOpen(false);
+                                            setTimeout(function(){
+                                                window.location.reload();
+                                            }, 2000);
                                         }
-                                        setOpen(false);
-                                        window.location.reload();
                                     }
                                 }>Eliminar</Button>
                                 <Button variant='contained' onClick={ () => setOpen(false) }>Salir</Button>
