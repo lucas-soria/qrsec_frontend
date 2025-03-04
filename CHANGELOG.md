@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-03-03 ([#11](https://github.com/soria-lucas/qrsec_frontend/pull/9))
+### Added
+- NotFound Page.
+- Protected routes from unauthenticated access.
+- Guest validation before to showing public invite info.
+- Auth google endpoint from backend to retrieve users authorities.
+- Structure's skeleton while loading or fetching data.
+- Enable switch on user page.
+- More data is stored in localStorage.
+  - Log out button deletes this data.
+- Error handling when comunication with backend.
+
+### Changed
+- Not Found or invalid Invite page (public invite).
+- Drawer pages are shown based on user authorities.
+- Some buttons or options are shown based on the user authorities.
+- Avoid showing signup page unless necessary.
+
 ## [0.0.3] - 2025-02-18 ([#9](https://github.com/soria-lucas/qrsec_frontend/pull/9))
 ### Changed
 - Colors, style and layout.
