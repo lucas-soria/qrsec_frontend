@@ -42,7 +42,9 @@ export function ViewInvite() {
 
 	const [open, setOpen] = useState<boolean>(false);
 
-    const [openSnack, setOpenSnack] = useState<boolean>(false);
+    const [openSnackCopied, setOpenSnackCopied] = useState<boolean>(false);
+
+	const [openSnackUpdated, setOpenSnackUpdated] = useState<boolean>(false);
 
 	let authoritiesString : string = localStorage.getItem('authorities') ?? '';
     let authorities : string[] = authoritiesString.split(',');
@@ -51,31 +53,39 @@ export function ViewInvite() {
 	useEffect( () => {
 
 		const setInitialValues = async () => {
-	
+
 			let invite = await getInvite(id);
+			if (invite === null) {
+                setOpenSnackUpdated(true);
+				setTimeout(function(){
+					navigate(frontUrls.base + frontUrls.invite);
+				}, 2000);
+            }
+
 			setInvite(invite);
-			setDescription(invite.description);
-			setGuests(invite.guests as Guest[]);
-			setDays(invite.days);
-			setHours(invite.hours.length === 0 ? [ [] ] : invite.hours);
-			setMaxTime(invite.maxTimeAllowed);
-			setPassengers(invite.numberOfPassengers);
-			setDrop(invite.dropsTrueGuest);
+			if (invite !== null) {
+				setDescription(invite.description);
+				setGuests(invite.guests as Guest[]);
+				setDays(invite.days);
+				setHours(invite.hours.length === 0 ? [ [] ] : invite.hours);
+				setMaxTime(invite.maxTimeAllowed);
+				setPassengers(invite.numberOfPassengers);
+				setDrop(invite.dropsTrueGuest);
+			}
 		
 		};
 
 		document.title = 'QRSec - Ver invitación';
 		setInitialValues();
 
-	}, [ id ]);
+	}, [ id, navigate ]);
 
 	const handleClickOpen = () => {
         setOpen(true);
     };
-    
+
     const handleClose = () => {
         setOpen(false);
-		navigate(frontUrls.base + frontUrls.invite);
     };
 
     const handleUpdate = async () => {
@@ -89,14 +99,29 @@ export function ViewInvite() {
 			inviteToUpdate.numberOfPassengers =  passengers;
 			inviteToUpdate.dropsTrueGuest = drop;
 
-			await updateInvite(inviteToUpdate).then( (updatedInvite) => setUrl(base_url + id) );
-        	handleClickOpen();
+			await updateInvite(inviteToUpdate)
+				.then( (updatedInvite) => {
+					if (updatedInvite !== null) {
+						setUrl(base_url + id);
+						setOpenSnackUpdated(true);
+						handleClickOpen();
+					} else {
+						setOpenSnackUpdated(true);
+						setTimeout(function(){
+							navigate(frontUrls.base + frontUrls.invite);
+						}, 2000);
+					}
+				} );
 		}
     };
 
     const handleCopy = () => {
-        setOpenSnack(true);
-        navigator.clipboard.writeText(url);
+		setOpen(false);
+        setOpenSnackCopied(true);
+		setTimeout(function(){
+			navigator.clipboard.writeText(url);
+			navigate(frontUrls.base + frontUrls.invite);
+		}, 2000);
     };
 
     return (
@@ -123,23 +148,46 @@ export function ViewInvite() {
 			<Dialog open={open} onClose={ handleClose }>
 				<DialogTitle id='responsive-dialog-title'>Copiá y compartí la invitación!</DialogTitle>
 				<DialogContent>
-					<DialogContentText>
-						{url} <Button variant='contained' startIcon={ <ContentCopy fontSize='large'/> } onClick={ handleCopy }>Copiar</Button>
+					<DialogContentText sx={{ 
+							overflow: 'hidden', 
+							textOverflow: 'ellipsis', 
+							whiteSpace: 'nowrap', 
+							display: 'inline-block', 
+							maxWidth: '100%' 
+						}}
+					>
+						{url}
 					</DialogContentText>
 				</DialogContent>
 				<DialogActions>
-					<Button variant='contained' onClick={ handleClose } autoFocus>Hecho</Button>
+					<Button variant='contained' startIcon={ <ContentCopy fontSize='large'/> } onClick={ handleCopy }>Copiar</Button>
 				</DialogActions>
 			</Dialog>
 
 			<Snackbar
-				open={ openSnack }
-				onClose={ () => setOpenSnack(false) }
+				open={ openSnackCopied }
+				onClose={ () => setOpenSnackCopied(false) }
 				autoHideDuration={ 2000 }
 			>
 				<Alert severity='success'>
 					Copiado al portapapeles!
 				</Alert>
+			</Snackbar>
+
+			<Snackbar
+				open={ openSnackUpdated }
+				onClose={ () => setOpenSnackUpdated(false) }
+				autoHideDuration={ 2000 }
+			>
+				{url !== '' ? (
+					<Alert severity='success'>
+						Invitación actualizada!
+					</Alert>
+				) :
+					<Alert severity='error'>
+						Error actualizando la invitación.
+					</Alert>
+				}
 			</Snackbar>
 
 		</Fragment>

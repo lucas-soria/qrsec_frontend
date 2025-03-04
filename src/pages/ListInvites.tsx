@@ -79,6 +79,8 @@ export function ListInvites () {
 
     const [foundContent, setFoundContent] = useState<boolean | null>(null);
 
+    const [deleted, setDeleted] = useState<boolean>(false);
+
     let authoritiesString : string = localStorage.getItem('authorities') ?? '';
     let authorities : string[] = authoritiesString.split(',');
     const OWNER = 'OWNER';
@@ -225,9 +227,15 @@ export function ListInvites () {
                             onClose={ () => setOpenSnack(false) }
                             autoHideDuration={ 2000 }
                         >
-                            <Alert severity='info'>
-                                Dirección eliminada!
-                            </Alert>
+                            { deleted ? (
+                                <Alert severity='success'>
+                                    Invitación eliminada!
+                                </Alert>
+                            ):
+                                <Alert severity='error'>
+                                    Error al eliminar la invitación.
+                                </Alert>
+                            }
                         </Snackbar>
 
                         <Dialog
@@ -236,17 +244,21 @@ export function ListInvites () {
                         >
 
                             <DialogTitle id='responsive-dialog-title'>
-                                ¿Desea borrar la dirección {invite?.id}?
+                                ¿Desea borrar la invitación "{invite?.description}"?
                             </DialogTitle>
 
                             <DialogActions>
                                 <Button color='error' variant='contained' onClick={
                                     async() => {
                                         if (invite !== null) {
-                                            await deleteInvite(invite.id).then( () => setOpenSnack(true) );
+                                            let deleted = await deleteInvite(invite.id);
+                                            setDeleted(deleted);
+                                            setOpenSnack(true);
+                                            setOpen(false);
+                                            setTimeout(function(){
+                                                window.location.reload();
+                                            }, 2000);
                                         }
-                                        setOpen(false);
-                                        window.location.reload();
                                     }
                                 }>Eliminar</Button>
                                 <Button variant='contained' onClick={ () => setOpen(false) }>Salir</Button>
@@ -324,9 +336,19 @@ export function ListInvites () {
                             </Skeleton>
                         </div>
                     ) : (
-                        <NotFound>
-                            <Typography variant='h5'>No hay invitaciones disponibles</Typography>
-                        </NotFound>
+                        <>
+                            <NotFound>
+                                <Typography variant='h5'>No hay invitaciones disponibles</Typography>
+                            </NotFound>
+
+                            <>
+                                {authorities.includes(OWNER) ? (
+                                    <FloatingAddButton />
+                                ) :
+                                    <></>
+                                }
+                            </>
+                        </>
                     )}
                 </>
             }
