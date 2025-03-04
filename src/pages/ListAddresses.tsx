@@ -66,6 +66,8 @@ export function ListAddresses () {
 
     const [foundContent, setFoundContent] = useState<boolean | null>(null);
 
+    const [deleted, setDeleted] = useState<boolean>(false);
+
     const handleExpandClick = ( id: string ) => {
         setExpandedAddress(id !== expandedAddress ? id : '')
     };
@@ -127,9 +129,15 @@ export function ListAddresses () {
                             onClose={ () => setOpenSnack(false) }
                             autoHideDuration={ 2000 }
                         >
-                            <Alert severity='info'>
-                                Dirección eliminada!
-                            </Alert>
+                            { deleted ? (
+                                <Alert severity='success'>
+                                    Dirección eliminada!
+                                </Alert>
+                            ):
+                                <Alert severity='error'>
+                                    Error al eliminar la dirección.
+                                </Alert>
+                            }
                         </Snackbar>
 
                         <Dialog
@@ -138,17 +146,21 @@ export function ListAddresses () {
                         >
 
                             <DialogTitle id='responsive-dialog-title'>
-                                ¿Desea borrar la dirección {address?.house.block} {address?.house.house}?
+                                ¿Desea borrar la dirección "{address?.house.block} {address?.house.house}"?
                             </DialogTitle>
 
                             <DialogActions>
                                 <Button color='error' variant='contained' onClick={
                                     async() => {
                                         if (address !== null) {
-                                            await deleteAddress(address.id).then( () => setOpenSnack(true) );
+                                            let deleted = await deleteAddress(address.id);
+                                            setDeleted(deleted);
+                                            setOpenSnack(true);
+                                            setOpen(false);
+                                            setTimeout(function(){
+                                                window.location.reload();
+                                            }, 2000);
                                         }
-                                        setOpen(false);
-                                        window.location.reload();
                                     }
                                 }>Eliminar</Button>
                                 <Button variant='contained' onClick={ () => setOpen(false) }>Salir</Button>
@@ -209,9 +221,13 @@ export function ListAddresses () {
                             </Skeleton>
                         </div>
                     ) : (
-                        <NotFound>
-                            <Typography variant='h5'>No hay direcciones disponibles</Typography>
-                        </NotFound>
+                        <>
+                            <NotFound>
+                                <Typography variant='h5'>No hay direcciones disponibles</Typography>
+                            </NotFound>
+
+                            <FloatingAddButton />
+                        </>
                     )}
                 </>
             }
